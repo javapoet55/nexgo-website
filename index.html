@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nexdo — A little less juggling. A little more living.</title>
+  <meta name="description" content="An AI-powered to-do app that brings tasks, calendar and conversation together.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-current="page"><span class="mark">N</span> Nexdo</a>
+    <div class="nav-links">
+      <div class="drop">
+        <button class="drop-t" aria-haspopup="true">Product
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 9l7 7 7-7"/></svg>
+        </button>
+        <div class="drop-m">
+          <a href="ai-assistant.html">
+            <span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 1 1-3.2-6.4"/><path d="M21 4v5h-5"/></svg></span>
+            <span><b>AI Assistant</b><small>Ask Nexdo. Know what to do next.</small></span>
+          </a>
+          <a href="index.html#day">
+            <span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+            <span><b>My Day</b><small>Tasks, calendar and focus in one place.</small></span>
+          </a>
+          <a href="index.html#ways">
+            <span class="di"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+            <span><b>All features</b><small>The ten ways Nexdo lightens your day.</small></span>
+          </a>
+        </div>
+      </div>
+      <a href="index.html#ways">Features</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <a class="signin" href="#signin">Sign in</a>
+      <a class="btn btn-primary" href="#start">Get started free</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="glow"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="dot">◆</span> Your day. A little lighter.</p>
+      <h1>A little less juggling.<br><span class="serif">A little more living.</span></h1>
+      <p class="lede">Nexdo turns a full head into a clear plan. Tasks, calendar, and a conversation that holds it all together — so the next right thing is always obvious.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#start">Find your flow <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="#signin">Sign in <span class="arw">→</span></a>
+      </div>
+      <div class="assure">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 9.1-8 10-4.6-.9-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        AI proposes. You approve. Nothing moves without your say.
+      </div>
+    </div>
+
+    <div class="panel" aria-label="Example of the My Day view">
+      <div class="panel-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C5CFF" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span class="t">My Day</span>
+        <span class="avatar">J</span>
+      </div>
+      <div class="panel-body">
+        <div class="panel-head">
+          <span class="k">A sample day with Nexdo</span>
+          <span class="h">Room to do your best work.</span>
+          <div class="counts"><span><b>3</b>things that matter</span><span><b>1</b>clear next step</span></div>
+        </div>
+
+        <div class="task hot">
+          <span class="tick"></span>
+          <span class="meta">
+            <span class="name">Finish the proposal</span>
+            <span class="sub"><span class="pill pill-crit">Critical</span> 60 min · Due today</span>
+          </span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A88CFF" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4M9 2h6"/></svg>
+        </div>
+
+        <div class="task">
+          <span class="tick" style="border-radius:5px"></span>
+          <span class="meta">
+            <span class="name">Design review</span>
+            <span class="sub"><span class="pill pill-cal">Calendar</span> 10:00 AM · 30 min</span>
+          </span>
+          <span class="tag">Work</span>
+        </div>
+
+        <div class="task">
+          <span class="tick"></span>
+          <span class="meta">
+            <span class="name">Send the follow-up</span>
+            <span class="sub">After lunch · 15 min</span>
+          </span>
+        </div>
+
+        <div class="nudge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A88CFF" stroke-width="2" style="flex:0 0 auto;margin-top:2px"><path d="M12 3v10"/><rect x="9" y="1" width="6" height="10" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+          <div>
+            <span class="lbl">A little clarity from Nexdo</span>
+            <p>Your proposal comes first. There's room for the rest after your meeting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="wrap strip-in">
+    <span class="lab">One place for your day</span>
+    <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg> Tasks</span>
+    <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> Calendar</span>
+    <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 1 1-3.2-6.4"/><path d="M21 4v5h-5"/></svg> AI conversation</span>
+    <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg> Focus</span>
+  </div>
+</div>
+
+<section class="sec wrap" id="day">
+  <div class="sec-head">
+    <p class="eyebrow">Less setup. More “I've got this.”</p>
+    <h2>Start with what's on your mind.</h2>
+    <p class="lede">No tour of a dozen menus. Ask the thing you'd ask a very good assistant, and get a plan you can act on. Pick a question below — these are guided examples, not live AI.</p>
+  </div>
+
+  <div class="scen">
+    <div class="scen-list" role="tablist" aria-label="Sample questions">
+      <button class="scen-btn" role="tab" aria-selected="true" data-s="0">
+        <span class="n">01</span>
+        <span><span class="ttl">Find my focus</span><span class="d">One clear next step from a crowded list</span></span>
+      </button>
+      <button class="scen-btn" role="tab" aria-selected="false" data-s="1">
+        <span class="n">02</span>
+        <span><span class="ttl">Make room for a change</span><span class="d">Something slipped — rebuild the afternoon</span></span>
+      </button>
+      <button class="scen-btn" role="tab" aria-selected="false" data-s="2">
+        <span class="n">03</span>
+        <span><span class="ttl">See the bigger picture</span><span class="d">Where the week gets tight, before it does</span></span>
+      </button>
+    </div>
+
+    <div class="scen-panel" role="tabpanel">
+      <div class="ask">
+        <svg class="wave" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h2M8 7v10M12 4v16M16 8v8M20 11h1"/></svg>
+        <span id="q">“What should I focus on today?”</span>
+      </div>
+      <div class="answer">
+        <h3 id="ah">Less deciding. More doing.</h3>
+        <p id="ap">Start with the proposal — it's due today and needs your best thinking. The follow-up can wait until after lunch.</p>
+      </div>
+      <div class="tl" id="tl"></div>
+      <span class="foot-note" id="fn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        Priorities, deadlines and real available time — not just the first three tasks.
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="ways">
+  <div class="sec-head">
+    <p class="eyebrow">Ten ways Nexdo lightens your day</p>
+    <h2>Less organizing.<br>More moving forward.</h2>
+    <p class="lede">From a spoken thought to a clear next step. This is the intelligence working underneath your everyday plan.</p>
+  </div>
+
+  <div class="cap-grid">
+    <div class="cap-feature">
+      <span class="k">01 / 10 · Your next move</span>
+      <h3>“I have 38 minutes. What should I do?”</h3>
+      <p>Nexdo finds one useful task that actually fits the gap, plus alternatives if it doesn't suit — weighing time, deadlines, dependencies and what's already in progress.</p>
+      <div class="timebar">
+        <div class="row"><span>Free window</span><span>38 min</span></div>
+        <div class="bar"><i></i></div>
+        <div class="row"><span>Best fit · Finish presentation</span><span>~30 min</span></div>
+      </div>
+      <div class="mini">
+        <div class="mini-row"><span class="idx">1</span><span class="nm">Finish presentation</span><span class="mt">~30 min · due 5 PM</span></div>
+        <div class="mini-row"><span class="idx">2</span><span class="nm" style="font-weight:500;color:var(--text-2)">Call insurance</span><span class="mt">~10 min</span></div>
+        <div class="mini-row"><span class="idx">3</span><span class="nm" style="font-weight:500;color:var(--text-2)">Reply to Damien</span><span class="mt">~5 min</span></div>
+      </div>
+    </div>
+
+    <div class="cap-list">
+      <div class="cap-item"><span class="num">02</span><span><span class="nm">Start with your Top 3</span><span class="ds">The day opens with three things that matter, not forty that don't.</span></span></div>
+      <div class="cap-item"><span class="num">03</span><span><span class="nm">Speak. Refine. Keep going.</span><span class="ds">Continuous voice capture that keeps up with how you actually think.</span></span></div>
+      <div class="cap-item"><span class="num">04</span><span><span class="nm">Ask about your real day</span><span class="ds">Questions answered from your tasks and calendar, not a generic chat.</span></span></div>
+      <div class="cap-item"><span class="num">05</span><span><span class="nm">Say it. Put it on the calendar.</span><span class="ds">Spoken appointments become real events, with the details intact.</span></span></div>
+      <div class="cap-item"><span class="num">06</span><span><span class="nm">See where time gets tight</span><span class="ds">Conflicts and overloaded stretches surface before they bite.</span></span></div>
+      <div class="cap-item"><span class="num">07</span><span><span class="nm">Fix my day</span><span class="ds">Rebuild the plan in one move — and review it before it lands.</span></span></div>
+      <div class="cap-item"><span class="num">08</span><span><span class="nm">Turn a reminder into an action</span><span class="ds">Call, text or email the person the task is actually about.</span></span></div>
+      <div class="cap-item"><span class="num">09</span><span><span class="nm">See the progress you made</span><span class="ds">A weekly review that shows movement, not just leftovers.</span></span></div>
+      <div class="cap-item"><span class="num">10</span><span><span class="nm">Plan around your own rhythm</span><span class="ds">Estimates that learn how long things take <em>you</em> — only if you opt in.</span></span></div>
+    </div>
+  </div>
+  <p class="foot-note" style="margin-top:22px">Illustrative examples. No tasks are created here. Availability varies by plan and platform; continuous voice and contact actions are featured in the native iOS experience. <a href="pricing.html" style="color:var(--violet-2);font-weight:600">Compare plans →</a></p>
+</section>
+
+<section class="sec wrap" id="control">
+  <div class="ctrl">
+    <div class="sec-head" style="margin-bottom:0">
+      <p class="eyebrow">Helpful. Not heavy-handed.</p>
+      <h2>Your assistant.<br><span class="serif">Your final say.</span></h2>
+      <p class="lede">Let Nexdo do the thinking alongside you. Every proposed change waits for your review before it touches the plan — and personalization only learns from your habits if you ask it to.</p>
+    </div>
+    <div class="ctrl-list">
+      <div class="ctrl-row">
+        <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg></span>
+        <span class="tx"><b>Approval before any AI change</b><span>See the diff to your day, then accept or decline.</span></span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+        <span class="tx"><b>Opt-in personal predictions</b><span>Personalization stays off until you switch it on.</span></span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+        <span class="tx"><b>Phone, tablet, desktop</b><span>The same day, wherever you picked it up.</span></span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+        <span class="tx"><b>Works with your calendar</b><span>Existing events stay where you put them.</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="faq">
+  <div class="sec-head">
+    <p class="eyebrow">A few good questions</p>
+    <h2>Before you come aboard.</h2>
+  </div>
+  <div class="faq">
+    <details class="q" open>
+      <summary>Is this demo using my real tasks? <span class="plus">+</span></summary>
+      <p>No. Everything on this page is a guided example with sample content. Nothing is created, read or stored, and you don't need an account to look around.</p>
+    </details>
+    <details class="q">
+      <summary>What makes Nexdo AI-powered? <span class="plus">+</span></summary>
+      <p>Nexdo reads your tasks and calendar together and reasons about them — deadlines, dependencies, how long things really take, and the gaps you actually have — then proposes a plan in plain language you can question.</p>
+    </details>
+    <details class="q">
+      <summary>Will AI rearrange my day without asking? <span class="plus">+</span></summary>
+      <p>Never. Proposed changes are shown as a review step. You accept, edit or decline, and nothing moves until you do.</p>
+    </details>
+    <details class="q">
+      <summary>Can I use it on my phone? <span class="plus">+</span></summary>
+      <p>Yes. The web experience is built for mobile, and continuous voice and contact actions are featured in the native iOS app.</p>
+    </details>
+    <details class="q">
+      <summary>What about calendars and reminders? <span class="plus">+</span></summary>
+      <p>Nexdo plans around the events you already have rather than replacing them, so your calendar stays the source of truth for anything scheduled.</p>
+    </details>
+  </div>
+</section>
+
+<section class="wrap" id="start">
+  <div class="final">
+    <p class="eyebrow">Make room for what matters</p>
+    <h2>A clearer day starts<br>with <span class="serif">one conversation.</span></h2>
+    <p class="lede">Free to start. No credit card. Have a look around and find your next step.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn btn-primary" href="#start">Open Nexdo <span class="arw">→</span></a>
+      <a class="btn btn-ghost" href="#signin">I already have an account</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span class="brand" style="font-size:15px"><span class="mark" style="width:24px;height:24px;font-size:15px;border-radius:7px">N</span> Nexdo</span>
+    <span>© 2026 Nexdo</span>
+    <span class="links">
+      <a href="index.html#ways">Features</a><a href="pricing.html">Pricing</a><a href="index.html#control">Privacy</a><a href="#signin">Sign in</a>
+    </span>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
