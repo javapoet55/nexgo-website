@@ -535,6 +535,24 @@ html{scroll-behavior:smooth}
 .contact-card dt{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
 .contact-card dd{margin:0;font-size:15px;color:var(--text)}
 
+.legal-intro p{margin:0 0 12px;font-size:17px;color:var(--text-2)}
+.legal-body p a{color:var(--violet-2);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(168,140,255,.4)}
+.legal-body p a:hover{text-decoration-color:var(--violet-2)}
+.legal-body h3 .n{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:400;color:var(--text-3);margin-right:10px}
+.legal-body section h3:first-of-type{margin-top:18px}
+.legal-body b.hl{color:var(--text)}
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.principles p{margin:0;padding:16px 18px;border-radius:var(--r-md);border:1px solid rgba(124,92,255,.3);background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(124,92,255,.03));font-size:14.5px;line-height:1.55}
+.principles b{display:block;color:var(--text);margin-bottom:4px}
+.callout-ok{border-color:rgba(95,227,192,.3);background:rgba(95,227,192,.06)}
+.callout-ok p{color:var(--text)}
+.examples{margin:6px 0 16px;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.examples div{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:12px 18px;border-bottom:1px solid var(--line-soft)}
+.examples div:last-child{border-bottom:none}
+.examples dt{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-2);padding-top:3px}
+.examples dd{margin:0;font-size:15px;color:var(--text)}
+.path{font-family:"JetBrains Mono",monospace;font-size:.86em;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+
 .foot a[aria-current="page"]{color:var(--text-2)}
 
 @media (max-width:920px){
@@ -547,7 +565,8 @@ html{scroll-behavior:smooth}
   .toc ol{margin:0 18px 16px}
 }
 @media (max-width:560px){
-  .legal-body ul.cols,.contact-card{grid-template-columns:1fr}
+  .legal-body ul.cols,.contact-card,.principles{grid-template-columns:1fr}
+  .examples div{grid-template-columns:80px 1fr;gap:12px}
 }
 
 .nav-links a[aria-current="page"]{color:var(--text)}

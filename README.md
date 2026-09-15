@@ -1,6 +1,6 @@
 # nexgo-website
 
-Redesigned NexNav marketing site — a static, self-contained prototype of the
+Redesigned Nexdo marketing site — a static, self-contained prototype of the
 welcome, pricing and AI Assistant pages in a dark, high-contrast direction.
 
 ## Pages
