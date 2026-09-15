@@ -27,7 +27,7 @@
       q:"“How does the rest of my week look?”",
       h:"Thursday is where it gets tight.",
       p:"Two deadlines land on the same afternoon with only 40 free minutes between them. Moving one task to Wednesday clears it.",
-      n:"Nexdo flags the squeeze days ahead of time, while you can still do something about it.",
+      n:"NexNav flags the squeeze days ahead of time, while you can still do something about it.",
       rows:[
         {t:"Tue", n:"Clear — 2 tasks, 3 hrs free", s:"Comfortable"},
         {t:"Wed", n:"Room for one more", s:"1 hr 20 min free"},
