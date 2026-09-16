@@ -604,3 +604,8 @@ body::before{
 }
 .strip,footer{background-color:rgba(255,255,255,.72);backdrop-filter:blur(6px)}
 .nav{box-shadow:0 1px 0 rgba(28,20,80,.04)}
+
+/* ---------- pricing hidden site-wide ----------
+   Every route into pricing.html is hidden rather than deleted — the page and
+   all of its links stay in the markup, so this is a one-line revert. */
+a[href^="pricing.html"]{display:none!important}
