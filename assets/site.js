@@ -1,3 +1,26 @@
+function logEvent(name, params) {
+  if (!name) return;
+  if (window.AnalyticsWebInterface) {
+    // Call Android interface
+    window.AnalyticsWebInterface.logEvent(name, JSON.stringify(params));
+  } else if (window.webkit?.messageHandlers?.firebase) {
+    // Call iOS interface
+    var message = { command: 'logEvent', name: name, parameters: params };
+    window.webkit.messageHandlers.firebase.postMessage(message);
+  } else {
+    console.log("No native APIs found.");
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  logEvent('web_page_view', { page: location.pathname });
+});
+
+document.addEventListener('click', function(e){
+  var el = e.target.closest && e.target.closest('[data-event]');
+  if (el) logEvent(el.dataset.event, { label: el.textContent.trim() });
+});
+
 (function(){
 
   var data = [
