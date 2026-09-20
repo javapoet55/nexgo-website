@@ -1,0 +1,7 @@
+.git
+node_modules
+dist
+work
+*.html
+README.md
+!src/*.html

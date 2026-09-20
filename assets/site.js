@@ -1,103 +1,16 @@
-function logEvent(name, params) {
-  if (!name) return;
-  if (window.AnalyticsWebInterface) {
-    // Call Android interface
-    window.AnalyticsWebInterface.logEvent(name, JSON.stringify(params));
-  } else if (window.webkit?.messageHandlers?.firebase) {
-    // Call iOS interface
-    var message = { command: 'logEvent', name: name, parameters: params };
-    window.webkit.messageHandlers.firebase.postMessage(message);
-  } else {
-    console.log("No native APIs found.");
-  }
+// First-party event hook only. No external analytics, cookies, or personal data.
+function track(name, details={}) {
+  window.dispatchEvent(new CustomEvent('nexdo:analytics', {detail:{name,path:location.pathname,...details}}));
+  if (typeof window.nexdoAnalytics === 'function') window.nexdoAnalytics(name,{path:location.pathname,...details});
 }
-
-document.addEventListener('DOMContentLoaded', function(){
-  logEvent('web_page_view', { page: location.pathname });
-});
-
-document.addEventListener('click', function(e){
-  var el = e.target.closest && e.target.closest('[data-event]');
-  if (el) logEvent(el.dataset.event, { label: el.textContent.trim() });
-});
-
-(function(){
-
-  var data = [
-    {
-      q:"“What should I focus on today?”",
-      h:"Less deciding. More doing.",
-      p:"Start with the proposal — it's due today and needs your best thinking. The follow-up can wait until after lunch.",
-      n:"Priorities, deadlines and real available time — not just the first three tasks.",
-      rows:[
-        {t:"09:00", n:"Finish the proposal", s:"Critical · 60 min", key:true},
-        {t:"10:00", n:"Design review", s:"Calendar · 30 min"},
-        {t:"13:30", n:"Send the follow-up", s:"Task · 15 min"}
-      ]
-    },
-    {
-      q:"“The design review moved to 2. Fix my day.”",
-      h:"Here's the afternoon, rebuilt.",
-      p:"Your deep-work block moves up so the proposal still lands before 5. The follow-up slides to the gap after the review.",
-      n:"Review the change before it touches your plan — accept, edit, or leave it as it was.",
-      rows:[
-        {t:"09:30", n:"Finish the proposal", s:"Moved earlier · 60 min", key:true},
-        {t:"14:00", n:"Design review", s:"Rescheduled · 30 min"},
-        {t:"14:45", n:"Send the follow-up", s:"Task · 15 min"}
-      ]
-    },
-    {
-      q:"“How does the rest of my week look?”",
-      h:"Thursday is where it gets tight.",
-      p:"Two deadlines land on the same afternoon with only 40 free minutes between them. Moving one task to Wednesday clears it.",
-      n:"Nexdo flags the squeeze days ahead of time, while you can still do something about it.",
-      rows:[
-        {t:"Tue", n:"Clear — 2 tasks, 3 hrs free", s:"Comfortable"},
-        {t:"Wed", n:"Room for one more", s:"1 hr 20 min free"},
-        {t:"Thu", n:"Two deadlines, 40 min between", s:"Needs a change", key:true}
-      ]
-    }
-  ];
-
-  var tl = document.getElementById('tl');
-  if (!tl) { initBilling(); return; }
-  function render(i){
-    var d = data[i];
-    document.getElementById('q').textContent = d.q;
-    document.getElementById('ah').textContent = d.h;
-    document.getElementById('ap').textContent = d.p;
-    document.getElementById('fn').lastChild.textContent = " " + d.n;
-    tl.innerHTML = d.rows.map(function(r){
-      return '<div class="tl-row'+(r.key?' key':'')+'">'
-        + '<span class="tl-time">'+r.t+'</span>'
-        + '<span><span class="tl-name">'+r.n+'</span><span class="tl-sub">'+r.s+'</span></span>'
-        + '</div>';
-    }).join('');
-  }
-
-  var btns = Array.prototype.slice.call(document.querySelectorAll('.scen-btn'));
-  btns.forEach(function(b){
-    b.addEventListener('click', function(){
-      btns.forEach(function(x){ x.setAttribute('aria-selected','false'); });
-      b.setAttribute('aria-selected','true');
-      render(parseInt(b.dataset.s,10));
-    });
-  });
-  render(0);
-
-  initBilling();
-
-  function initBilling(){
-  var bm = document.getElementById('bm'), ba = document.getElementById('ba');
-  if (!bm || !ba) return;
-  function bill(mode){
-    bm.setAttribute('aria-pressed', mode === 'm' ? 'true' : 'false');
-    ba.setAttribute('aria-pressed', mode === 'a' ? 'true' : 'false');
-    Array.prototype.forEach.call(document.querySelectorAll('[data-m]'), function(el){
-      el.textContent = mode === 'a' ? el.dataset.a : el.dataset.m;
-    });
-  }
-  bm.addEventListener('click', function(){ bill('m'); });
-  ba.addEventListener('click', function(){ bill('a'); });
-  }
-})();
+const menu=document.querySelector('.menu-toggle');
+menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')==='true';menu.setAttribute('aria-expanded',String(!open));menu.setAttribute('aria-label',open?'Open navigation':'Close navigation');document.getElementById('mobile-nav').hidden=open;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu?.getAttribute('aria-expanded')==='true'){menu.click();menu.focus();}});
+document.addEventListener('click',e=>{const target=e.target.closest('[data-event]');if(target)track(target.dataset.event,{label:target.textContent.trim()});});
+const scenarios=[
+['“I have 30 minutes. What should I do next?”','Give the proposal a head start.','It’s due today. Use this gap to outline your key points before your next meeting.','Outline the proposal','Suggested next step · 25 min','FOCUS'],
+['“My meeting moved to 2. Help me fix my day.”','Make a little room for the change.','Move the proposal block earlier and save the follow-up for after your meeting. Review this suggestion before applying it.','Move proposal to 11:00','Suggested change · Awaiting your review','REVIEW'],
+['“I still need to get back to Alex.”','Turn that intention into a next step.','Open the contact task to call or message Alex. If now isn’t a good time, choose Remind Later.','Follow up with Alex','Contact task · Choose when to act','NEXT']
+];
+document.querySelectorAll('[data-scenario]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.scenario),d=scenarios[i];document.querySelectorAll('[data-scenario]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));document.getElementById('demo-question').textContent=d[0];const result=document.getElementById('demo-result');result.innerHTML=`<h3>${d[1]}</h3><p>${d[2]}</p><div class="demo-task"><span class="task-check" aria-hidden="true">○</span><span>${d[3]}<small>${d[4]}</small></span><span class="tag">${d[5]}</span></div>`;track('scenario_view',{scenario:i});}));
+track('page_view');
