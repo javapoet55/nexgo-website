@@ -1,0 +1,935 @@
+<style>
+:root{
+  --indigo:#3D29F0;--blue:#0594F5;--magenta:#F014C7;--purple:#8514F5;
+  --a1:var(--indigo);--a2:var(--blue);--a3:var(--magenta);
+  --bg:#F4F5FC;--ink:#080F2E;--muted:#575C80;--glass:rgba(255,255,255,.55);--glass-b:rgba(255,255,255,.8);
+  --line:rgba(8,15,46,.08);--shadow:0 20px 60px -20px rgba(61,41,240,.35);--tint:rgba(61,41,240,.12);--tint-ink:#3D29F0;--blob:.45;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#080F2E;--ink:#EEF0FF;--muted:#A7ABCB;--glass:rgba(255,255,255,.06);--glass-b:rgba(255,255,255,.14);
+  --line:rgba(255,255,255,.08);--shadow:0 20px 60px -20px rgba(0,0,0,.7);--tint:rgba(133,20,245,.22);--tint-ink:#C9B6FF;--blob:.5;}}
+:root[data-theme="dark"]{--bg:#080F2E;--ink:#EEF0FF;--muted:#A7ABCB;--glass:rgba(255,255,255,.06);--glass-b:rgba(255,255,255,.14);--line:rgba(255,255,255,.08);--shadow:0 20px 60px -20px rgba(0,0,0,.7);--tint:rgba(133,20,245,.22);--tint-ink:#C9B6FF;--blob:.5;}
+body{transition:background .4s,color .4s}
+.mode{display:flex;gap:2px;padding:4px;border-radius:999px}
+.mode button{border:0;background:transparent;color:var(--muted);font:600 13px Inter,sans-serif;padding:7px 12px;border-radius:999px;cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--indigo);color:#fff}
+.navr{display:flex;gap:10px;align-items:center}
+@media (max-width:560px){.navr .btn{display:none}.mode button{padding:7px 9px}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+.blobs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;filter:blur(90px);opacity:var(--blob);animation:float 18s ease-in-out infinite alternate}
+.blobs i:nth-child(1){width:520px;height:520px;background:var(--a1);top:-140px;left:-120px}
+.blobs i:nth-child(2){width:460px;height:460px;background:var(--a2);top:30%;right:-160px;animation-delay:-6s}
+.blobs i:nth-child(4){width:340px;height:340px;background:var(--purple);top:45%;left:-100px;animation-delay:-9s}
+.blobs i:nth-child(3){width:380px;height:380px;background:var(--a3);bottom:-120px;left:30%;animation-delay:-12s}
+@keyframes float{to{transform:translate(60px,40px) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.blobs i{animation:none}}
+.glass{background:var(--glass);border:1px solid var(--glass-b);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);box-shadow:var(--shadow);border-radius:24px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:12px;z-index:10;margin:12px auto 0;max-width:1140px;padding:0 16px}
+nav .bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 18px;border-radius:999px}
+.nmark{width:34px;height:30px}.word{font-size:22px}.spark{width:14px;height:14px;align-self:flex-start;margin-left:-6px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;letter-spacing:-.03em;text-decoration:none;color:var(--ink)}
+.mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-size:15px}
+.links{display:flex;gap:26px}
+.links a{color:var(--muted);text-decoration:none;font-weight:500;font-size:15px}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:600;text-decoration:none;font-size:15px;border:0;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:linear-gradient(135deg,var(--indigo),var(--purple) 55%,var(--blue));color:#fff;box-shadow:0 10px 30px -8px rgba(61,41,240,.55)}
+.ghost{background:var(--glass);border:1px solid var(--glass-b);color:var(--ink);backdrop-filter:blur(12px)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:80px 0 60px}
+.pill{display:inline-flex;gap:8px;align-items:center;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+h1{font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:20px 0}
+.grad{background:linear-gradient(120deg,var(--a1),var(--a3) 50%,var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:19px;color:var(--muted);max-width:520px}
+.ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.note{margin-top:16px;font-size:13px;color:var(--muted)}
+/* phone mock */
+.stage{position:relative;height:560px}
+.phone{position:absolute;left:50%;top:0;transform:translateX(-50%);width:290px;height:560px;border-radius:44px;padding:18px;overflow:hidden}
+.ph-h{display:flex;justify-content:space-between;align-items:center;margin:8px 4px 16px}
+.ph-h b{font-size:20px;letter-spacing:-.02em}
+.ph-h span{font-size:12px;color:var(--muted)}
+.card{border-radius:18px;padding:14px;margin-bottom:10px;background:var(--glass);border:1px solid var(--glass-b)}
+.card small{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.task{display:flex;gap:10px;align-items:center;font-size:14px;padding:7px 0}
+.chk{width:18px;height:18px;border-radius:6px;border:2px solid var(--a1);flex:none}
+.chk.on{background:var(--a1)}
+.task s{color:var(--muted)}
+.tag{margin-left:auto;font-size:11px;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--tint-ink);font-weight:600}
+.float{position:absolute;padding:12px 16px;border-radius:18px;font-size:13px;font-weight:600;display:flex;gap:10px;align-items:center;animation:bob 5s ease-in-out infinite}
+.float em{font-style:normal;font-size:20px}
+.f1{left:-30px;top:-46px}.f2{right:-4px;top:250px;animation-delay:-2s}.f3{left:-20px;bottom:-24px;animation-delay:-3.5s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+@media (prefers-reduced-motion:reduce){.float{animation:none}}
+section{padding:70px 0}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tint-ink)}
+h2{font-size:clamp(30px,4vw,44px);letter-spacing:-.03em;line-height:1.1;margin:10px 0 14px;font-weight:800}
+.center{text-align:center;max-width:680px;margin:0 auto 44px}
+.center p{color:var(--muted);font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{padding:28px;transition:transform .25s}
+.feat:hover{transform:translateY(-6px)}
+.ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:22px;margin-bottom:18px;background:linear-gradient(135deg,rgba(61,41,240,.18),rgba(5,148,245,.18));border:1px solid var(--glass-b)}
+.feat h3{font-size:19px;margin-bottom:6px;letter-spacing:-.01em}
+.feat p{color:var(--muted);font-size:15px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{padding:28px}
+.num{font-size:44px;font-weight:800;line-height:1}
+.step h3{margin:12px 0 6px}
+.step p{color:var(--muted)}
+.cta{padding:56px 40px;text-align:center;position:relative;overflow:hidden}
+.cta p{color:var(--muted);font-size:18px;max-width:560px;margin:0 auto 26px}
+footer{padding:40px 0 50px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--muted);text-decoration:none;margin-left:20px}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:50px;text-align:center}
+  .lead{margin:0 auto}.ctas{justify-content:center}
+  .grid,.steps{grid-template-columns:1fr}
+  .links{display:none}
+  .f1{left:-6px}.f2{right:-6px}
+}
+@media (max-width:420px){.float{font-size:12px;padding:10px 12px}.f1,.f3{left:-10px}.f2{right:-10px}.cta{padding:40px 20px}}
+
+.voice{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:44px}
+.voice ul{list-style:none;margin-top:22px;display:grid;gap:14px}
+.voice li{display:flex;gap:12px;align-items:flex-start;color:var(--muted)}
+.voice li b{color:var(--ink)}
+.voice li span.i{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--tint)}
+.talk{display:grid;gap:12px}
+.bub{padding:12px 16px;border-radius:18px;max-width:85%;font-size:15px}
+.me{justify-self:end;background:linear-gradient(135deg,var(--indigo),var(--purple));color:#fff;border-bottom-right-radius:6px}
+.ai{justify-self:start;background:var(--glass);border:1px solid var(--glass-b);border-bottom-left-radius:6px}
+.ai small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.wave{display:flex;gap:5px;align-items:center;justify-content:center;height:56px;margin-bottom:6px}
+.wave i{width:6px;border-radius:6px;background:linear-gradient(var(--magenta),var(--blue));animation:w 1.1s ease-in-out infinite}
+.wave i:nth-child(odd){animation-delay:-.4s}.wave i:nth-child(3n){animation-delay:-.7s}
+@keyframes w{0%,100%{height:10px}50%{height:50px}}
+@media (prefers-reduced-motion:reduce){.wave i{animation:none;height:26px}}
+.live{display:flex;justify-content:center;gap:8px;align-items:center;font-size:13px;font-weight:600;color:var(--muted)}
+.safe{font-size:12px;color:var(--muted);margin-top:18px}
+@media (max-width:900px){.voice{grid-template-columns:1fr;padding:28px 20px}}
+
+/* ---------- shared across all pages ---------- */
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+nav{top:calc(12px + env(safe-area-inset-top,0px))}
+.page{display:none}.page.on{display:block}
+.links a.cur{color:var(--ink);font-weight:600}
+.burger{display:none;border:0;background:transparent;color:var(--ink);font-size:22px;cursor:pointer;padding:6px 8px}
+.menu{display:none;margin:8px auto 0;max-width:1140px;padding:0 16px}
+.menu .glass{padding:10px;display:grid;gap:2px}
+.menu a{display:block;padding:12px 14px;border-radius:14px;color:var(--ink);text-decoration:none;font-weight:600}
+.menu a:hover,.menu a.cur{background:var(--tint)}
+.menu.open{display:block}
+@media (max-width:900px){.burger{display:inline-block}}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:12px}
+.phead{padding:70px 0 20px;max-width:760px}
+.phead .lead{max-width:640px;margin-top:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.two.flip>div:first-child{order:2}
+.fblock{padding:44px;margin-bottom:22px}
+.fblock h3{font-size:clamp(24px,3vw,32px);letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+.fblock p{color:var(--muted);font-size:16px}
+.fblock ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+.fblock li{display:flex;gap:10px;color:var(--muted)}
+.fblock li b{color:var(--ink)}
+.fblock li:before{content:"✓";color:var(--tint-ink);font-weight:800;flex:none}
+.mini{border-radius:22px;padding:18px}
+.mini .card{margin-bottom:8px}
+.big{font-size:19px;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+.stat{padding:24px;text-align:center}
+.stat b{display:block;font-size:34px;letter-spacing:-.03em}
+.stat span{color:var(--muted);font-size:14px}
+.quote{padding:32px;font-size:17px}
+.quote p{color:var(--ink);margin-bottom:14px}
+.quote small{color:var(--muted)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:15px}
+table.cmp th,table.cmp td{padding:14px 16px;text-align:center;border-bottom:1px solid var(--line)}
+table.cmp th:first-child,table.cmp td:first-child{text-align:left}
+table.cmp thead th{font-size:14px;color:var(--muted);font-weight:700}
+table.cmp thead th.us{color:var(--tint-ink)}
+table.cmp td.us{background:var(--tint);font-weight:700}
+table.cmp tr:last-child td{border-bottom:0}
+.scroll{overflow-x:auto;border-radius:24px;padding:6px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.plan{padding:30px;display:flex;flex-direction:column}
+.plan.hot{border:2px solid var(--indigo)}
+.plan h3{font-size:22px;margin-bottom:4px}
+.plan .price{font-size:38px;font-weight:800;letter-spacing:-.03em;margin:12px 0 2px}
+.plan .price small{font-size:14px;color:var(--muted);font-weight:500;letter-spacing:0}
+.plan .for{color:var(--muted);font-size:14px}
+.plan ul{list-style:none;margin:18px 0 24px;display:grid;gap:9px;flex:1}
+.plan li{display:flex;gap:8px;font-size:15px}
+.plan li:before{content:"✓";color:var(--tint-ink);font-weight:800}
+.plan li.no{color:var(--muted)}.plan li.no:before{content:"–";color:var(--muted)}
+.plan .btn{justify-content:center}
+.notice{padding:16px 20px;border-radius:18px;font-size:14px;color:var(--muted);margin-top:22px}
+.faq details{padding:6px 22px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:600;font-size:16px;padding:12px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";color:var(--tint-ink);font-weight:800;font-size:20px;line-height:1}
+.faq details[open] summary:after{content:"–"}
+.faq details p{color:var(--muted);padding:0 0 16px}
+.faq h3{margin:34px 0 12px;font-size:20px}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.person{padding:24px;text-align:center}
+.avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;font-weight:800;font-size:22px;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--magenta))}
+.person b{display:block;font-size:17px}
+.person span{color:var(--muted);font-size:14px}
+.person p{color:var(--muted);font-size:14px;margin-top:10px}
+.values{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.prose{max-width:720px}
+.prose h3{font-size:22px;margin:30px 0 8px}
+.prose p,.prose li{color:var(--muted);font-size:16px;margin-bottom:12px}
+.prose ul{padding-left:20px}
+.crumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.crumbs a{font-size:14px;font-weight:600;text-decoration:none;color:var(--ink);padding:8px 14px;border-radius:999px}
+.jump{padding:22px 26px;font-size:15px;color:var(--muted)}
+.jump a{color:var(--tint-ink);font-weight:600;text-decoration:none}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px;width:100%;margin-bottom:26px}
+footer .cols b{display:block;color:var(--ink);margin-bottom:10px;font-size:14px}
+footer .cols a{display:block;margin:0 0 8px}
+footer .cols p{max-width:300px}
+footer .base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;width:100%;border-top:1px solid var(--line);padding-top:20px}
+footer .base a{margin:0 0 0 20px}
+@media (max-width:900px){
+  .two,.two.flip{grid-template-columns:1fr}.two.flip>div:first-child{order:0}
+  .fblock{padding:28px 20px}.stats,.plans,.values{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr 1fr}footer .cols{grid-template-columns:1fr 1fr}
+}
+@media (max-width:480px){.team,footer .cols{grid-template-columns:1fr}}
+
+/* ---------- pricing (from Harbour) ---------- */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.billing{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.bill{display:flex;gap:2px;padding:4px;border-radius:999px}
+.bill button{border:0;background:transparent;color:var(--muted);font:600 15px Inter,sans-serif;padding:10px 22px;border-radius:999px;cursor:pointer}
+.bill button[aria-pressed="true"]{background:linear-gradient(135deg,var(--indigo),var(--purple));color:#fff}
+.save{font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--tint);color:var(--tint-ink)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.pcard{padding:30px;position:relative;display:flex;flex-direction:column}
+.pcard.hot{border:2px solid var(--indigo);box-shadow:0 30px 70px -25px rgba(61,41,240,.55)}
+.popular{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--indigo),var(--magenta));color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:999px;white-space:nowrap}
+.pcard h3{font-size:22px}.pcard .sub{color:var(--tint-ink);font-weight:600;font-size:14px}
+.amt{display:flex;align-items:baseline;gap:6px;margin:16px 0 2px}.amt b{font-size:44px;letter-spacing:-.04em;font-weight:800}.amt span{color:var(--muted);font-size:15px}
+.bnote{font-size:13px;color:var(--muted);min-height:20px}
+.pdesc{color:var(--muted);font-size:15px;margin:12px 0 18px}
+.pcard .btn{justify-content:center}
+.pfeat{list-style:none;margin-top:22px;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:18px}
+.pfeat li{display:flex;gap:8px;align-items:flex-start;font-size:14.5px}
+.pfeat li:before{content:"✓";color:var(--tint-ink);font-weight:800;flex:none}
+.pfeat li span{flex:1}
+.tip{position:relative;flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--muted);background:transparent;color:var(--muted);font:700 11px/1 Georgia,serif;font-style:italic;cursor:help;display:inline-grid;place-items:center;margin-left:6px;vertical-align:middle}
+.tip:hover,.tip:focus-visible{border-color:var(--tint-ink);color:var(--tint-ink)}
+.tip:hover::after,.tip:focus::after{content:attr(data-tip);position:absolute;z-index:20;right:0;bottom:calc(100% + 8px);width:min(260px,70vw);padding:10px 12px;border-radius:12px;background:var(--ink);color:var(--bg);font:500 13px/1.45 Inter,sans-serif;font-style:normal;text-align:left;box-shadow:var(--shadow)}
+.assure{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.assure>div{display:flex;gap:12px;align-items:center;padding:18px;border-radius:20px}
+.assure .ico{margin:0;flex:none}
+.assure b{display:block;font-size:15px}.assure span{color:var(--muted);font-size:13px}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.dcard{padding:24px}
+.dtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.dpill{font-weight:800;font-size:14px;padding:5px 12px;border-radius:999px;background:linear-gradient(135deg,var(--indigo),var(--magenta));color:#fff}
+.dcard h3{font-size:18px}.dterm{color:var(--tint-ink);font-weight:600;font-size:14px;margin:2px 0 8px}.ddesc{color:var(--muted);font-size:14px}
+.dact{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;font-size:14px}
+.dact a{color:var(--tint-ink);font-weight:700;text-decoration:none}
+.dact summary{cursor:pointer;color:var(--muted);font-weight:600}
+.dact details p{color:var(--muted);margin-top:6px;flex-basis:100%}
+.ptable{width:100%;border-collapse:collapse;font-size:14.5px;min-width:640px}
+.ptable th,.ptable td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:center}
+.ptable th[scope=row],.ptable thead th:first-child{text-align:left;font-weight:500}
+.ptable thead th{font-weight:800;font-size:15px;position:sticky;top:0}
+.ptable thead small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.ptable .pro{background:var(--tint)}
+.ptable .grp th{text-align:left;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tint-ink);padding-top:22px}
+.fname{display:inline-flex;align-items:center}
+.yes{color:var(--tint-ink);font-weight:800;font-size:17px}.nope{color:var(--muted)}
+.lbl{font-size:13px;font-weight:600}.lbl.soon{color:var(--magenta)}
+@media (max-width:900px){.pgrid{grid-template-columns:1fr}.assure,.dgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.assure,.dgrid{grid-template-columns:1fr}}
+</style>
+
+<div class="blobs"><i></i><i></i><i></i><i></i></div>
+
+<nav><div class="bar glass">
+  <a class="logo" href="#/home" aria-label="Nexdo home"><svg class="nmark" viewBox="0 0 64 56" aria-hidden="true"><defs><linearGradient id="ng" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0594F5"/><stop offset=".45" stop-color="#3D29F0"/><stop offset=".75" stop-color="#8514F5"/><stop offset="1" stop-color="#F014C7"/></linearGradient><linearGradient id="sg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F014C7"/><stop offset=".5" stop-color="#3D29F0"/><stop offset="1" stop-color="#0594F5"/></linearGradient></defs><path d="M8 48 L22 12 Q24 7 27 12 L37 42 Q40 48 43 42 L56 8" fill="none" stroke="url(#ng)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="word">Nexdo</span><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C13 7 15 10 24 12C15 14 13 17 12 24C11 17 9 14 0 12C9 10 11 7 12 0Z" fill="url(#sg)"/></svg></a>
+  <div class="links" data-nav><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a></div>
+  <div class="navr">
+    <div class="mode glass" role="group" aria-label="Appearance">
+      <button data-m="light" title="Day">☀️ Day</button><button data-m="dark" title="Night">🌙 Night</button><button data-m="system" title="System">💻 Auto</button>
+    </div>
+    <a class="btn primary" href="#/start">Get started</a>
+    <button class="burger" aria-label="Open menu" aria-expanded="false" id="burger">☰</button>
+  </div>
+</div></nav>
+<div class="menu" id="menu"><div class="glass" data-nav>
+  <a href="#/home">Home</a><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a><a href="#/about">About</a><a href="#/start">Get started</a>
+</div></div>
+
+<main class="wrap">
+
+<!-- ================= HOME ================= -->
+<div class="page" data-page="home">
+  <header class="hero">
+    <div>
+      <span class="pill glass"><span class="dot"></span>Get More Done with AI</span>
+      <h1>Less on your mind.<br><span class="grad">More done in your day.</span></h1>
+      <p class="lead">Your AI action &amp; follow-up assistant. Nexdo turns your tasks, calendar, and reminders into one clear plan — then helps you actually act on it. Call, text, or email right from a task — or just talk to it in real time, even while driving.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#/start">Start free on the web →</a>
+        <a class="btn ghost" href="#/features">See what it does</a>
+      </div>
+      <p class="note">iPhone app coming soon · Free plan available · 14-day trial of Pro, no card needed</p>
+    </div>
+
+    <div class="stage" aria-hidden="true">
+      <div class="phone glass">
+        <div class="ph-h"><b>Good morning ☀️</b><span>Mon</span></div>
+        <div class="card"><small>Daily brief</small>
+          <div class="task"><span class="chk on"></span><s>Send proposal to Priya</s></div>
+          <div class="task"><span class="chk"></span>Call dentist to reschedule<span class="tag">Call</span></div>
+          <div class="task"><span class="chk"></span>Follow up with Alex<span class="tag">Email</span></div>
+        </div>
+        <div class="card"><small>Calendar</small>
+          <div class="task">10:00 · Team sync</div>
+          <div class="task">1:30 · Client review <span class="tag" style="background:rgba(240,20,199,.15);color:var(--magenta)">Conflict</span></div>
+        </div>
+        <div class="card"><small>Coming up</small>
+          <div class="task">🎂 Mom's birthday · Fri</div>
+        </div>
+      </div>
+      <div class="float glass f1"><em>🎙️</em>"Remind me to pay rent Friday"</div>
+      <div class="float glass f2"><em>⚡</em>Follow-up drafted</div>
+      <div class="float glass f3"><em>🛒</em>List shared with family</div>
+    </div>
+  </header>
+
+  <section id="hm-features">
+    <div class="center">
+      <div class="eyebrow">Everything in one place</div>
+      <h2>From “I should…” to done.</h2>
+      <p>Six tools that usually live in six apps — working together.</p>
+    </div>
+    <div class="grid">
+      <a class="feat glass" href="#/features#brief" style="text-decoration:none;color:inherit"><div class="ico">☀️</div><h3>Daily Brief</h3><p>Your priorities and meetings in one view, every morning. Know what matters in seconds.</p></a>
+      <a class="feat glass" href="#/features#calendar" style="text-decoration:none;color:inherit"><div class="ico">📅</div><h3>Tasks + Calendar</h3><p>Tasks and schedule side by side, with clashes spotted before they bite.</p></a>
+      <a class="feat glass" href="#/features#voice" style="text-decoration:none;color:inherit"><div class="ico">🎙️</div><h3>Real-time Voice</h3><p>Talk naturally to create tasks, schedule events, and plan your day — hands-free, even on the road.</p></a>
+      <a class="feat glass" href="#/features#action" style="text-decoration:none;color:inherit"><div class="ico">⚡</div><h3>Action &amp; Follow-up</h3><p>Call, message, or email straight from a task. Nothing slips through.</p></a>
+      <a class="feat glass" href="#/features#lists" style="text-decoration:none;color:inherit"><div class="ico">🛒</div><h3>Shopping Lists</h3><p>Shareable, reusable lists — with smart swaps when an item is out.</p></a>
+      <a class="feat glass" href="#/features#moments" style="text-decoration:none;color:inherit"><div class="ico">🎉</div><h3>Important Moments</h3><p>Birthdays, anniversaries, festivals — remembered, with the message drafted.</p></a>
+    </div>
+  </section>
+
+  <section id="hm-voice">
+    <div class="voice glass">
+      <div>
+        <div class="eyebrow">Real-time voice</div>
+        <h2>Just talk. <span class="grad">Even on the drive.</span></h2>
+        <p class="lead">Have a real conversation with Nexdo, hands-free. Say what's on your mind and it becomes a task, a calendar event, or a plan for your day — while your eyes stay on the road.</p>
+        <ul>
+          <li><span class="i">✅</span><div><b>Create tasks out loud.</b> "Remind me to call the plumber tomorrow at 9."</div></li>
+          <li><span class="i">📅</span><div><b>Book and move events.</b> "Push my 3 pm to Thursday and let Sam know."</div></li>
+          <li><span class="i">🧭</span><div><b>Manage your time on the go.</b> "What's left today, and what can wait?"</div></li>
+        </ul>
+        <p class="safe">Designed for hands-free use. Always follow local laws and keep your attention on driving.</p>
+      </div>
+      <div class="talk" aria-label="Example voice conversation">
+        <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="live"><span class="dot"></span>Listening · 🚗 Driving mode</div>
+        <div class="bub me">"Add a dentist appointment Friday at 4, and remind me Thursday night."</div>
+        <div class="bub ai">Done. Dentist is on Friday, 4:00 pm, and I'll remind you Thursday at 8 pm.<small>📅 Event added · ⏰ Reminder set</small></div>
+        <div class="bub me">"What does the rest of my afternoon look like?"</div>
+        <div class="bub ai">Two things left: client review at 1:30, then pick up groceries. Want me to move the groceries to tomorrow?</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hm-how">
+    <div class="center">
+      <div class="eyebrow">How it works</div>
+      <h2>Three steps. Zero mental clutter.</h2>
+    </div>
+    <div class="steps">
+      <div class="step glass"><div class="num grad">01</div><h3>Capture</h3><p>Type it, or just say it out loud. Nexdo sorts it.</p></div>
+      <div class="step glass"><div class="num grad">02</div><h3>Plan</h3><p>Get a daily brief that fits your calendar — not a guilt list.</p></div>
+      <div class="step glass"><div class="num grad">03</div><h3>Act</h3><p>Tap to call, text, or send the follow-up. Done means done.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="center">
+      <div class="eyebrow">Built for real life</div>
+      <h2>One assistant. Every kind of busy.</h2>
+      <p>Nexdo fits the day you actually have — meetings, school runs, clients, errands, and the people you don't want to forget.</p>
+    </div>
+    <div class="grid">
+      <a class="feat glass" href="#/use-cases#pro" style="text-decoration:none;color:inherit"><div class="ico">💼</div><h3>Busy professionals</h3><p>Back-to-back meetings and a hundred small follow-ups. Nexdo keeps the follow-ups from falling off.</p></a>
+      <a class="feat glass" href="#/use-cases#family" style="text-decoration:none;color:inherit"><div class="ico">🏡</div><h3>Parents &amp; families</h3><p>Shared lists, shared calendars, and birthdays that get remembered by someone other than you.</p></a>
+      <a class="feat glass" href="#/use-cases#founder" style="text-decoration:none;color:inherit"><div class="ico">🚀</div><h3>Founders &amp; owners</h3><p>Every conversation turns into a next step — with the call or email one tap away.</p></a>
+    </div>
+    <p class="note" style="text-align:center;margin-top:22px"><a href="#/use-cases" style="color:var(--tint-ink);font-weight:600;text-decoration:none">See all use cases →</a></p>
+  </section>
+
+  <section id="hm-pricing">
+    <div class="center">
+      <div class="eyebrow">Pricing</div>
+      <h2>Start free. <span class="grad">Upgrade when you're ready.</span></h2>
+      <p>Pro and Max include a 14-day free trial, with no credit card required. Save up to 20% with annual billing.</p>
+    </div>
+    <div class="grid">
+      <a class="feat glass" href="#/pricing" style="text-decoration:none;color:inherit"><h3>Free</h3><p style="margin:4px 0 10px">Get organized.</p><div class="amt" style="margin:0"><b style="font-size:36px">$0</b><span>/ month</span></div><p>Unlimited tasks, 1 calendar, 5 AI actions a week.</p></a>
+      <a class="feat glass" href="#/pricing" style="text-decoration:none;color:inherit;border:2px solid var(--indigo)"><span class="save" style="float:right">Most popular</span><h3>Nexdo Pro</h3><p style="margin:4px 0 10px">Your AI Executive Companion.</p><div class="amt" style="margin:0"><b style="font-size:36px">$9.99</b><span>/ month</span></div><p>Top 3 priorities, continuous voice, Call/Message/Email from tasks, Fix My Day.</p></a>
+      <a class="feat glass" href="#/pricing" style="text-decoration:none;color:inherit"><h3>Nexdo Max</h3><p style="margin:4px 0 10px">For power users and executives.</p><div class="amt" style="margin:0"><b style="font-size:36px">$19.99</b><span>/ month</span></div><p>Everything in Pro, plus personalized estimates, work-pattern insights, and advanced analytics.</p></a>
+    </div>
+    <p class="note" style="text-align:center;margin-top:22px"><a href="#/pricing" style="color:var(--tint-ink);font-weight:600;text-decoration:none">Compare all plans, discounts &amp; FAQ →</a></p>
+  </section>
+
+  <section>
+    <div class="cta glass">
+      <h2>Clear your head. <span class="grad">Start today.</span></h2>
+      <p>Sign in on the web and get your first Daily Brief in under a minute.</p>
+      <a class="btn primary" href="https://nexdoapp.com">Get started free →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ================= FEATURES ================= -->
+<div class="page" data-page="features">
+  <header class="phead">
+    <div class="eyebrow">Features</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Everything you'd usually juggle, <span class="grad">in one calm place.</span></h1>
+    <p class="lead">Most planning tools stop at the plan. Nexdo goes further: it captures what you say, fits it around your day, and then helps you make the call, send the message, or share the list — so the plan actually turns into progress.</p>
+    <div class="crumbs">
+      <a class="glass" href="#/features#brief">☀️ Daily Brief</a><a class="glass" href="#/features#calendar">📅 Tasks + Calendar</a><a class="glass" href="#/features#voice">🎙️ Voice</a><a class="glass" href="#/features#action">⚡ Action &amp; Follow-up</a><a class="glass" href="#/features#lists">🛒 Lists</a><a class="glass" href="#/features#moments">🎉 Moments</a>
+    </div>
+  </header>
+
+  <section id="brief" style="padding-top:40px">
+    <div class="fblock glass two">
+      <div>
+        <div class="eyebrow">Daily Brief</div>
+        <h3>Wake up knowing what matters.</h3>
+        <p>Every morning, Nexdo reads your tasks, your calendar, and the moments coming up — and turns them into one short brief. Not a long list that makes you feel behind. A plan you can actually finish.</p>
+        <ul>
+          <li><div><b>Ranked, not dumped.</b> Overdue items, deadlines, and today's meetings come first. Nice-to-haves wait their turn.</div></li>
+          <li><div><b>Conflicts called out.</b> If two things collide, you hear about it before 9 am, not at 1:29 pm.</div></li>
+          <li><div><b>One question away.</b> Ask "what's left?" any time and the brief updates around what you've done.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Tuesday brief</b><span>3 tasks · 2 meetings</span></div>
+        <div class="card"><small>Do first</small>
+          <div class="task"><span class="chk"></span>Send revised quote to Dana<span class="tag">Email</span></div>
+          <div class="task"><span class="chk"></span>Call pharmacy re: refill<span class="tag">Call</span></div>
+        </div>
+        <div class="card"><small>Today</small>
+          <div class="task">9:30 · Standup</div>
+          <div class="task">2:00 · School pickup <span class="tag" style="background:rgba(240,20,199,.15);color:var(--magenta)">Overlaps 2:00 call</span></div>
+        </div>
+        <div class="card"><small>Can wait</small><div class="task"><span class="chk"></span>Book car service</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calendar" style="padding-top:0">
+    <div class="fblock glass two flip">
+      <div>
+        <div class="eyebrow">Tasks + Calendar</div>
+        <h3>Tasks that know what time it is.</h3>
+        <p>A to-do list on its own has no idea you're in meetings until 4. A calendar on its own doesn't know you promised someone a reply. Nexdo keeps both in the same view, so every task lands somewhere it can really get done.</p>
+        <ul>
+          <li><div><b>Deadlines respected.</b> Due dates and event times are treated as promises, and the brief plans around them.</div></li>
+          <li><div><b>Move things without the shuffle.</b> "Push my 3 pm to Thursday" moves the event, the reminder, and the follow-up together.</div></li>
+          <li><div><b>Clash detection.</b> Overlapping commitments are flagged with the option to fix them on the spot.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Thursday</b><span>Calendar</span></div>
+        <div class="card"><div class="task">9:00 · Deep work (held)</div><div class="task">11:00 · Client review</div><div class="task">3:00 · Moved from Tue · Vendor call<span class="tag">Updated</span></div></div>
+        <div class="card"><small>Tasks placed today</small><div class="task"><span class="chk"></span>Draft agenda before 11:00</div><div class="task"><span class="chk"></span>Text Sam about new time<span class="tag">Text</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="voice" style="padding-top:0">
+    <div class="fblock glass two">
+      <div>
+        <div class="eyebrow">Real-time Voice</div>
+        <h3>Say it. It's handled.</h3>
+        <p>This isn't "record a voice memo and sort it later." Nexdo listens in real time, asks a follow-up if it needs one, and confirms what it did — in a normal back-and-forth conversation. Driving, cooking, walking between meetings: your hands stay free.</p>
+        <ul>
+          <li><div><b>Natural phrasing.</b> "Remind me to call the plumber tomorrow at 9" becomes a timed reminder tagged as a call.</div></li>
+          <li><div><b>Two-way, not one-way.</b> It checks what it's unsure about — "this Friday or next?" — before it saves anything.</div></li>
+          <li><div><b>Driving mode.</b> Shorter replies, bigger confirmations, and nothing that needs your eyes.</div></li>
+        </ul>
+        <p class="safe">Designed for hands-free use. Always follow local laws and keep your attention on driving.</p>
+      </div>
+      <div class="talk" aria-label="Example voice conversation">
+        <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="live"><span class="dot"></span>Listening</div>
+        <div class="bub me">"Book a haircut next Saturday morning and remind me the night before."</div>
+        <div class="bub ai">Saturday the 3rd at 10 am works — you're free until noon. Want that?</div>
+        <div class="bub me">"Yes."</div>
+        <div class="bub ai">Booked. I'll remind you Friday at 8 pm.<small>📅 Event added · ⏰ Reminder set</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="action" style="padding-top:0">
+    <div class="fblock glass two flip">
+      <div>
+        <div class="eyebrow">Action &amp; Follow-up</div>
+        <h3>The task that makes the call.</h3>
+        <p>Most "done" lists are really "remembered to do" lists. Nexdo closes the gap: when a task needs a call, a text, or an email, it's one tap away — with the message already drafted from what you told it.</p>
+        <ul>
+          <li><div><b>Call, text, or email from the task.</b> No copying numbers, no hunting for the thread.</div></li>
+          <li><div><b>Drafts written for you.</b> "Follow up with Alex about the invoice" arrives with a ready-to-send note you can edit.</div></li>
+          <li><div><b>Follow-ups that follow up.</b> Sent something and heard nothing? Nexdo nudges you at the right time to chase it.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Follow up with Alex</b><span>Due today</span></div>
+        <div class="card"><small>Drafted email</small><p style="font-size:14px;color:var(--muted);margin:6px 0">Hi Alex — quick nudge on the March invoice. Could you confirm it's been received? Happy to resend. Thanks!</p></div>
+        <div class="ctas" style="margin-top:6px"><span class="btn primary" style="padding:10px 16px;font-size:14px">Send email</span><span class="btn ghost" style="padding:10px 16px;font-size:14px">Call instead</span></div>
+        <div class="card" style="margin-top:12px"><small>If no reply</small><div class="task">⏰ Remind me Thursday 10 am</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lists" style="padding-top:0">
+    <div class="fblock glass two">
+      <div>
+        <div class="eyebrow">Shopping Lists</div>
+        <h3>The list everyone can see.</h3>
+        <p>Groceries, hardware runs, party supplies — add items by voice or text, share the list with your household, and reuse it next week instead of starting from scratch.</p>
+        <ul>
+          <li><div><b>Shared in a tap.</b> Everyone sees the same list; checking off an item updates it for all.</div></li>
+          <li><div><b>Reusable staples.</b> Keep a "weekly shop" list and bring it back with one word.</div></li>
+          <li><div><b>Smart swaps.</b> Item out of stock? Nexdo suggests a sensible alternative so the trip still ends.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Weekend shop</b><span>Shared · 3 people</span></div>
+        <div class="card"><div class="task"><span class="chk on"></span><s>Oat milk</s></div><div class="task"><span class="chk"></span>Eggs (12)</div><div class="task"><span class="chk"></span>Basil <span class="tag">Swap: coriander?</span></div><div class="task"><span class="chk"></span>Birthday candles</div></div>
+        <div class="card"><small>Added by voice</small><div class="task">🎙️ "Add sunscreen and a card for Mom"</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="moments" style="padding-top:0">
+    <div class="fblock glass two flip">
+      <div>
+        <div class="eyebrow">Important Moments</div>
+        <h3>Remembered. Reminded. Ready to send.</h3>
+        <p>Birthdays, anniversaries, festivals, first days — the dates that matter to the people who matter. Nexdo keeps them, reminds you with enough notice to do something, and drafts the message so you're never sending "sorry this is late."</p>
+        <ul>
+          <li><div><b>Reminders with lead time.</b> A week out for gifts, the night before for messages.</div></li>
+          <li><div><b>Message drafted.</b> A warm note in your tone, ready to text or send.</div></li>
+          <li><div><b>Gift on the list.</b> One tap adds "gift for Mom" to your shared shopping list.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Coming up</b><span>Moments</span></div>
+        <div class="card"><div class="task">🎂 Mom's birthday · Fri<span class="tag">Message drafted</span></div><div class="task">💍 Anniversary · in 12 days<span class="tag">Gift on list</span></div><div class="task">🪔 Diwali · Nov 8</div></div>
+        <div class="card"><small>Drafted text</small><p style="font-size:14px;color:var(--muted);margin:6px 0">Happy birthday, Mom! Can't wait to see you Sunday — love you. 🎂</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="cta glass">
+      <h2>See it with your own day.</h2>
+      <p>Sign in on the web, add three things, and get your first Daily Brief.</p>
+      <a class="btn primary" href="#/start">Start free →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ================= USE CASES ================= -->
+<div class="page" data-page="use-cases">
+  <header class="phead">
+    <div class="eyebrow">Use cases</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Made for the day <span class="grad">you actually have.</span></h1>
+    <p class="lead">Different lives, same problem: too much to hold in your head, and too many steps between "I should" and "done." Here's how Nexdo fits into each.</p>
+    <div class="crumbs"><a class="glass" href="#/use-cases#pro">💼 Professionals</a><a class="glass" href="#/use-cases#family">🏡 Families</a><a class="glass" href="#/use-cases#founder">🚀 Founders &amp; owners</a><a class="glass" href="#/use-cases#student">🎓 Students &amp; trainees</a></div>
+  </header>
+
+  <section id="pro" style="padding-top:40px">
+    <div class="fblock glass two">
+      <div>
+        <div class="eyebrow">Busy professionals</div>
+        <h3>Meetings all day. Follow-ups all night.</h3>
+        <p>The job isn't the meeting — it's the fifteen things you promised in it. Nexdo turns those promises into tasks with the email or call attached, and plans them into the gaps you actually have.</p>
+        <ul>
+          <li><div><b>Say it between meetings.</b> "Follow up with Dana on the quote by Thursday" — captured, drafted, scheduled.</div></li>
+          <li><div><b>Conflicts caught early.</b> Double-bookings show up in the morning brief with a fix.</div></li>
+          <li><div><b>Nothing left in the parking lot.</b> Ask "what did I promise this week?" and get the list.</div></li>
+        </ul>
+      </div>
+      <div class="quote glass"><p>"I used to keep a notes file called 'things I said I'd do.' Now I just say them out loud on the drive home and they're waiting in the morning with the email half-written."</p><small>Example of how a professional might use Nexdo</small></div>
+    </div>
+  </section>
+
+  <section id="family" style="padding-top:0">
+    <div class="fblock glass two flip">
+      <div>
+        <div class="eyebrow">Parents &amp; families</div>
+        <h3>One brain for the whole household.</h3>
+        <p>School forms, dentist visits, the thing you're out of, the birthday next week. Nexdo puts the shared parts in one place, so the load stops living in one person's head.</p>
+        <ul>
+          <li><div><b>Shared shopping lists.</b> Anyone adds, anyone checks off, nobody buys milk twice.</div></li>
+          <li><div><b>Moments for everyone.</b> Grandparents' birthdays, school events, and festivals — reminded with time to spare.</div></li>
+          <li><div><b>Hands-free in the car.</b> "Remind me to sign the permission slip tonight" while you're on the school run.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Family</b><span>Shared</span></div>
+        <div class="card"><small>This week</small><div class="task">🎂 Nana's birthday · Thu<span class="tag">Card on list</span></div><div class="task">🏫 Field trip form · Tue</div><div class="task">🦷 Dentist, Maya · Fri 4:00</div></div>
+        <div class="card"><small>Shopping</small><div class="task"><span class="chk"></span>Milk, bread, candles</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="founder" style="padding-top:0">
+    <div class="fblock glass two">
+      <div>
+        <div class="eyebrow">Founders &amp; small business owners</div>
+        <h3>Every conversation, a next step.</h3>
+        <p>When you're the sales team, the support line, and the accounts department, follow-through is the business. Nexdo makes sure each call ends with a task, and each task ends with a call, text, or email that actually goes out.</p>
+        <ul>
+          <li><div><b>Chase without the spreadsheet.</b> Unpaid invoice, unanswered quote — Nexdo reminds you and drafts the nudge.</div></li>
+          <li><div><b>Customers by voice.</b> "Call Mrs. Patel back about the estimate tomorrow at 10" while you're still on site.</div></li>
+          <li><div><b>Your day, planned around the work.</b> Site visits and calls sit together, with travel gaps respected.</div></li>
+        </ul>
+      </div>
+      <div class="quote glass"><p>"Three quotes out, two invoices overdue, one supplier to call back. Nexdo lines them up each morning and I just tap through."</p><small>Example of how a business owner might use Nexdo</small></div>
+    </div>
+  </section>
+
+  <section id="student" style="padding-top:0">
+    <div class="fblock glass two flip">
+      <div>
+        <div class="eyebrow">Students &amp; trainees</div>
+        <h3>Deadlines, shifts, and a life in between.</h3>
+        <p>Lectures, rotations, group projects, part-time work — and the people back home. Nexdo keeps deadlines honest, fits study time around your timetable, and remembers the birthdays you'd otherwise miss during exam week.</p>
+        <ul>
+          <li><div><b>Deadlines you can see coming.</b> Submissions appear in the brief days ahead, not the night before.</div></li>
+          <li><div><b>Group work that moves.</b> "Text the group about Thursday's meeting" — drafted and one tap away.</div></li>
+          <li><div><b>Study blocks that survive.</b> When your timetable shifts, your study time moves with it.</div></li>
+        </ul>
+      </div>
+      <div class="mini glass" aria-hidden="true">
+        <div class="ph-h"><b>Wednesday</b><span>2 deadlines this week</span></div>
+        <div class="card"><div class="task">10:00 · Lecture</div><div class="task">1:00 · Study block (held)</div><div class="task">6:00 · Shift</div></div>
+        <div class="card"><small>Due</small><div class="task"><span class="chk"></span>Lab report · Fri</div><div class="task"><span class="chk"></span>Text group re: meeting<span class="tag">Text</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="cta glass">
+      <h2>Whatever your busy looks like.</h2>
+      <p>Start free and let Nexdo build your first brief around the real week ahead.</p>
+      <a class="btn primary" href="#/start">Get started free →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ================= WHY NEXDO ================= -->
+<div class="page" data-page="why-nexdo">
+  <header class="phead">
+    <div class="eyebrow">Why Nexdo</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Planning tools plan. <span class="grad">Nexdo acts.</span></h1>
+    <p class="lead">There are great to-do apps and clever AI calendars. Most of them stop the moment your day is scheduled. Nexdo is built around what happens next: the call you need to make, the message you need to send, the list your family needs to see.</p>
+  </header>
+
+  <section style="padding-top:30px">
+    <div class="scroll glass">
+    <table class="cmp">
+      <thead><tr><th>What you need</th><th>To-do apps</th><th>AI calendars</th><th class="us">Nexdo</th></tr></thead>
+      <tbody>
+        <tr><td>Capture tasks and events by typing</td><td>✓</td><td>✓</td><td class="us">✓</td></tr>
+        <tr><td>Plan today around your calendar</td><td>Partly</td><td>✓</td><td class="us">✓ Daily Brief</td></tr>
+        <tr><td>Real-time, two-way voice conversation</td><td>Rare</td><td>Rare</td><td class="us">✓ Driving mode</td></tr>
+        <tr><td>Call, text, or email straight from a task</td><td>–</td><td>–</td><td class="us">✓ Drafts included</td></tr>
+        <tr><td>Reminds you to chase a reply</td><td>–</td><td>–</td><td class="us">✓</td></tr>
+        <tr><td>Shared shopping lists with smart swaps</td><td>Some</td><td>–</td><td class="us">✓</td></tr>
+        <tr><td>Birthdays &amp; moments with the message drafted</td><td>–</td><td>–</td><td class="us">✓</td></tr>
+        <tr><td>Built for individuals and households, not just teams</td><td>✓</td><td>Mostly teams</td><td class="us">✓</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">Categories are described in general terms; individual products vary. Compare features on each product's own site before choosing.</p>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="center"><div class="eyebrow">What we believe</div><h2>Three ideas behind Nexdo.</h2></div>
+    <div class="grid">
+      <div class="feat glass"><div class="ico">🎯</div><h3>A plan should end in an action.</h3><p>If a task needs a call, the phone should be one tap away. If it needs an email, the draft should already exist.</p></div>
+      <div class="feat glass"><div class="ico">🗣️</div><h3>Talking is faster than typing.</h3><p>Most of your day isn't at a keyboard. The assistant should keep up with you wherever you are — including the car.</p></div>
+      <div class="feat glass"><div class="ico">🧘</div><h3>Calm beats complete.</h3><p>A brief you can finish is worth more than a list that never ends. Nexdo ranks, and lets the rest wait.</p></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="cta glass">
+      <h2>Try the difference in one morning.</h2>
+      <p>Add a few tasks tonight. Read your brief tomorrow. Tap to act.</p>
+      <a class="btn primary" href="#/start">Start free →</a>
+    </div>
+  </section>
+</div>
+
+<!-- ================= PRICING ================= -->
+<div class="page" data-page="pricing">
+  <header class="phead" style="text-align:center;margin:0 auto">
+    <div class="eyebrow">Your AI executive companion</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Choose the plan that <span class="grad">fits your day.</span></h1>
+    <p class="lead" style="margin:14px auto 0">Get more focus, less chaos, and make real progress with AI by your side.</p>
+    <div class="billing">
+      <div class="bill glass" role="group" aria-label="Billing period"><button type="button" data-bill="m" aria-pressed="true">Monthly</button><button type="button" data-bill="a" aria-pressed="false">Annual</button></div>
+      <span class="save" id="save">Save up to 20% with annual</span>
+    </div>
+  </header>
+
+  <section style="padding-top:30px">
+    <div class="pgrid" aria-live="polite"><article class="pcard glass">
+<h3>Free</h3><p class="sub">Get organized.</p>
+<div class="amt"><b data-m="$0" data-a="$0">$0</b><span data-m="/ month" data-a="forever">/ month</span></div>
+<p class="bnote" data-m="Free to get started" data-a="Free to get started">Free to get started</p>
+<p class="pdesc">A great way to experience Nexdo and see the power of AI in your day.</p>
+<a class="btn ghost" href="https://nexdoapp.com">Get Started Free</a>
+<ul class="pfeat"><li><span>Unlimited tasks</span><button type="button" class="tip" aria-label="About Unlimited tasks" data-tip="Create as many tasks as you need. Keep your to-dos in one place.">i</button></li><li><span>1 calendar connection</span><button type="button" class="tip" aria-label="About 1 calendar connection" data-tip="Connect one external calendar. See its events alongside your tasks.">i</button></li><li><span>Basic AI assistant (5 actions/week)</span><button type="button" class="tip" aria-label="About Basic AI assistant (5 actions/week)" data-tip="Get help capturing and planning tasks. Includes five AI actions each week.">i</button></li><li><span>Daily briefing (limited)</span><button type="button" class="tip" aria-label="About Daily briefing (limited)" data-tip="See a summary of your daily plans. Free includes limited briefing access.">i</button></li><li><span>Basic schedule view</span><button type="button" class="tip" aria-label="About Basic schedule view" data-tip="See your tasks and calendar together. Review what is planned for your day.">i</button></li><li><span>Responsive web app</span><button type="button" class="tip" aria-label="About Responsive web app" data-tip="Use Nexdo in your web browser. The layout adapts to your screen.">i</button></li><li><span>Community support</span><button type="button" class="tip" aria-label="About Community support" data-tip="Get help through community support. Share questions about using Nexdo.">i</button></li></ul></article><article class="pcard glass hot"><div class="popular">Most popular</div>
+<h3>Nexdo Pro</h3><p class="sub">Your AI Executive Companion.</p>
+<div class="amt"><b data-m="$9.99" data-a="$99.99">$9.99</b><span data-m="/ month" data-a="/ year">/ month</span></div>
+<p class="bnote" data-m="Billed monthly" data-a="$8.33 / month equivalent, billed annually">Billed monthly</p>
+<p class="pdesc">Plan your day, choose your next step, and turn intentions into action.</p>
+<a class="btn primary" href="https://nexdoapp.com">Start 14-Day Free Trial</a>
+<ul class="pfeat"><li><span>Everything in Free</span><button type="button" class="tip" aria-label="About Everything in Free" data-tip="Keep every feature in the Free plan. Add the planning tools listed below.">i</button></li><li><span>Generous AI usage, subject to fair-use limits</span><button type="button" class="tip" aria-label="About Generous AI usage, subject to fair-use limits" data-tip="Use AI more often for daily planning. Fair-use limits still apply.">i</button></li><li><span>Executive Daily Briefing and Top 3 priorities</span><button type="button" class="tip" aria-label="About Executive Daily Briefing and Top 3 priorities" data-tip="Review your day and top three tasks. Prioritize urgent and important work.">i</button></li><li><span>What Should I Do Next? Refreshes as your day changes</span><button type="button" class="tip" aria-label="About What Should I Do Next? Refreshes as your day changes" data-tip="Get a useful next-step suggestion. Refreshes on task changes and app return.">i</button></li><li><span>Tasks that fit your available time, with alternatives and focus sessions</span><button type="button" class="tip" aria-label="About Tasks that fit your available time, with alternatives and focus sessions" data-tip="Find work that fits an open time slot. Start focus or choose another option.">i</button></li><li><span>Ask Nexdo by voice or text about your tasks and calendar</span><button type="button" class="tip" aria-label="About Ask Nexdo by voice or text about your tasks and calendar" data-tip="Ask questions by speaking or typing. Answers use your tasks and calendar.">i</button></li><li><span>Continuous voice conversations: create tasks, add more, and make corrections</span><button type="button" class="tip" aria-label="About Continuous voice conversations: create tasks, add more, and make corrections" data-tip="Keep talking to add or correct tasks. Hear replies in the same conversation.">i</button></li><li><span>Create calendar appointments and events by voice</span><button type="button" class="tip" aria-label="About Create calendar appointments and events by voice" data-tip="Speak an appointment’s date and time. Save a calendar entry, not a booking.">i</button></li><li><span>Call, Message, Email, or Remind Later for contact tasks</span><button type="button" class="tip" aria-label="About Call, Message, Email, or Remind Later for contact tasks" data-tip="Open a contact action from a task. Review the contact or snooze it for later.">i</button></li><li><span>Weekly progress, focus time, and completed-work reviews</span><button type="button" class="tip" aria-label="About Weekly progress, focus time, and completed-work reviews" data-tip="Look back at your weekly progress. Review completed work and focus time.">i</button></li><li><span>Schedule Insights &amp; Conflict Alerts</span><button type="button" class="tip" aria-label="About Schedule Insights &amp; Conflict Alerts" data-tip="Spot overlapping or tight schedules. Review work that needs more time.">i</button></li><li><span>Fix My Day schedule optimization</span><button type="button" class="tip" aria-label="About Fix My Day schedule optimization" data-tip="Review proposed moves for your tasks. Approve changes before they apply.">i</button></li><li><span>Clear next steps for vague tasks (coming soon)</span><button type="button" class="tip" aria-label="About Clear next steps for vague tasks (coming soon)" data-tip="Coming soon: clarify a vague task. Save a small, actionable next step.">i</button></li><li><span>Multiple calendar connections</span><button type="button" class="tip" aria-label="About Multiple calendar connections" data-tip="Connect more than one calendar. See work and personal plans together.">i</button></li><li><span>Priority email support</span><button type="button" class="tip" aria-label="About Priority email support" data-tip="Get priority help through email. Ask for support with using Nexdo.">i</button></li></ul></article><article class="pcard glass">
+<h3>Nexdo Max</h3><p class="sub">For power users and executives.</p>
+<div class="amt"><b data-m="$19.99" data-a="$199.99">$19.99</b><span data-m="/ month" data-a="/ year">/ month</span></div>
+<p class="bnote" data-m="Billed monthly" data-a="$16.67 / month equivalent, billed annually">Billed monthly</p>
+<p class="pdesc">Deeper personalization to make room for your most important work.</p>
+<a class="btn ghost" href="https://nexdoapp.com">Start 14-Day Free Trial</a>
+<ul class="pfeat"><li><span>Everything in Pro</span><button type="button" class="tip" aria-label="About Everything in Pro" data-tip="Keep every feature in the Pro plan. Add the Max features listed below.">i</button></li><li><span>Personalized duration estimates and completion insights</span><button type="button" class="tip" aria-label="About Personalized duration estimates and completion insights" data-tip="Opt in to estimates from work history. Review duration and completion predictions.">i</button></li><li><span>Work-pattern and postponement insights</span><button type="button" class="tip" aria-label="About Work-pattern and postponement insights" data-tip="See patterns in your completed work. Notice tasks you repeatedly postpone.">i</button></li><li><span>Protected-time proposals for repeatedly postponed work (coming soon)</span><button type="button" class="tip" aria-label="About Protected-time proposals for repeatedly postponed work (coming soon)" data-tip="Coming soon: reserve time for delayed work. Approve a block protected from replanning.">i</button></li><li><span>Expanded voice allowance for frequent conversations (coming soon)</span><button type="button" class="tip" aria-label="About Expanded voice allowance for frequent conversations (coming soon)" data-tip="Coming soon: a larger voice allowance. For more frequent planning conversations.">i</button></li><li><span>Advanced analytics &amp; insights</span><button type="button" class="tip" aria-label="About Advanced analytics &amp; insights" data-tip="Explore insights from your work history. Review progress and completion patterns.">i</button></li><li><span>Email &amp; commitment intelligence (coming soon)</span><button type="button" class="tip" aria-label="About Email &amp; commitment intelligence (coming soon)" data-tip="Coming soon: find commitments in email. Turn relevant messages into suggested tasks.">i</button></li><li><span>Goal planning &amp; tracking (coming soon)</span><button type="button" class="tip" aria-label="About Goal planning &amp; tracking (coming soon)" data-tip="Coming soon: plan and track your goals. Connect everyday work to bigger aims.">i</button></li><li><span>Early access to new features</span><button type="button" class="tip" aria-label="About Early access to new features" data-tip="Try selected features before wider release. Availability depends on the rollout.">i</button></li><li><span>Priority support</span><button type="button" class="tip" aria-label="About Priority support" data-tip="Get priority assistance with Nexdo. Ask for help with features or your account.">i</button></li></ul></article></div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="assure">
+      <div class="glass"><span class="ico">📅</span><p><b>14-day free trial</b><span>No credit card required</span></p></div>
+      <div class="glass"><span class="ico">💳</span><p><b>Cancel anytime</b><span>No long-term contracts</span></p></div>
+      <div class="glass"><span class="ico">🛡️</span><p><b>Your data stays private</b><span>You stay in control</span></p></div>
+      <div class="glass"><span class="ico">💜</span><p><b>For busy professionals</b><span>More time for what matters</span></p></div>
+    </div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="center"><div class="eyebrow">Special pricing</div><h2>Discounts that meet you where you are.</h2><p>Eligible customers can save on Nexdo while they study, serve, build, or switch.</p></div>
+    <div class="dgrid"><article class="dcard glass"><div class="dtop"><span class="ico" style="margin:0">🎓</span><span class="dpill">50% off</span></div>
+<h3>Student Discount</h3><p class="dterm">for 12 months</p><p class="ddesc">For verified students, educators, and faculty.</p>
+<div class="dact"><a href="https://nexdoapp.com">Apply now →</a><details><summary>Eligibility</summary><p>Available after academic-status verification.</p></details></div></article><article class="dcard glass"><div class="dtop"><span class="ico" style="margin:0">🤝</span><span class="dpill">20% off</span></div>
+<h3>Nonprofit Discount</h3><p class="dterm">for 3 years</p><p class="ddesc">For qualified nonprofit organizations doing meaningful work.</p>
+<div class="dact"><a href="https://nexdoapp.com">Apply now →</a><details><summary>Eligibility</summary><p>Organization verification is required.</p></details></div></article><article class="dcard glass"><div class="dtop"><span class="ico" style="margin:0">🚀</span><span class="dpill">20% off</span></div>
+<h3>Startup Discount</h3><p class="dterm">for 3 years</p><p class="ddesc">For qualified early-stage startups building what comes next.</p>
+<div class="dact"><a href="https://nexdoapp.com">Apply now →</a><details><summary>Eligibility</summary><p>Company eligibility is confirmed during application.</p></details></div></article><article class="dcard glass"><div class="dtop"><span class="ico" style="margin:0">🔁</span><span class="dpill">20% off</span></div>
+<h3>Switching Discount</h3><p class="dterm">for 6 months</p><p class="ddesc">For customers moving from another eligible planning provider.</p>
+<div class="dact"><a href="https://nexdoapp.com">Apply now →</a><details><summary>Eligibility</summary><p>Proof of an active competing subscription is required.</p></details></div></article></div>
+    <p class="note" style="text-align:center">Discounts require verification and cannot be combined with other offers.</p>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="center"><div class="eyebrow">Compare plans</div>
+      <button class="btn ghost" type="button" id="cmpBtn" aria-expanded="false" aria-controls="cmp">Show all features ▾</button>
+      <p style="margin-top:14px">See exactly what is included as Nexdo grows with your day.</p></div>
+    <div id="cmp" hidden>
+      <div class="scroll glass"><table class="ptable"><caption class="sr">Comparison of all features in Nexdo Free, Nexdo Pro, and Nexdo Max</caption>
+        <thead><tr><th scope="col">Feature</th><th scope="col">Free<small>$0</small></th><th scope="col" class="pro">Nexdo Pro<small>$9.99/mo</small></th><th scope="col">Nexdo Max<small>$19.99/mo</small></th></tr></thead>
+        <tbody><tr class="grp"><th colspan="4" scope="colgroup">Tasks &amp; organization</th></tr><tr><th scope="row"><span class="fname">Tasks, inbox, Today, and Waiting For views<button type="button" class="tip" aria-label="About Tasks, inbox, Today, and Waiting For views" data-tip="Keep tasks in one organized place. See today’s work and what’s waiting.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Priorities, due dates, duration, and energy level<button type="button" class="tip" aria-label="About Priorities, due dates, duration, and energy level" data-tip="Set importance, timing, and effort. Match your tasks to your capacity.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Notes, subtasks, and recurring tasks<button type="button" class="tip" aria-label="About Notes, subtasks, and recurring tasks" data-tip="Add context and smaller steps. Repeat tasks on a regular schedule.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Projects, categories, tags, and task dependencies<button type="button" class="tip" aria-label="About Projects, categories, tags, and task dependencies" data-tip="Group work by project or category. Link tasks that depend on others.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Task search, filters, and bulk actions<button type="button" class="tip" aria-label="About Task search, filters, and bulk actions" data-tip="Find the tasks you need quickly. Update several tasks in one action.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Focus timer with pause and resume<button type="button" class="tip" aria-label="About Focus timer with pause and resume" data-tip="Start a focused work session. Pause and resume when you need to.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr></tbody><tbody><tr class="grp"><th colspan="4" scope="colgroup">Calendar &amp; scheduling</th></tr><tr><th scope="row"><span class="fname">Daily, weekly, and monthly schedule views<button type="button" class="tip" aria-label="About Daily, weekly, and monthly schedule views" data-tip="View your schedule at different scales. Switch between day, week, and month.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Google Calendar and Microsoft Outlook connections<button type="button" class="tip" aria-label="About Google Calendar and Microsoft Outlook connections" data-tip="Connect Google or Outlook calendars. See synced events alongside tasks.">i</button></span></th><td><span class="lbl">1 calendar</span></td><td class="pro"><span class="lbl">Multiple</span></td><td><span class="lbl">Multiple</span></td></tr><tr><th scope="row"><span class="fname">Calendar visibility, default, and write controls<button type="button" class="tip" aria-label="About Calendar visibility, default, and write controls" data-tip="Choose which calendars appear. Control where Nexdo can write events.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Sync Nexdo task blocks to your calendar<button type="button" class="tip" aria-label="About Sync Nexdo task blocks to your calendar" data-tip="Add scheduled task blocks to a calendar. Keep your work visible with meetings.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Personal working hours and quiet hours<button type="button" class="tip" aria-label="About Personal working hours and quiet hours" data-tip="Set when you normally work. Choose quiet hours for notifications.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Schedule Insights &amp; Conflict Alerts<button type="button" class="tip" aria-label="About Schedule Insights &amp; Conflict Alerts" data-tip="Spot overlapping or tight schedules. Review work that needs more time.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Create calendar appointments and events by voice<button type="button" class="tip" aria-label="About Create calendar appointments and events by voice" data-tip="Speak an appointment’s date and time. Save a calendar entry, not a booking.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Fix My Day schedule optimization<button type="button" class="tip" aria-label="About Fix My Day schedule optimization" data-tip="Review proposed moves for your tasks. Approve changes before they apply.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr></tbody><tbody><tr class="grp"><th colspan="4" scope="colgroup">AI executive companion</th></tr><tr><th scope="row"><span class="fname">Conversational task capture and follow-ups<button type="button" class="tip" aria-label="About Conversational task capture and follow-ups" data-tip="Describe tasks in your own words. Continue the conversation to refine them.">i</button></span></th><td><span class="lbl">5 actions/week</span></td><td class="pro"><span class="lbl">Generous usage</span></td><td><span class="lbl">Generous usage</span></td></tr><tr><th scope="row"><span class="fname">Executive Daily Briefing<button type="button" class="tip" aria-label="About Executive Daily Briefing" data-tip="Get a briefing from your saved plans. Review priorities and commitments.">i</button></span></th><td><span class="lbl">Limited</span></td><td class="pro"><span class="lbl">Unlimited</span></td><td><span class="lbl">Unlimited</span></td></tr><tr><th scope="row"><span class="fname">Top 3 priorities for today<button type="button" class="tip" aria-label="About Top 3 priorities for today" data-tip="See three recommended focus tasks. Ranked using urgency and importance.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">What Should I Do Next?<button type="button" class="tip" aria-label="About What Should I Do Next?" data-tip="Get one useful next-step suggestion. Choose it or explore alternatives.">i</button></span></th><td><span class="lbl">Limited</span></td><td class="pro"><span class="lbl">Unlimited</span></td><td><span class="lbl">Unlimited</span></td></tr><tr><th scope="row"><span class="fname">Tasks that fit your available time, with alternatives and focus sessions<button type="button" class="tip" aria-label="About Tasks that fit your available time, with alternatives and focus sessions" data-tip="Find work that fits an open time slot. Start focus or choose another option.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Next-action recommendations refresh after task changes and app return<button type="button" class="tip" aria-label="About Next-action recommendations refresh after task changes and app return" data-tip="Refresh suggestions as tasks change. Update again when you return to the app.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Ask about priorities, deadlines, and available time using your tasks and calendar<button type="button" class="tip" aria-label="About Ask about priorities, deadlines, and available time using your tasks and calendar" data-tip="Ask questions about your saved plans. Get answers grounded in your schedule.">i</button></span></th><td><span class="lbl">Limited</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Turn vague tasks into clear next steps<button type="button" class="tip" aria-label="About Turn vague tasks into clear next steps" data-tip="Coming soon: clarify a vague task. Save a small, actionable next step.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="lbl soon">Coming soon</span></td><td><span class="lbl soon">Coming soon</span></td></tr><tr><th scope="row"><span class="fname">Driving and evening briefings<button type="button" class="tip" aria-label="About Driving and evening briefings" data-tip="Listen to a spoken schedule briefing. Review your day and upcoming work.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Review and approval before AI schedule changes<button type="button" class="tip" aria-label="About Review and approval before AI schedule changes" data-tip="Review AI-proposed schedule changes. Nothing moves until you approve it.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Protected commitments and stale-plan safeguards<button type="button" class="tip" aria-label="About Protected commitments and stale-plan safeguards" data-tip="Keep fixed commitments in place. Reject plans based on outdated data.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr></tbody><tbody><tr class="grp"><th colspan="4" scope="colgroup">Voice, briefings &amp; reminders</th></tr><tr><th scope="row"><span class="fname">Typed Ask Nexdo assistant<button type="button" class="tip" aria-label="About Typed Ask Nexdo assistant" data-tip="Type a question or planning request. Get help without using a microphone.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Continuous voice conversations with spoken replies and task corrections<button type="button" class="tip" aria-label="About Continuous voice conversations with spoken replies and task corrections" data-tip="Keep talking to add or correct tasks. Hear replies in the same conversation.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Expanded voice allowance for frequent planning conversations<button type="button" class="tip" aria-label="About Expanded voice allowance for frequent planning conversations" data-tip="Coming soon: a larger voice allowance. For more frequent planning conversations.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="lbl soon">Coming soon</span></td></tr><tr><th scope="row"><span class="fname">Call, Message, Email, or Remind Later for contact tasks<button type="button" class="tip" aria-label="About Call, Message, Email, or Remind Later for contact tasks" data-tip="Open a contact action from a task. Review the contact or snooze it for later.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Weekly progress, focus time, and completed-work reviews<button type="button" class="tip" aria-label="About Weekly progress, focus time, and completed-work reviews" data-tip="Look back at your weekly progress. Review completed work and focus time.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Browser push reminders<button type="button" class="tip" aria-label="About Browser push reminders" data-tip="Receive reminders in your browser. Requires notification permission.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Email reminders<button type="button" class="tip" aria-label="About Email reminders" data-tip="Receive task reminders by email. Keep upcoming work in view.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">SMS reminders<button type="button" class="tip" aria-label="About SMS reminders" data-tip="Receive reminders by text message. Requires a configured phone number.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Morning and evening summaries<button type="button" class="tip" aria-label="About Morning and evening summaries" data-tip="Review plans at the start of the day. Reflect on progress in the evening.">i</button></span></th><td><span class="lbl">Limited</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Notification delivery history<button type="button" class="tip" aria-label="About Notification delivery history" data-tip="Review recorded notification attempts. Check delivery status and failures.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr></tbody><tbody><tr class="grp"><th colspan="4" scope="colgroup">Personalization, privacy &amp; support</th></tr><tr><th scope="row"><span class="fname">Encrypted calendar credentials<button type="button" class="tip" aria-label="About Encrypted calendar credentials" data-tip="Calendar access credentials are encrypted. Connect calendars without sharing passwords.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">No raw voice-audio storage<button type="button" class="tip" aria-label="About No raw voice-audio storage" data-tip="Raw voice recordings are not retained. Transcripts may support your conversation.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Opt-in personalized duration estimates and completion predictions<button type="button" class="tip" aria-label="About Opt-in personalized duration estimates and completion predictions" data-tip="Opt in to estimates from work history. Review duration and completion predictions.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Work-pattern and postponement insights<button type="button" class="tip" aria-label="About Work-pattern and postponement insights" data-tip="See patterns in your completed work. Notice tasks you repeatedly postpone.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Protected-time proposals for important work postponed three or more times<button type="button" class="tip" aria-label="About Protected-time proposals for important work postponed three or more times" data-tip="Coming soon: reserve time for delayed work. Approve a block protected from replanning.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="lbl soon">Coming soon</span></td></tr><tr><th scope="row"><span class="fname">Erase learned personalization data<button type="button" class="tip" aria-label="About Erase learned personalization data" data-tip="Remove learned personalization data. Stay in control of your work history.">i</button></span></th><td><span class="yes" aria-label="Included">✓</span></td><td class="pro"><span class="yes" aria-label="Included">✓</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Support<button type="button" class="tip" aria-label="About Support" data-tip="Get help with using Nexdo. Support options vary by plan.">i</button></span></th><td><span class="lbl">Community</span></td><td class="pro"><span class="lbl">Priority email</span></td><td><span class="lbl">Priority</span></td></tr><tr><th scope="row"><span class="fname">Early access to new features<button type="button" class="tip" aria-label="About Early access to new features" data-tip="Try selected features before wider release. Availability depends on the rollout.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="yes" aria-label="Included">✓</span></td></tr><tr><th scope="row"><span class="fname">Email and commitment intelligence<button type="button" class="tip" aria-label="About Email and commitment intelligence" data-tip="Coming soon: find commitments in email. Turn relevant messages into suggested tasks.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="lbl soon">Coming soon</span></td></tr><tr><th scope="row"><span class="fname">Goal planning and tracking<button type="button" class="tip" aria-label="About Goal planning and tracking" data-tip="Coming soon: plan and track your goals. Connect everyday work to bigger aims.">i</button></span></th><td><span class="nope" aria-label="Not included">—</span></td><td class="pro"><span class="nope" aria-label="Not included">—</span></td><td><span class="lbl soon">Coming soon</span></td></tr></tbody></table></div>
+      <p class="note">Generous AI usage is subject to fair-use limits. Expanded voice allowances and features marked coming soon are not included in the current product. Next-action recommendations refresh while you use the app and when you return. Voice-created appointments are calendar entries, not external bookings or invitations. Personalization is opt-in.</p>
+    </div>
+  </section>
+
+  <section class="faq" style="padding-top:20px">
+    <div class="center"><h2>Frequently asked questions</h2></div>
+    <details class="glass"><summary>Can I try Nexdo before I pay?</summary><p>Pro and Max include a 14-day free trial, with no credit card required. You can also explore Nexdo with the Free plan.</p></details><details class="glass"><summary>What’s the difference between Pro and Max?</summary><p>Pro brings daily priorities, next-action recommendations, continuous voice conversations, contact actions, and weekly reviews. Max adds personalized duration estimates, completion predictions, and work-pattern insights. Protected-time proposals, an expanded voice allowance, and email intelligence are coming soon. Fair-use limits apply.</p></details><details class="glass"><summary>Can I change plans later?</summary><p>You can choose monthly or annual billing. For help changing an existing subscription, contact support.</p></details><details class="glass"><summary>Is my data secure?</summary><p>Nexdo asks for approval before applying AI-proposed changes and lets you choose whether to enable personalization.</p></details><details class="glass"><summary>Do you offer refunds?</summary><p>Contact support to confirm the refund terms that apply to your subscription before purchasing.</p></details><details class="glass"><summary>Do you offer team or business plans?</summary><p>Nexdo Max is designed for power users, executives and teams. Contact support to discuss your team’s requirements.</p></details>
+  </section>
+
+  <section style="padding-top:10px">
+    <div class="cta glass">
+      <h2>Ready to get back control <span class="grad">of your day?</span></h2>
+      <p>Join professionals who are doing more with Nexdo.</p>
+      <a class="btn primary" href="https://nexdoapp.com">Start Your Free Trial →</a>
+      <p class="safe">No credit card required · Less chaos. More progress. That's Nexdo.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ================= HELP ================= -->
+<div class="page" data-page="help">
+  <header class="phead">
+    <div class="eyebrow">Help center</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Answers, <span class="grad">quickly.</span></h1>
+    <p class="lead">Common questions about getting started, talking to Nexdo, and keeping your day on track. Can't find it? <a href="#/contact" style="color:var(--tint-ink);font-weight:600">Contact us</a>.</p>
+  </header>
+
+  <section class="faq" style="padding-top:20px">
+    <h3>Getting started</h3>
+    <details class="glass"><summary>How do I start using Nexdo?</summary><p>Go to nexdoapp.com and sign in on the web. Add a few tasks and any events you have this week; your first Daily Brief is ready the next morning (or right away, if you ask for it).</p></details>
+    <details class="glass"><summary>Is there a phone app?</summary><p>The iPhone app is coming soon. Until then, Nexdo works in your phone's browser, including voice.</p></details>
+    <details class="glass"><summary>Does it connect to my existing calendar?</summary><p>Calendar connections are part of the roadmap and will be announced on this page. Today, events you add in Nexdo appear in your Tasks + Calendar view.</p></details>
+
+    <h3>Daily Brief</h3>
+    <details class="glass"><summary>When does the brief arrive?</summary><p>Each morning at a time you choose. You can also ask "what's my day look like?" at any time to get a fresh one.</p></details>
+    <details class="glass"><summary>How does Nexdo decide what comes first?</summary><p>Overdue tasks, hard deadlines, and today's meetings lead. Then tasks with a set time, then everything else. You can move anything up or down.</p></details>
+
+    <h3>Voice</h3>
+    <details class="glass"><summary>What can I say?</summary><p>Anything you'd say to a person: "remind me to pay rent Friday," "move my 3 pm to Thursday," "what's left today?" If Nexdo isn't sure, it asks a short follow-up before saving.</p></details>
+    <details class="glass"><summary>What is driving mode?</summary><p>A hands-free mode with shorter spoken replies and larger confirmations, so nothing needs your eyes. Always follow local laws and keep your attention on the road.</p></details>
+    <details class="glass"><summary>Is Nexdo always listening?</summary><p>No. Voice is active only while you've started a conversation. It stops when you end it.</p></details>
+
+    <h3>Action &amp; follow-up</h3>
+    <details class="glass"><summary>How does "call from a task" work?</summary><p>If a task involves a person or a number, a Call, Text, or Email button appears on it. Tapping it opens the call or message on your device with the details filled in.</p></details>
+    <details class="glass"><summary>Can I edit drafted messages?</summary><p>Always. Drafts are a starting point; nothing is sent until you tap send.</p></details>
+
+    <h3>Lists and moments</h3>
+    <details class="glass"><summary>How do I share a shopping list?</summary><p>Open the list, tap Share, and invite by email or link. Everyone with access can add and check off items.</p></details>
+    <details class="glass"><summary>What are "smart swaps"?</summary><p>If you mark an item as unavailable, Nexdo suggests a similar alternative so the trip can still finish.</p></details>
+    <details class="glass"><summary>How far ahead do moment reminders come?</summary><p>By default a week ahead for gifts and the night before for messages. You can change both per moment.</p></details>
+
+    <h3>Account</h3>
+    <details class="glass"><summary>How do I delete my account and data?</summary><p>From Settings, choose Delete account. Your tasks, lists, moments, and voice history are removed. See <a href="#/trust" style="color:var(--tint-ink)">Trust &amp; privacy</a> for details.</p></details>
+  </section>
+</div>
+
+<!-- ================= ABOUT / TEAM ================= -->
+<div class="page" data-page="about">
+  <header class="phead">
+    <div class="eyebrow">About Nexdo</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">We're building the assistant <span class="grad">that finishes the job.</span></h1>
+    <p class="lead">Nexdo started with a simple frustration: every productivity app made a beautiful plan, and then left the actual doing to us. We wanted something that would say "here's your day," and then help make the call.</p>
+  </header>
+
+  <section style="padding-top:30px">
+    <div class="values">
+      <div class="feat glass"><div class="ico">🔍</div><h3>Clarity first</h3><p>A short brief you can finish beats a long list you can't. We'd rather show you less and be right.</p></div>
+      <div class="feat glass"><div class="ico">🤝</div><h3>You stay in control</h3><p>Nexdo drafts, suggests, and reminds. It never sends a message or makes a call without you tapping.</p></div>
+      <div class="feat glass"><div class="ico">🏠</div><h3>Built for real life</h3><p>Work and home aren't separate calendars in your head, so they aren't separate in Nexdo either.</p></div>
+      <div class="feat glass"><div class="ico">🔒</div><h3>Private by default</h3><p>Your tasks and conversations are yours. We collect what the product needs and nothing more.</p></div>
+    </div>
+  </section>
+
+  <section id="team" style="padding-top:20px">
+    <div class="center"><div class="eyebrow">Our team</div><h2>The people behind Nexdo.</h2><p>A small team that has spent too many evenings on "things I said I'd do" lists.</p></div>
+    <div class="team">
+      <div class="person glass"><div class="avatar">RK</div><b>Founder name</b><span>Founder &amp; product</span><p>Replace with a two-line bio: background, and why Nexdo.</p></div>
+      <div class="person glass"><div class="avatar" style="background:linear-gradient(135deg,var(--blue),var(--indigo))">AB</div><b>Team member</b><span>Engineering</span><p>Replace with a two-line bio.</p></div>
+      <div class="person glass"><div class="avatar" style="background:linear-gradient(135deg,var(--purple),var(--magenta))">CD</div><b>Team member</b><span>Design</span><p>Replace with a two-line bio.</p></div>
+      <div class="person glass"><div class="avatar" style="background:linear-gradient(135deg,var(--magenta),var(--blue))">EF</div><b>Team member</b><span>Voice &amp; AI</span><p>Replace with a two-line bio.</p></div>
+    </div>
+    <div class="notice glass">Team cards are placeholders. Swap the initials, names, roles, and bios; to use photos, replace each <code>.avatar</code> with an <code>&lt;img&gt;</code>.</div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="cta glass">
+      <h2>Want to help shape Nexdo?</h2>
+      <p>Early users get a direct line to the team. Tell us what's slowing you down and we'll build toward it.</p>
+      <a class="btn primary" href="#/contact">Get in touch</a>
+    </div>
+  </section>
+</div>
+
+<!-- ================= TRUST ================= -->
+<div class="page" data-page="trust">
+  <header class="phead">
+    <div class="eyebrow">Trust &amp; privacy</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Your day is <span class="grad">your business.</span></h1>
+    <p class="lead">Nexdo sees your tasks, your calendar, and what you say to it. Here's how we treat that, in plain language. For the full detail, read our <a href="#/privacy" style="color:var(--tint-ink);font-weight:600">Privacy Policy</a> and <a href="#/terms" style="color:var(--tint-ink);font-weight:600">Terms of Service</a>.</p>
+  </header>
+  <section class="prose" style="padding-top:20px">
+    <h3>What Nexdo stores</h3>
+    <p>The tasks, events, lists, and moments you create, and the settings you choose. Voice conversations are processed to carry out what you asked; you can clear voice history from Settings.</p>
+    <h3>What Nexdo doesn't do</h3>
+    <ul>
+      <li>It doesn't listen unless you've started a conversation.</li>
+      <li>It doesn't send messages or place calls on its own — every send and every call is your tap.</li>
+      <li>It doesn't sell your data or use your content to advertise to you.</li>
+    </ul>
+    <h3>Sharing</h3>
+    <p>Shared lists and moments are visible only to the people you invite. Remove someone and they lose access immediately.</p>
+    <h3>Your controls</h3>
+    <ul>
+      <li>Export your tasks and lists from Settings.</li>
+      <li>Delete a conversation, a list, or your whole account at any time.</li>
+      <li>Change reminder times, driving-mode behaviour, and what the Daily Brief includes.</li>
+    </ul>
+    <h3>Questions</h3>
+    <p>Write to us via the <a href="#/contact" style="color:var(--tint-ink)">contact page</a>. We answer privacy questions directly.</p>
+  </section>
+</div>
+
+<!-- ================= CONTACT ================= -->
+<div class="page" data-page="contact">
+  <header class="phead">
+    <div class="eyebrow">Contact</div>
+    <h1 style="font-size:clamp(34px,5vw,56px)">Talk to a <span class="grad">human.</span></h1>
+    <p class="lead">Questions, feedback, press, or a feature you wish existed — we read everything.</p>
+  </header>
+  <section style="padding-top:20px">
+    <div class="grid">
+      <div class="feat glass"><div class="ico">💬</div><h3>Support</h3><p>Stuck on something? Start with the <a href="#/help" style="color:var(--tint-ink)">Help center</a>, then email <a href="mailto:support@nexdoapp.com" style="color:var(--tint-ink)">support@nexdoapp.com</a>.</p></div>
+      <div class="feat glass"><div class="ico">💡</div><h3>Feedback &amp; ideas</h3><p>Tell us what would make Nexdo indispensable: <a href="mailto:hello@nexdoapp.com" style="color:var(--tint-ink)">hello@nexdoapp.com</a>.</p></div>
+      <div class="feat glass"><div class="ico">📰</div><h3>Press &amp; partnerships</h3><p>For media or partnership enquiries: <a href="mailto:hello@nexdoapp.com" style="color:var(--tint-ink)">hello@nexdoapp.com</a>.</p></div>
+    </div>
+    <div class="notice glass">Confirm these mailboxes exist before launch, or point all three to a single address.</div>
+  </section>
+</div>
+
+<!-- ================= START ================= -->
+<div class="page" data-page="start">
+  <section style="padding-top:60px">
+    <div class="cta glass">
+      <div class="eyebrow">Get started</div>
+      <h1 style="font-size:clamp(30px,4vw,44px);line-height:1.1;margin:10px 0 14px">Clear your head. <span class="grad">Start today.</span></h1>
+      <p>Sign in on the web, add a few things you've been carrying around, and get your first Daily Brief in under a minute. No card needed.</p>
+      <a class="btn primary" href="https://nexdoapp.com">Open Nexdo on the web →</a>
+      <p class="note">iPhone app coming soon · Plan information on the <a href="#/pricing" style="color:var(--tint-ink)">Pricing</a> page</p>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <div class="steps">
+      <div class="step glass"><div class="num grad">01</div><h3>Sign in</h3><p>Web first; your phone's browser works too.</p></div>
+      <div class="step glass"><div class="num grad">02</div><h3>Add three things</h3><p>Type them or say them. A task, an event, a birthday.</p></div>
+      <div class="step glass"><div class="num grad">03</div><h3>Read your brief</h3><p>Then tap to call, text, or send. Done means done.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= LEGAL ================= -->
+<div class="page" data-page="privacy">
+  <header class="phead"><div class="eyebrow">Legal</div><h1 style="font-size:clamp(34px,5vw,56px)">Privacy Policy</h1><p class="lead">The full policy is being finalised and will appear here before any paid plan launches. In the meantime, <a href="#/trust" style="color:var(--tint-ink);font-weight:600">Trust &amp; privacy</a> explains how Nexdo treats your data in plain language.</p></header>
+</div>
+<div class="page" data-page="terms">
+  <header class="phead"><div class="eyebrow">Legal</div><h1 style="font-size:clamp(34px,5vw,56px)">Terms of Service</h1><p class="lead">Terms are being finalised and will appear here before any paid plan launches. Questions in the meantime: <a href="#/contact" style="color:var(--tint-ink);font-weight:600">contact us</a>.</p></header>
+</div>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><b>Nexdo</b><p>Your AI action &amp; follow-up assistant. Less on your mind, more done in your day.</p></div>
+    <div><b>Product</b><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a></div>
+    <div><b>Company</b><a href="#/about">About &amp; team</a><a href="#/trust">Trust &amp; privacy</a><a href="#/contact">Contact</a></div>
+    <div><b>Support</b><a href="#/help">Help center</a><a href="#/start">Get started</a><a href="https://nexdoapp.com">Sign in</a></div>
+  </div>
+  <div class="base">
+    <span>© 2026 Nexdo · Get More Done with AI · nexdoapp.com</span>
+    <span><a href="#/privacy">Privacy</a><a href="#/terms">Terms</a><a href="#/contact">Contact</a></span>
+  </div>
+</div></footer>

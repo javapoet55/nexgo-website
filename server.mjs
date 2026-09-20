@@ -2,7 +2,7 @@ import http from 'node:http';
 import {readFile,stat} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
 const root=resolve('dist');
-const aliases={'/index.html':'/','/welcome':'/','/welcome/':'/','/pricing.html':'/pricing','/privacy.html':'/privacy','/terms.html':'/terms','/ai-assistant.html':'/features/ai-assistant','/support':'/contact'};
+const aliases={'/index.html':'/','/welcome':'/','/welcome/':'/','/pricing.html':'/pricing','/privacy.html':'/privacy','/terms.html':'/terms','/ai-assistant.html':'/features#voice','/features/ai-assistant':'/features#voice','/how-it-works':'/features','/security':'/trust','/support':'/contact','/compare':'/why-nexdo','/compare/asana':'/why-nexdo','/compare/monday':'/why-nexdo','/compare/akiflow':'/why-nexdo','/compare/motion':'/why-nexdo','/compare/todoist':'/why-nexdo'};
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.webp':'image/webp','.ico':'image/x-icon','.woff2':'font/woff2','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8'};
 const server=http.createServer(async(req,res)=>{
 res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');res.setHeader('X-Frame-Options','DENY');res.setHeader('Permissions-Policy','camera=(), microphone=(), geolocation=()');res.setHeader('Content-Security-Policy',"default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'");

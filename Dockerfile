@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json ./
 COPY scripts ./scripts
 COPY src ./src
+COPY site ./site
 COPY assets ./assets
 RUN node scripts/build.mjs
 FROM node:22-alpine
