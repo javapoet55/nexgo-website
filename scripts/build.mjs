@@ -56,7 +56,7 @@ for(const key of Object.keys(pages)){
 const nf=`<div class="page" data-page="notfound"><section style="padding-top:60px"><div class="cta glass"><div class="eyebrow">404</div><h1 style="font-size:clamp(34px,5vw,56px)">That page <span class="grad">wandered off.</span></h1><p>The link may be old or mistyped. Everything Nexdo does is one click away.</p><a class="btn primary" href="/">Back to home</a></div></section></div>\n`;
 writeFileSync('dist/404.html',doc('home',nf).replace(/<title>[^<]*<\/title>/,'<title>Page not found — Nexdo</title>').replace(/<link rel="canonical"[^>]*>\n/,'<meta name="robots" content="noindex">\n'));
 copyFileSync('site/app.js','dist/app.js');
-for(const f of ['favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
+for(const f of ['favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 writeFileSync('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.values(pages).map(([p])=>`  <url><loc>${ORIGIN}${p==='/'?'/':p}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built ${Object.keys(pages).length} pages + 404 into dist/`);

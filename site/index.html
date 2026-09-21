@@ -41,8 +41,8 @@ h1{font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-.04em;font-we
 .ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
 .note{margin-top:16px;font-size:13px;color:var(--muted)}
 /* phone mock */
-.stage{position:relative;height:560px}
-.phone{position:absolute;left:50%;top:0;transform:translateX(-50%);width:290px;height:560px;border-radius:44px;padding:18px;overflow:hidden}
+.stage{position:relative;height:620px}
+.phone{position:absolute;left:50%;top:0;transform:translateX(-50%);width:280px;border-radius:42px;padding:8px;overflow:hidden}.phone img{display:block;width:100%;height:auto;border-radius:34px}
 .ph-h{display:flex;justify-content:space-between;align-items:center;margin:8px 4px 16px}
 .ph-h b{font-size:20px;letter-spacing:-.02em}
 .ph-h span{font-size:12px;color:var(--muted)}
@@ -55,7 +55,8 @@ h1{font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-.04em;font-we
 .tag{margin-left:auto;font-size:11px;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--tint-ink);font-weight:600}
 .float{position:absolute;padding:12px 16px;border-radius:18px;font-size:13px;font-weight:600;display:flex;gap:10px;align-items:center;animation:bob 5s ease-in-out infinite}
 .float em{font-style:normal;font-size:20px}
-.f1{left:-30px;top:-46px}.f2{right:-4px;top:250px;animation-delay:-2s}.f3{left:-20px;bottom:-24px;animation-delay:-3.5s}
+.f1{left:-30px;top:-46px}.f2{right:-70px;top:250px;animation-delay:-2s}.f3{left:-20px;bottom:-24px;animation-delay:-3.5s}
+@media (max-width:1180px){.f2{right:-10px}}
 @keyframes bob{50%{transform:translateY(-10px)}}
 @media (prefers-reduced-motion:reduce){.float{animation:none}}
 section{padding:70px 0}
@@ -331,21 +332,7 @@ footer .base a{margin:0 0 0 20px}
     </div>
 
     <div class="stage" aria-hidden="true">
-      <div class="phone glass">
-        <div class="ph-h"><b>Good morning ☀️</b><span>Mon</span></div>
-        <div class="card"><small>Daily brief</small>
-          <div class="task"><span class="chk on"></span><s>Send proposal to Priya</s></div>
-          <div class="task"><span class="chk"></span>Call dentist to reschedule<span class="tag">Call</span></div>
-          <div class="task"><span class="chk"></span>Follow up with Alex<span class="tag">Email</span></div>
-        </div>
-        <div class="card"><small>Calendar</small>
-          <div class="task">10:00 · Team sync</div>
-          <div class="task">1:30 · Client review <span class="tag" style="background:rgba(240,20,199,.15);color:var(--magenta)">Conflict</span></div>
-        </div>
-        <div class="card"><small>Coming up</small>
-          <div class="task">🎂 Mom's birthday · Fri</div>
-        </div>
-      </div>
+      <div class="phone glass"><img src="/assets/app-today.webp" width="560" height="1214" alt="Nexdo app Today screen: greeting, Quick Access to Weekly Summary, Moments and Shopping, your day in focus, and your schedule"></div>
       <div class="float glass f1"><em>🎙️</em>"Remind me to pay rent Friday"</div>
       <div class="float glass f2"><em>⚡</em>Follow-up drafted</div>
       <div class="float glass f3"><em>🛒</em>List shared with family</div>
