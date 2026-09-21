@@ -1,9 +1,4 @@
 (function(){
-  var root=document.documentElement,bs=document.querySelectorAll('.mode button');
-  function set(m){if(m==='system')root.removeAttribute('data-theme');else root.setAttribute('data-theme',m);
-    bs.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m))});try{localStorage.setItem('nexdo-mode',m)}catch(e){}}
-  var saved='system';try{saved=localStorage.getItem('nexdo-mode')||'system'}catch(e){}
-  bs.forEach(function(b){b.onclick=function(){set(b.dataset.m)}});set(saved);
 
   var path=location.pathname.replace(/\/+$/,'')||'/';
   document.querySelectorAll('[data-nav] a').forEach(function(a){a.classList.toggle('cur',a.getAttribute('href')===path)});
