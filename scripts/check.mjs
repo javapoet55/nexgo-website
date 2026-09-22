@@ -36,9 +36,10 @@ assert.equal(pages.length,17,'expected 16 pages + 404');assert(existsSync(root+'
 {const v=readFileSync(root+'/shopping-lists/index.html','utf8');
   assert(v.includes('<title>NexDo Shopping Lists | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping Lists | Voice, AI & Smarter Shopping</title>'),'shopping title');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'shopping one h1');
-  for(const t of ['Just say what you need.','Find another option','Replace item','Keep original','weekly','view-only','Explore Voice AI'])assert(v.includes(t),'shopping missing '+t);
+  for(const t of ['Just say what you need.','your way.','Shop with Instacart','Send to Instacart','Watch how it works','Real-time sync','store managers','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
   assert(v.includes('href="/voice-ai"')&&/data-event="shopping_get_started_click"/.test(v),'shopping CTAs');
-  assert(!/instacart|store manager|real-time sync|Send to Instacart|Watch how it works/i.test(v.replace(/<style[\s\S]*?<\/style>/g,'')),'shopping contains an unsupported claim');}
+  assert(v.includes('id="sl-how"'),'shopping how anchor');
+  for(const img of ['sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])assert(v.includes('/assets/'+img),'shopping image '+img);}
 {const v=readFileSync(root+'/important-moments/index.html','utf8');const txt=v.replace(/<style[\s\S]*?<\/style>/g,'');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'moments one h1');
   for(const t of ['Never miss what matters','Warm','Personal','Short','Fun','Email','Messages','Copy','Share','Festivals','Get well soon'])assert(txt.includes(t),'moments missing '+t);

@@ -5,7 +5,7 @@ const src=readFileSync('site/index.html','utf8');
 const pages={
   home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
   'voice-ai':['/voice-ai','NexDo Voice AI Assistant | Turn Conversations Into Action','Talk naturally with NexDo to create tasks, manage your day, ask questions, set reminders, and turn conversations into action.'],
-  'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI-powered alternatives, share your list and reuse your weekly shop — all with NexDo, your AI Action Assistant.'],
+  'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, send your list to Instacart, and share with family — all with NexDo, your AI Action Assistant.'],
   'important-moments':['/important-moments','NexDo Important Moments | Never Miss What Matters','Remember birthdays, anniversaries, festivals and milestones, get AI-drafted wishes, and send them by email, message or share — with NexDo.'],
   'ask-ai':['/ask-ai','NexDo Ask AI | Your Everyday Questions, Real Progress','Ask NexDo about your day by text or voice — get answers from your tasks and calendar, find free time, see what to do next, and take action.'],
   features:['/features','Features — Nexdo','Daily Brief, Tasks + Calendar, real-time voice, action and follow-up, shopping lists, and Important Moments.'],
@@ -60,7 +60,7 @@ for(const key of Object.keys(pages)){
 const nf=`<div class="page" data-page="notfound"><section style="padding-top:60px"><div class="cta glass"><div class="eyebrow">404</div><h1 style="font-size:clamp(34px,5vw,56px)">That page <span class="grad">wandered off.</span></h1><p>The link may be old or mistyped. Everything Nexdo does is one click away.</p><a class="btn primary" href="/">Back to home</a></div></section></div>\n`;
 writeFileSync('dist/404.html',doc('home',nf).replace(/<title>[^<]*<\/title>/,'<title>Page not found — Nexdo</title>').replace(/<link rel="canonical"[^>]*>\n/,'<meta name="robots" content="noindex">\n'));
 copyFileSync('site/app.js','dist/app.js');
-for(const f of ['favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
+for(const f of ['favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 writeFileSync('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.values(pages).map(([p])=>`  <url><loc>${ORIGIN}${p==='/'?'/':p}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built ${Object.keys(pages).length} pages + 404 into dist/`);
