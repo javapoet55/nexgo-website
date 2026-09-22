@@ -18,5 +18,6 @@
   /* analytics hook: no SDK; pushes to window.dataLayer if present and emits nexdo:track */
   function track(name){var d={event:name,path:location.pathname};try{(window.dataLayer=window.dataLayer||[]).push(d)}catch(x){}try{document.dispatchEvent(new CustomEvent('nexdo:track',{detail:d}))}catch(x){}}
   if(path==='/voice-ai')track('voice_ai_page_view');
+  if(path==='/shopping-lists')track('shopping_page_view');
   document.addEventListener('click',function(e){var el=e.target.closest&&e.target.closest('[data-event]');if(el)track(el.getAttribute('data-event'))});
 })();
