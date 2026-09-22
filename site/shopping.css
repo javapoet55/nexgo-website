@@ -1,0 +1,131 @@
+/* Shopping Lists redesign. SVG viewBox windows display the supplied asset pack
+   at its original quality; page text and actions remain semantic HTML. */
+body.shopping-page{background:#fcfdff;color:#08072e;--muted:#555988;--tint-ink:#8642ff;font-family:Arial,Helvetica,sans-serif;line-height:1.4}
+.shopping-page .blobs,.shopping-page>footer{display:none}
+.shopping-page main.wrap{max-width:1200px;padding:0 26px}
+.shopping-page nav{max-width:1200px;position:relative;top:0;margin:0 auto;padding:15px 26px}
+.shopping-page nav .bar{padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;backdrop-filter:none}
+.shopping-page .sl2-nav-logo{width:202px;height:auto}
+.shopping-page .links{gap:32px}
+.shopping-page .links a{font-size:13px;color:#565b90;font-weight:400}
+.shopping-page .btn{border-radius:14px;padding:14px 24px;font-size:17px;font-weight:500;line-height:1.25;white-space:nowrap}
+.shopping-page .primary{background:linear-gradient(105deg,#1555ff,#7730ff 57%,#c000ed);box-shadow:none;color:#fff}
+.shopping-page nav .btn{font-size:15px;padding:13px 20px}
+.shopping-page .eyebrow{font-size:13px;letter-spacing:.145em;font-weight:700;color:#8952ff;margin-bottom:12px}
+.shopping-page h2{font-size:clamp(29px,3.25vw,41px);line-height:1.04;font-weight:750;letter-spacing:-.045em;margin:0 0 12px}
+.shopping-page p{font-size:17px;line-height:1.42;color:#555b8a}
+.sl2-gradient{background:linear-gradient(100deg,#155aff 0%,#8905f7 45%,#d100df);background-clip:text;-webkit-background-clip:text;color:transparent}
+.sl2-asset{display:block;overflow:hidden;height:auto;flex-shrink:0}
+.sl2-hero{display:grid;grid-template-columns:1.05fr 1fr;gap:0;align-items:center;position:relative;isolation:isolate;padding-top:8px}
+.sl2-hero:before{content:"";position:absolute;inset:-90px -26px -10px 15%;z-index:-1;background:radial-gradient(ellipse at 84% 10%,#f3dffc 0%,transparent 55%),radial-gradient(ellipse at 88% 75%,#ddecff 0%,transparent 55%);pointer-events:none}
+.sl2-hero-copy{position:relative;z-index:3;padding:20px 0 110px 3px}
+.sl2-hero h1{font-size:clamp(40px,4.8vw,62px);line-height:1.04;letter-spacing:-.045em;font-weight:750;margin:0 0 20px}
+.sl2-hero h1 .sl2-gradient{background-image:linear-gradient(100deg,#8e00f8,#d700e7)}
+.sl2-hero-copy>p{font-size:20px;line-height:1.4;max-width:540px}
+.sl2-actions{display:flex;align-items:center;gap:25px;margin-top:26px;flex-wrap:wrap}
+.sl2-actions .btn{padding:15px 27px}
+.sl2-watch{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:#3520b4;text-decoration:none;font-weight:600;white-space:nowrap}
+.sl2-watch>span{display:grid;place-items:center;width:32px;height:32px;border:1px solid #e6ddff;border-radius:50%;color:#8c12ff;font-size:20px}
+.sl2-hero-scene{position:relative;height:600px;isolation:isolate;margin-right:-26px}
+.sl2-list-phone{position:absolute;width:294px;left:18%;bottom:11px;z-index:2;mix-blend-mode:multiply;transform:rotate(1deg)}
+.sl2-hero-bag{position:absolute;width:225px;bottom:0;right:-5px;mix-blend-mode:multiply;z-index:1}
+.sl2-hero-waves{position:absolute;left:-14%;bottom:0;width:114%;height:88%;border-radius:55% 0 0 0;opacity:.34;z-index:-1}
+.sl2-hero-waves image,.sl2-voice-glow image,.sl2-shop-glow image{pointer-events:none}
+.sl2-callout{position:absolute;display:flex;align-items:center;gap:11px;padding:12px 16px;border:1px solid #f2ecff;border-radius:25px;background:#fffffff2;box-shadow:0 9px 25px #6745ef0d;z-index:4;font-size:14px;font-weight:600;line-height:1.3;color:#20215b}
+.sl2-callout>.sl2-asset{width:47px;mix-blend-mode:multiply;border-radius:16px}
+.sl2-callout-voice{left:0;top:8px;background:#fcf8ff}
+.sl2-callout-shop{right:2px;top:53px;background:#fff3fc}
+.sl2-callout-share{right:14px;top:226px;background:#f6fdff}
+.sl2-callout-ai{right:34px;bottom:99px;background:#fcf8ff}
+.sl2-groceries-note{position:absolute;left:-11%;bottom:18px;width:145px;mix-blend-mode:multiply;z-index:3}
+.sl2-features{display:grid;grid-template-columns:repeat(4,1fr);margin:10px 0 18px;padding:20px 0;border:1px solid #edf0fd;border-radius:16px;background:#ffffffbd;box-shadow:0 7px 25px #687add04}
+.sl2-features article{text-align:center;border-right:1px solid #e9edfc;padding:0 25px}
+.sl2-features article:last-child{border:0}
+.sl2-features .sl2-asset{width:72px;margin:0 auto 6px;border-radius:50%;mix-blend-mode:multiply}
+.sl2-features h3{font-size:17px;letter-spacing:-.035em;margin:2px 0 6px;line-height:1.15}
+.sl2-features p{font-size:16px;line-height:1.35}
+.sl2-two{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;padding:0;margin:20px 0}
+.sl2-create{scroll-margin-top:22px;min-height:470px}
+.sl2-copy p{max-width:530px}
+.sl2-voice-scene{position:relative;height:470px;isolation:isolate}
+.sl2-voice-glow{position:absolute;inset:0 0 auto -25px;width:100%;height:90%;border-radius:48%;opacity:.65;z-index:-1}
+.sl2-groceries{position:absolute;bottom:20px;left:-10px;width:102%;mix-blend-mode:multiply}
+.sl2-voice-phone{position:absolute;bottom:0;width:216px;left:24%;mix-blend-mode:multiply;z-index:2}
+.sl2-say-note{position:absolute;top:83px;left:-4px;width:80px;mix-blend-mode:multiply;z-index:3}
+.sl2-ways{list-style:none;display:grid;gap:15px;margin-top:20px}
+.sl2-ways li{display:flex;align-items:center;gap:19px}
+.sl2-ways .sl2-asset,.sl2-vector{width:57px;height:55px;border-radius:50%;mix-blend-mode:multiply;flex-shrink:0}
+.sl2-ways h3{font-size:17px;line-height:1.2;margin:0 0 3px;font-weight:700;letter-spacing:-.025em}
+.sl2-ways p{font-size:16px}
+.sl2-vector{display:grid;place-items:center;background:#e7f2ff;color:#0871ff}
+.sl2-vector svg{width:31px;height:31px}
+.sl2-shop{margin-top:0;gap:30px;min-height:420px}
+.sl2-shop>.sl2-copy{padding-left:3px}
+.sl2-checks{list-style:none;display:grid;gap:8px;margin:17px 0 20px;font-size:16px;color:#555b8a}
+.sl2-checks li{display:flex;gap:10px;align-items:flex-start}
+.sl2-check{display:inline-grid;place-items:center;width:18px;height:18px;flex-shrink:0;font-size:12px;line-height:1;background:#00bc64;color:#fff;border-radius:50%;margin-top:2px;font-weight:bold}
+.sl2-instacart-scene{position:relative;isolation:isolate;height:425px}
+.sl2-shop-glow{position:absolute;width:110%;height:100%;top:0;left:-10%;opacity:.6;border-radius:42% 40% 48% 45%;z-index:-1}
+.sl2-instacart-bag{position:absolute;right:-7px;bottom:0;width:207px;mix-blend-mode:multiply}
+.sl2-instacart-brand{position:absolute;top:35px;left:9%;width:310px;padding:22px 15px 65px;background:#ffffffdf;border-radius:19px;box-shadow:0 8px 25px #3f64f408}
+.sl2-instacart-brand>div{display:flex;align-items:center;justify-content:center;gap:2px;color:#004c34;font-size:42px;letter-spacing:-.05em}
+.sl2-instacart-brand .sl2-asset{width:45px;mix-blend-mode:multiply}
+.sl2-instacart-brand p{text-align:center;font-size:16px;white-space:nowrap}
+.sl2-order{position:absolute;left:2%;top:172px;width:370px;padding:25px;border-radius:17px;background:#fff;box-shadow:0 15px 32px #6435df15;z-index:2}
+.sl2-order>p{font-size:14px;display:flex;gap:12px;align-items:center;color:#2b285b}
+.sl2-order .sl2-check{width:26px;height:26px;font-size:16px;margin:0}
+.sl2-food{display:flex;align-items:center;justify-content:space-between;font-size:34px;padding:8px 18px 23px}
+.sl2-order>a{display:block;text-align:center;padding:13px;border-radius:12px;background:linear-gradient(100deg,#00b551,#00be64);color:#fff;text-decoration:none;font-size:17px;font-weight:600;transition:filter .2s}
+.sl2-order>a:hover{filter:brightness(.94)}
+.sl2-same-list{position:absolute;right:16px;top:15px;width:123px;mix-blend-mode:multiply}
+.sl2-share{gap:45px;margin:28px 0 26px}
+.sl2-family{position:relative;aspect-ratio:1.55;overflow:hidden;border-radius:34px;isolation:isolate;background:#f5f4f3}
+.sl2-family-photo{position:absolute;width:100%;height:100%;inset:0}
+.sl2-family-photo{aspect-ratio:323/359;height:auto;top:-15%}
+.sl2-family-callout{top:30px;right:13px;font-size:14px;padding:10px 13px;border-radius:22px}
+.sl2-family-callout .sl2-asset{width:43px}
+.sl2-share h2{font-size:clamp(29px,3.05vw,39px)}
+.sl2-share .sl2-checks{font-size:15px;margin-bottom:0;gap:7px}
+.sl2-share .sl2-checks b{color:#30315e}
+.sl2-everyday{display:grid;grid-template-columns:.85fr 1.15fr;gap:38px;align-items:center;padding:0;margin:25px 0 32px}
+.sl2-everyday .eyebrow{font-size:11px;letter-spacing:.08em;margin-bottom:9px}
+.sl2-everyday h2{font-size:29px;margin-bottom:9px;line-height:1.08}
+.sl2-everyday p{font-size:14px;line-height:1.35}
+.sl2-categories{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sl2-categories article{border:1px solid #edf0fd;border-radius:16px;box-shadow:0 8px 25px #6468e908;text-align:center;padding:14px 8px;background:#fff}
+.sl2-categories .sl2-asset{width:60px;margin:0 auto 10px;border-radius:17px}
+.sl2-categories h3{font-size:13px;letter-spacing:-.04em;white-space:nowrap;margin-bottom:6px}
+.sl2-categories p{font-size:13px;line-height:1.3}
+.sl2-final{position:relative;isolation:isolate;padding:32px 28px 40px;margin:0 -26px;background:linear-gradient(120deg,#fff1fb,#eff9ff);overflow:hidden}
+.sl2-final-waves{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.76}
+.sl2-final-waves{object-fit:fill}
+.sl2-final-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center}
+.sl2-final h2{font-size:42px}
+.sl2-final p{font-size:17px;max-width:590px;margin-bottom:13px}
+.sl2-final-art{display:flex;flex-direction:column;align-items:center;gap:25px;padding-left:30px}
+.sl2-final-note{width:275px;mix-blend-mode:multiply;transform:rotate(-5deg)}
+.sl2-final-logo{width:300px;mix-blend-mode:multiply}
+.sl2-footer{padding:24px 3px 35px;font-size:13px;color:#64679b}
+.sl2-footer a{margin:0;color:#64679b;text-decoration:none}
+.sl2-footer-top,.sl2-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:25px}
+.sl2-footer-logo{width:190px}
+.sl2-footer-links{display:flex;gap:32px}
+.sl2-footer-bottom{margin-top:34px}
+.sl2-footer-bottom>div{display:flex;gap:32px}
+@media(min-width:1350px){.sl2-hero-copy{padding-bottom:115px}.sl2-hero-scene{height:610px}}
+@media(max-width:1100px){.shopping-page .links{gap:24px}.shopping-page .sl2-nav-logo{width:180px}.sl2-hero-scene{height:535px}.sl2-list-phone{width:257px;left:15%;bottom:8px}.sl2-hero-bag{width:190px}.sl2-callout{font-size:12px;padding:10px 12px;gap:7px;border-radius:20px}.sl2-callout>.sl2-asset{width:40px}.sl2-callout-share{right:0;top:208px}.sl2-callout-ai{right:17px;bottom:90px}.sl2-groceries-note{width:125px;left:-11%}.sl2-hero-copy>p{font-size:18px}.sl2-hero-copy{padding-bottom:85px}.sl2-actions{gap:16px}.sl2-actions .btn{font-size:16px;padding:14px 22px}.sl2-watch{font-size:13px}.sl2-features article{padding:0 18px}.sl2-features h3{font-size:15px}.sl2-features p{font-size:15px}.sl2-two{gap:35px}.sl2-voice-scene{height:435px}.sl2-voice-phone{width:200px}.sl2-instacart-brand{left:5%;width:260px}.sl2-instacart-brand>div{font-size:36px}.sl2-instacart-brand p{font-size:14px}.sl2-order{width:300px;left:0;padding:20px}.sl2-same-list{right:-3px;width:102px}.sl2-instacart-bag{width:177px}.sl2-everyday{gap:25px;grid-template-columns:.9fr 1.1fr}.sl2-categories{gap:8px}.sl2-categories h3{font-size:11px}.sl2-categories p{font-size:11px}.sl2-everyday h2{font-size:26px}.sl2-family-callout{top:18px}.sl2-footer-links{gap:24px}}
+@media(max-width:900px) and (min-width:701px){.sl2-hero-scene{height:465px}.sl2-list-phone{width:225px;left:11%}.sl2-callout-shop{top:55px;right:-10px}.sl2-callout-share{right:-10px;top:200px}.sl2-callout-ai{right:0;bottom:53px}.sl2-callout{padding:8px;font-size:11px}.sl2-callout>.sl2-asset{width:32px}.sl2-callout-voice{left:-10px;top:0}.sl2-hero-bag{width:155px}.sl2-groceries-note{width:108px}.sl2-hero h1{font-size:40px}.sl2-hero-copy{padding-bottom:60px}.sl2-hero-copy>p{font-size:17px}.sl2-voice-scene{height:410px}.sl2-voice-phone{width:183px;left:23%}.sl2-say-note{width:62px;left:-10px}.sl2-instacart-brand{width:225px;left:0}.sl2-order{width:255px;padding:18px}.sl2-order>p{font-size:12px}.sl2-food{font-size:28px;padding:8px 4px 20px}.sl2-same-list{width:85px;right:0}.sl2-instacart-bag{width:145px}.sl2-family-callout{font-size:10px;right:8px;top:13px}.sl2-family-callout .sl2-asset{width:30px}.sl2-everyday{grid-template-columns:1fr 1.2fr}.sl2-categories{grid-template-columns:repeat(2,1fr)}.sl2-final h2{font-size:35px}.sl2-final-art{padding:0}.sl2-final-logo{width:240px}.sl2-final-note{width:220px}}
+@media(max-width:700px){.shopping-page main.wrap{padding:0 20px}.shopping-page nav{padding:14px 20px}.shopping-page .sl2-nav-logo{width:150px}.shopping-page nav .btn{font-size:13px;padding:11px 13px}.shopping-page .navr{gap:7px}.shopping-page h2{font-size:34px}.shopping-page p{font-size:17px}.shopping-page .eyebrow{font-size:12px}.sl2-hero{grid-template-columns:1fr;padding-top:16px}.sl2-hero:before{inset:-80px -20px 0 0}.sl2-hero-copy{padding:8px 0 18px}.sl2-hero h1{font-size:clamp(36px,6.8vw,48px);line-height:1.06}.sl2-hero-copy>p{font-size:18px;max-width:550px}.sl2-actions{gap:15px 22px;margin-top:22px}.sl2-actions .btn{font-size:16px}.sl2-hero-scene{height:auto;aspect-ratio:1/1.18;margin:0 auto;max-width:490px;width:100%}.sl2-list-phone{width:54%;left:23%;bottom:0}.sl2-hero-bag{width:38%;right:-10px}.sl2-callout{font-size:clamp(10px,2.8vw,13px);padding:9px 10px;border-radius:18px}.sl2-callout>.sl2-asset{width:34px}.sl2-callout-voice{left:2%;top:4%}.sl2-callout-shop{right:-6px;top:14%}.sl2-callout-share{right:-10px;top:47%}.sl2-callout-ai{right:-4px;bottom:15%}.sl2-groceries-note{left:-3%;bottom:4%;width:26%}.sl2-hero-waves{left:-20px;width:calc(100% + 40px);height:85%}.sl2-features{grid-template-columns:repeat(2,1fr);gap:25px 0;padding:24px 0;margin-top:20px}.sl2-features article{padding:0 17px}.sl2-features article:nth-child(2){border:0}.sl2-features h3{font-size:16px}.sl2-features p{font-size:15px}.sl2-features .sl2-asset{width:62px}.sl2-two{grid-template-columns:1fr;gap:25px;margin:30px 0}.sl2-create{min-height:0}.sl2-voice-scene{height:auto;aspect-ratio:1.08;max-width:520px;width:100%;margin:auto}.sl2-voice-phone{width:42%;left:29%}.sl2-groceries{width:100%;left:0;bottom:4%}.sl2-say-note{width:16%;left:4%;top:16%}.sl2-voice-glow{left:-15px;width:calc(100% + 30px)}.sl2-ways{gap:17px}.sl2-ways li{gap:16px}.sl2-ways p{font-size:16px}.sl2-ways .sl2-asset,.sl2-vector{width:53px;height:51px}.sl2-shop{gap:10px}.sl2-shop>.sl2-copy{padding:0}.sl2-instacart-scene{height:360px;max-width:470px;width:100%;margin:auto}.sl2-instacart-brand{width:65%;top:30px;left:5%;padding-top:20px}.sl2-instacart-brand>div{font-size:32px}.sl2-instacart-brand p{font-size:12px}.sl2-instacart-brand .sl2-asset{width:36px}.sl2-order{left:0;top:152px;width:76%;padding:18px}.sl2-order>p{font-size:12px}.sl2-order .sl2-check{width:23px;height:23px}.sl2-food{font-size:27px;padding:10px 4px 20px}.sl2-order>a{font-size:15px;padding:12px}.sl2-same-list{width:24%;right:-4px;top:20px}.sl2-instacart-bag{width:37%;right:-8px}.sl2-family{aspect-ratio:1.4;border-radius:26px}.sl2-family-callout{top:18px;right:12px;font-size:12px}.sl2-family-callout .sl2-asset{width:36px}.sl2-share h2{font-size:32px}.sl2-share .sl2-checks{font-size:15px;gap:10px}.sl2-everyday{grid-template-columns:1fr;gap:22px;margin:32px 0}.sl2-everyday h2{font-size:29px}.sl2-everyday p{font-size:16px}.sl2-categories{grid-template-columns:repeat(2,1fr);gap:12px}.sl2-categories article{padding:18px 10px}.sl2-categories h3{font-size:14px}.sl2-categories p{font-size:14px}.sl2-final{margin:0 -20px;padding:30px 20px}.sl2-final-inner{grid-template-columns:1fr;gap:32px}.sl2-final h2{font-size:36px}.sl2-final p{font-size:17px}.sl2-final-art{padding:0;gap:15px}.sl2-final-logo{width:260px}.sl2-final-note{width:235px}.sl2-footer-top{align-items:flex-start;flex-direction:column;gap:22px}.sl2-footer-logo{width:170px}.sl2-footer-links{gap:16px 23px;flex-wrap:wrap}.sl2-footer-bottom{flex-direction:column;align-items:flex-start;gap:18px;margin-top:25px;font-size:12px}.sl2-footer{padding:25px 0 30px}}
+@media(prefers-reduced-motion:reduce){.shopping-page .btn,.sl2-order>a{transition:none}html:has(.shopping-page){scroll-behavior:auto}}
+/* Keep the phone screens opaque when layering them over the groceries. */
+.sl2-list-phone,.sl2-voice-phone{mix-blend-mode:normal;clip-path:inset(1% 2% 1.5% 2% round 14% / 7%)}
+/* Preserve the family's faces when fitting the portrait asset into the card. */
+.sl2-family{aspect-ratio:1.18}
+.sl2-family-photo{top:0}
+.sl2-nav-logo,.sl2-footer-logo{mix-blend-mode:multiply}
+.sl2-groceries-note,.sl2-say-note,.sl2-same-list,.sl2-final-note{filter:brightness(1.12) contrast(1.1)}
+.sl2-final-waves{opacity:.45}
+.sl2-voice-glow,.sl2-shop-glow{opacity:.4}
+/* Bound the tall grocery composition to its scene at wide breakpoints. */
+.sl2-groceries{width:100%;height:85%;bottom:0;left:0}
+.sl2-groceries{width:auto;max-width:100%;left:50%;transform:translateX(-50%)}
