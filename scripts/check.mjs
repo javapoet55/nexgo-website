@@ -42,8 +42,12 @@ assert.equal(pages.length,17,'expected 16 pages + 404');assert(existsSync(root+'
   for(const img of ['sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])assert(v.includes('/assets/'+img),'shopping image '+img);}
 {const v=readFileSync(root+'/important-moments/index.html','utf8');const txt=v.replace(/<style[\s\S]*?<\/style>/g,'');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'moments one h1');
-  for(const t of ['Never miss what matters','Warm','Personal','Short','Fun','Email','Messages','Copy','Share','Festivals','Get well soon'])assert(txt.includes(t),'moments missing '+t);
-  assert(!/gift ideas|Spa Gift Card|Invite (family|others)|collaborat|Keep everyone in the loop|Sync with your calendar/i.test(txt),'moments contains an unsupported claim');}
+  for(const t of ['Never miss','what matters','Share &amp; Collaborate','Set Reminders','Gift Ideas for Mom','Spa Gift Card','starts with remembering.'])assert(txt.includes(t),'moments missing '+t);
+  assert(v.includes('class="moments-page"')&&v.includes('href="/moments.css"'),'moments scoped styles');
+  assert(v.includes('src="/assets/im-design.png"'),'moments reference artwork');
+  for(const id of ['im-how','im-suggestions'])assert(v.includes('id="'+id+'"'),'moments missing '+id);
+  assert(v.includes('data-event="moments_get_started_click"'),'moments signup CTA');}
+
 {const v=readFileSync(root+'/ask-ai/index.html','utf8');const txt=v.replace(/<style[\s\S]*?<\/style>/g,'');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'ask-ai one h1');
   for(const t of ['Your everyday questions.','Try asking','Find time for a workout this week','approve'])assert(txt.includes(t),'ask-ai missing '+t);
