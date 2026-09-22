@@ -12,7 +12,7 @@ const src=readFileSync('site/index.html','utf8');
 const pages={
   home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
   'voice-ai':['/voice-ai','NexDo Voice AI Assistant | Turn Conversations Into Action','Talk naturally with NexDo to create tasks, manage your day, ask questions, set reminders, and turn conversations into action.'],
-  'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, send your list to Instacart, and share with family — all with NexDo, your AI Action Assistant.'],
+  'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, and share with family — all with NexDo, your AI Action Assistant.'],
   'important-moments':['/important-moments','NexDo Important Moments | Never Miss What Matters','Remember birthdays, anniversaries and milestones. Plan ahead, get thoughtful AI suggestions, and celebrate together with NexDo Important Moments.'],
   'ask-ai':['/ask-ai','NexDo Ask AI | Your Everyday Questions, Real Progress','Ask NexDo about your day by text or voice — get answers from your tasks and calendar, find free time, see what to do next, and take action.'],
   features:['/features','Features — Nexdo','Daily Brief, Tasks + Calendar, real-time voice, action and follow-up, shopping lists, and Important Moments.'],

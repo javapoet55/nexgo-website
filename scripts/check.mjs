@@ -17,6 +17,8 @@ for(const file of pages){
   assert(html.includes('href="/shopping-lists"'),file+' missing Products > Shopping Lists nav link');
   assert(html.includes('href="/important-moments"'),file+' missing Products > Important Moments nav link');
   assert(html.includes('href="/ask-ai"'),file+' missing Products > Ask AI nav link');
+  const visible=html.replace(/<style[\s\S]*?<\/style>/g,'');
+  assert(!/Instacart|store managers|Start your free trial|Cancel anytime/i.test(visible),file+' contains outdated marketing');
   const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,file+' duplicate ids');
   for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){
     const link=m[1];if(/^(https?:|mailto:|data:)/.test(link))continue;
@@ -39,7 +41,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
 {const v=readFileSync(root+'/shopping-lists/index.html','utf8');
   assert(v.includes('<title>NexDo Shopping Lists | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping Lists | Voice, AI & Smarter Shopping</title>'),'shopping title');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'shopping one h1');
-  for(const t of ['Just say what you need.','your way.','Shop with Instacart','Send to Instacart','Watch how it works','Real-time sync','store managers','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
+  for(const t of ['Just say what you need.','your way.','Watch how it works','Real-time sync','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
   assert(v.includes('href="/voice-ai"')&&/data-event="shopping_get_started_click"/.test(v),'shopping CTAs');
   assert(v.includes('id="sl-how"'),'shopping how anchor');
   assert(v.includes('/assets/sl2-assets.png'),'shopping supplied asset pack');

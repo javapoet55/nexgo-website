@@ -127,3 +127,6 @@ body.shopping-page>nav{font-family:Inter,system-ui,sans-serif;line-height:1.55;-
 
 /* Consistent calm backgrounds and uncluttered phone previews. */
 .sl2-hero:before,.sl2-hero-waves,.sl2-voice-glow,.sl2-shop-glow,.sl2-final-waves,.sl2-hero-scene .sl2-callout{display:none}.sl2-final{background:#f4f5fc}.sl2-list-phone,.sl2-voice-phone{transform:rotate(7deg);transform-origin:center}
+
+/* Three core shopping capabilities; no external ordering promotion. */
+@media(min-width:701px){.sl2-features{grid-template-columns:repeat(3,1fr)}}
