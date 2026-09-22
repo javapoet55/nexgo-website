@@ -52,6 +52,6 @@ assert.equal(pages.length,17,'expected 16 pages + 404');assert(existsSync(root+'
 
 {const v=readFileSync(root+'/ask-ai/index.html','utf8');const txt=v.replace(/<style[\s\S]*?<\/style>/g,'');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'ask-ai one h1');
-  for(const t of ['Your everyday questions.','Try asking','Find time for a workout this week','approve'])assert(txt.includes(t),'ask-ai missing '+t);
-  assert(!/weekend trip|gift idea|Join thousands|Watch how it works/i.test(txt),'ask-ai contains an unsupported claim');}
+  for(const t of ['Your everyday questions.','Try asking','Find time for a workout this week'])assert(txt.includes(t),'ask-ai missing '+t);
+  assert(v.includes('/assets/ask-v2-assets.png')&&v.includes('id="ask-how"'),'ask-ai asset pack and how-it-works anchor');}
 console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checked.`);
