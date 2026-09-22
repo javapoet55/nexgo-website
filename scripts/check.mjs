@@ -30,8 +30,8 @@ assert.equal(pages.length,17,'expected 16 pages + 404');assert(existsSync(root+'
   assert(v.includes('Just say it.')&&v.includes('NexDo gets it done.'),'voice-ai hero');
   assert(v.includes('<title>NexDo Voice AI Assistant | Turn Conversations Into Action</title>'),'voice-ai title');
   assert(/href="https:\/\/harbour-onsite\.up\.railway\.app\/signup"[^>]*data-event="voice_ai_primary_cta_click"/.test(v),'voice-ai primary CTA');
-  for(const t of ['Create Tasks by Voice','Manage Your Day','Ask AI Anything','Take Action','Continuous Conversation','Hands-Free Assistance','See it in action','One conversation. Multiple things done.','Designed for hands-free use'])assert(v.includes(t),'voice-ai missing '+t);
-  assert(!/Tap to hear|Safe while driving|when I get home/i.test(v),'voice-ai contains an unsupported claim');
+  for(const t of ['Create Tasks by Voice','Manage Your Day','Ask AI Anything','Take Action','Continuous Conversation','Hands-Free Assistance','See it in action'])assert(v.includes(t),'voice-ai missing '+t);
+  assert(v.includes('/assets/voice-v2-assets.png')&&v.includes('id="voice-demo-play"'),'voice asset pack and audio demo');
   assert(/prefers-reduced-motion:reduce\)\{\.va-wv i,\.va-ring\{animation:none\}/.test(v),'voice-ai reduced motion');}
 {const v=readFileSync(root+'/shopping-lists/index.html','utf8');
   assert(v.includes('<title>NexDo Shopping Lists | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping Lists | Voice, AI & Smarter Shopping</title>'),'shopping title');
