@@ -73,7 +73,7 @@ writeFileSync('dist/404.html',doc('home',nf).replace(/<title>[^<]*<\/title>/,'<t
 copyFileSync('site/app.js','dist/app.js');
 copyFileSync('site/moments.css','dist/'+momentsCssFile);
 copyFileSync('site/shopping.css','dist/'+shoppingCssFile);
-for(const f of ['hero-assets.png','moments-assets.png','sl2-assets.png','favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
+for(const f of ['hero-v3-assets.png','moments-assets.png','sl2-assets.png','favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 writeFileSync('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.values(pages).map(([p])=>`  <url><loc>${ORIGIN}${p==='/'?'/':p}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built ${Object.keys(pages).length} pages + 404 into dist/`);
