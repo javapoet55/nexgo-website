@@ -54,16 +54,7 @@ const legalCss=`<style>.legaldoc{max-width:860px}.legaldoc .toc{padding:16px 20p
 function doc(key,body,status){
   const [path,title,desc]=pages[key]||pages.home;
   const url=ORIGIN+(path==='/'?'/':path);
-  let pagePrefix=prefix;
-  if(key==='shopping-lists'||key==='voice-ai'||key==='ask-ai'){
-    const navStart=pagePrefix.indexOf('<div class="links" data-nav>');
-    const navEnd=pagePrefix.indexOf('<div class="navr">',navStart);
-    pagePrefix=pagePrefix.slice(0,navStart)+'<div class="links" data-nav><a href="/">Home</a><a href="/features">Features</a><a href="/voice-ai">Voice AI</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/help">Help</a></div>\n  '+pagePrefix.slice(navEnd);
-    pagePrefix=pagePrefix.replace('<img src="/assets/nexdo-logo-nav.webp" width="413" height="96" alt="NexDo">','<svg class="sl2-asset sl2-nav-logo" viewBox="20 5 266 67" aria-hidden="true" focusable="false"><image href="/assets/sl2-assets.png" width="1536" height="1024"/></svg>');
-  }
-  if(key==='ask-ai')pagePrefix=pagePrefix.replace(/<svg class="sl2-asset sl2-nav-logo"[\s\S]*?<\/svg>/,'<svg class="a2-asset a2-nav-logo" viewBox="520 939 222 51" aria-hidden="true" focusable="false"><image href="/assets/ask-v2-assets.png" width="1536" height="1024"/></svg>');
-  if(key==='voice-ai')pagePrefix=pagePrefix.replace(/<svg class="sl2-asset sl2-nav-logo"[\s\S]*?<\/svg>/,'<svg class="v2-asset v2-nav-logo" viewBox="278 947 207 51" aria-hidden="true" focusable="false"><image href="/assets/voice-v2-assets.png" width="1536" height="1024"/></svg>');
-  if(key==='important-moments')pagePrefix=pagePrefix.replace('<img src="/assets/nexdo-logo-nav.webp" width="413" height="96" alt="NexDo">','<svg class="mm-asset mm-pack-nav-logo" viewBox="1190 741 321 72" aria-hidden="true" focusable="false"><image href="/assets/moments-assets.png" width="1536" height="1024"/></svg>');
+  const pagePrefix=prefix;
   return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc)}">\n<link rel="canonical" href="${url}">\n<meta property="og:title" content="${esc(title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta property="og:url" content="${url}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#3D29F0">\n<link rel="icon" type="image/png" href="/assets/favicon.png">\n<link rel="apple-touch-icon" href="/assets/nexdo-mark.png">\n${key==='ask-ai'?'<link rel="stylesheet" href="/'+askCssFile+'">':key==='voice-ai'?'<link rel="stylesheet" href="/'+voiceCssFile+'">':key==='important-moments'?'<link rel="stylesheet" href="/'+momentsCssFile+'">':key==='shopping-lists'?'<link rel="stylesheet" href="/'+shoppingCssFile+'">':''}\n<script src="/app.js" defer></script>${key==='voice-ai'?'<script src="/'+voiceJsFile+'" defer></script>':''}\n</head>\n<body${key==='ask-ai'?' class="ask-page"':key==='voice-ai'?' class="voice-page"':key==='important-moments'?' class="moments-page"':key==='shopping-lists'?' class="shopping-page"':''}>\n${pagePrefix}${body.replace(/<div class="page" data-page="([a-z-]+)">/,'<div class="page on" data-page="$1">')}${suffix}\n</body>\n</html>\n`;
 }
 rmSync('dist',{recursive:true,force:true});mkdirSync('dist/assets',{recursive:true});
