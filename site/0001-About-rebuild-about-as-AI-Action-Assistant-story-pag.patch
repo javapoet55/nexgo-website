@@ -1,0 +1,430 @@
+From 6da928ddf69ac9c45af124b247221319f531bace Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.com>
+Date: Tue, 22 Sep 2026 01:59:39 +0000
+Subject: [PATCH] =?UTF-8?q?About:=20rebuild=20/about=20as=20AI=20Action=20?=
+ =?UTF-8?q?Assistant=20story=20page;=20add=20About=20to=20desktop=20nav;?=
+ =?UTF-8?q?=20About=20SEO/OG=20metadata;=20tighten=20nav=20=E2=89=A4360px?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md         |   2 +-
+ scripts/build.mjs |   6 +-
+ site/index.html   | 333 +++++++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 320 insertions(+), 21 deletions(-)
+
+diff --git a/README.md b/README.md
+index 5f667b8..0ca2293 100644
+--- a/README.md
++++ b/README.md
+@@ -27,4 +27,4 @@ Old URLs redirect (301): `/how-it-works` → `/features`, `/features/ai-assistan
+ 
+ - Pricing (plans, prices, trial, discounts, feature comparison, FAQ) mirrors `src/components/pricing.tsx` in the Harbour app repo. Update both together.
+ - Brand colors: Indigo `#3D29F0`, Blue `#0594F5`, Magenta `#F014C7`, Purple `#8514F5`, Deep navy `#080F2E`, Muted slate `#575C80`.
+-- Team cards on `/about` and the mailboxes on `/contact` are placeholders to confirm before launch.
++- `/about` uses illustrated placeholder visuals (hero, mission, team) — swap the `<figure class="ab-visual…">` blocks for real photography when available. It states no user counts, ratings, testimonials, or team names. The mailboxes on `/contact` are placeholders to confirm before launch.
+diff --git a/scripts/build.mjs b/scripts/build.mjs
+index 472cc36..3753c6f 100644
+--- a/scripts/build.mjs
++++ b/scripts/build.mjs
+@@ -9,7 +9,7 @@ const pages={
+   'why-nexdo':['/why-nexdo','Why Nexdo','Planning tools plan. Nexdo acts: call, text, or email straight from a task, and talk to it in real time.'],
+   pricing:['/pricing','Pricing — Nexdo','Get 1 year of NexDo Pro or Max free when you sign up by November 30th. Compare plans and features.'],
+   help:['/help','Help center — Nexdo','Answers about getting started, the Daily Brief, voice, follow-ups, lists, and your account.'],
+-  about:['/about','About & team — Nexdo','We are building the assistant that finishes the job.'],
++  about:['/about','About NexDo | Building a Smarter Way to Get Things Done',"Learn why we're building NexDo, the AI Action Assistant designed to help you plan, remember, prioritize, and turn everyday intentions into action.",'About NexDo — Your AI Action Assistant'],
+   trust:['/trust','Trust & privacy — Nexdo','How Nexdo treats your tasks, calendar, and conversations, in plain language.'],
+   contact:['/contact','Contact — Nexdo','Support, feedback, press, and partnerships.'],
+   start:['/start','Get started — Nexdo','Sign in on the web and get your first Daily Brief in under a minute.'],
+@@ -42,9 +42,9 @@ starts.forEach((m,i)=>{chunk[m[1]]=html.slice(m.index,i+1<starts.length?starts[i
+ chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
+ const legalCss=`<style>.legaldoc{max-width:860px}.legaldoc .toc{padding:16px 20px;border-radius:18px;background:var(--glass);border:1px solid var(--glass-b);margin-bottom:26px}.legaldoc .toc summary{cursor:pointer;font-weight:700}.legaldoc .toc ol{padding-left:22px;margin-top:10px}.legaldoc .toc a,.legaldoc a{color:var(--tint-ink)}.legaldoc section{padding:0;margin:0 0 30px}.legaldoc h2{font-size:24px;margin:0 0 8px;letter-spacing:-.02em}.legaldoc p,.legaldoc li{margin:0 0 10px}.legaldoc ul,.legaldoc ol{margin:0 0 12px;padding-left:22px}.legaldoc h3{font-size:19px;margin:18px 0 6px}.legaldoc .plus,.legaldoc .glow{display:none}.legaldoc .callout,.legaldoc .contact-card{padding:16px 20px;border-radius:18px;background:var(--tint);margin:14px 0}.legaldoc dl dt{font-weight:700;color:var(--ink)}.legaldoc dl dd{color:var(--muted);margin:0 0 10px}.legaldoc .n{color:var(--tint-ink);font-weight:800;margin-right:6px}</style>`;
+ function doc(key,body,status){
+-  const [path,title,desc]=pages[key]||pages.home;
++  const [path,title,desc,og]=pages[key]||pages.home;
+   const url=ORIGIN+(path==='/'?'/':path);
+-  return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc)}">\n<link rel="canonical" href="${url}">\n<meta property="og:title" content="${esc(title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta property="og:url" content="${url}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#3D29F0">\n<link rel="icon" type="image/png" href="/assets/favicon.png">\n<link rel="apple-touch-icon" href="/assets/nexdo-mark.png">\n<script src="/app.js" defer></script>\n</head>\n<body>\n${prefix}${body.replace(/<div class="page" data-page="([a-z-]+)">/,'<div class="page on" data-page="$1">')}${suffix}\n</body>\n</html>\n`;
++  return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc)}">\n<link rel="canonical" href="${url}">\n<meta property="og:title" content="${esc(og||title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta property="og:url" content="${url}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#3D29F0">\n<link rel="icon" type="image/png" href="/assets/favicon.png">\n<link rel="apple-touch-icon" href="/assets/nexdo-mark.png">\n<script src="/app.js" defer></script>\n</head>\n<body>\n${prefix}${body.replace(/<div class="page" data-page="([a-z-]+)">/,'<div class="page on" data-page="$1">')}${suffix}\n</body>\n</html>\n`;
+ }
+ rmSync('dist',{recursive:true,force:true});mkdirSync('dist/assets',{recursive:true});
+ for(const key of Object.keys(pages)){
+diff --git a/site/index.html b/site/index.html
+index bd68bd3..94e8d35 100644
+--- a/site/index.html
++++ b/site/index.html
+@@ -121,6 +121,7 @@ nav{top:calc(12px + env(safe-area-inset-top,0px))}
+ .menu a:hover,.menu a.cur{background:var(--tint)}
+ .menu.open{display:block}
+ @media (max-width:900px){.burger{display:inline-block}}
++@media (max-width:360px){nav .bar{padding:8px 8px 8px 10px;gap:6px}nav .logo img{height:28px;width:auto}nav .btn{padding:10px 12px;font-size:13px;white-space:nowrap}.burger{padding:6px 4px}}
+ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:12px}
+ .phead{padding:70px 0 20px;max-width:760px}
+ .phead .lead{max-width:640px;margin-top:14px}
+@@ -503,13 +504,96 @@ footer .base a{margin:0 0 0 20px}
+ @media (max-width:1320px){.hx-feats{gap:10px 16px}.p-ask{top:700px}.hx-art{height:820px}.hx-phone-wrap{transform:translate(-62%,-50%) perspective(1600px) rotateY(-16deg) rotateX(3deg) rotateZ(3deg) scale(.9)}.hx-pill b{font-size:15px}.hx-pi{width:44px;height:44px}}
+ @media (max-width:1060px){.hx{grid-template-columns:1fr;text-align:left}.hx-art{height:800px;max-width:600px;width:100%;margin:0 auto}.hx-phone-wrap{transform:translate(-50%,-50%) perspective(1600px) rotateY(-12deg) rotateZ(2deg)}.p-sched,.p-voice{left:0}.p-call,.p-shop,.p-gift,.p-ask{right:0}}
+ @media (max-width:640px){.hx{padding-top:30px}.hx-h1 span{white-space:normal}.hx-feats{grid-template-columns:repeat(3,1fr);gap:18px 10px}.hx-logo{height:52px}.hx-feats li{min-width:0}.hx-ft{width:68px;height:62px;border-radius:16px}.hx-ft svg{width:32px;height:32px}.hx-feats b{font-size:15px}.hx-feats span:not(.hx-ft){font-size:13px}.hx-btn{font-size:18px;padding:15px 26px}.hx-stores{gap:14px}.hx-store{height:50px;padding:0 14px 0 12px}.hx-store span{font-size:19px}.hx-hand{display:none}.hx-art{height:700px}.hx-phone-wrap{transform:translate(-50%,-50%) scale(.78) rotateZ(2deg)}.hx-pill{padding:10px 14px 10px 10px;gap:10px;border-radius:16px}.hx-pill b{font-size:13px}.hx-pi{width:36px;height:36px}.hx-pi svg{width:20px;height:20px}.p-sched{left:0;top:30px}.p-call{right:0;top:120px}.p-voice{left:0;top:380px}.p-shop{right:0;top:330px}.p-gift{right:0;top:500px}.p-ask{left:0;right:auto;top:600px}}
++
++/* ---------- About page ---------- */
++.ab-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:70px 0 30px}
++.ab-h1{font-size:clamp(36px,4.7vw,58px);margin:14px 0 18px}
++.ab-hero-copy .lead{max-width:540px;margin-bottom:12px}
++.ab-arrow{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
++.ab-hero-art{position:relative;padding:40px 0 30px}
++.ab-visual{margin:0;border-radius:32px;overflow:hidden;background:var(--glass);border:1px solid var(--glass-b);box-shadow:var(--shadow)}
++.ab-visual svg{display:block;width:100%;height:auto}
++.ab-visual-hero{max-width:520px;margin-left:auto}
++.ab-float{position:absolute;right:-14px;bottom:0;padding:16px 18px;border-radius:20px;display:grid;gap:12px;font-size:13.5px;font-weight:600;animation:bob 6s ease-in-out infinite;max-width:260px}
++.ab-float div{display:flex;align-items:center;gap:10px}
++.ab-fi,.ab-tile{flex:none;display:grid;place-items:center;border-radius:10px;background:var(--t);color:var(--i)}
++.ab-fi{width:30px;height:30px}.ab-fi svg{width:17px;height:17px}
++.ab-hand{font:600 21px/1.2 "Bradley Hand","Segoe Print","Comic Sans MS",cursive;color:#2E4BC8;display:flex;gap:8px;align-items:flex-start}
++.ab-hand svg{width:44px;height:28px;flex:none}
++.ab-hand-hero{position:absolute;top:0;right:8px;transform:rotate(-6deg)}
++.ab-hand-hero svg{margin-top:26px}
++.ab-sec{padding:60px 0}
++.ab-sec-tight{padding:10px 0 40px}
++.ab-two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
++.ab-two.ab-top{align-items:start}
++.ab-p{color:var(--muted);font-size:17px;margin-bottom:14px;max-width:560px}
++.ab-strong{color:var(--ink);font-weight:600}
++.ab-intro{padding-top:34px}
++.ab-art{position:relative}
++.ab-hand-mission{position:absolute;top:26px;left:26px;color:#fff;font-size:24px;transform:rotate(-5deg);text-shadow:0 2px 12px rgba(8,15,46,.35)}
++.ab-values,.ab-outcomes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:34px}
++.ab-outcomes{grid-template-columns:1fr 1fr;margin-top:0}
++.ab-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:22px;padding:26px;box-shadow:var(--shadow)}
++.ab-card h3{font-size:18px;letter-spacing:-.01em;margin-bottom:8px}
++.ab-card p{color:var(--muted);font-size:15px}
++.ab-tile{width:54px;height:54px;border-radius:16px;margin-bottom:20px}.ab-tile svg{width:26px;height:26px}
++.ab-flow{list-style:none;display:grid;gap:10px;counter-reset:f;position:relative}
++.ab-flow li{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center;padding:14px 18px;border-radius:18px;background:var(--glass);border:1px solid var(--glass-b);box-shadow:var(--shadow);position:relative}
++.ab-flow li:before{counter-increment:f;content:counter(f);grid-row:span 2;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--purple) 55%,var(--magenta))}
++.ab-flow li:not(:last-child):after{content:"";position:absolute;left:35px;bottom:-11px;width:2px;height:12px;background:var(--indigo);opacity:.35}
++.ab-flow b{font-size:16px}.ab-flow span{color:var(--muted);font-size:14px}
++.ab-compare{padding:52px 48px;text-align:center}
++.ab-compare-head h2{margin-bottom:34px}
++.ab-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;text-align:left}
++.ab-col{padding:28px;border-radius:22px;border:1px solid var(--line)}
++.ab-col h3{font-size:18px;margin-bottom:14px}
++.ab-col-us{background:var(--tint);border-color:transparent}
++.ab-col-us h3{color:var(--tint-ink)}
++.ab-list{list-style:none;display:grid;gap:10px}
++.ab-list li{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:15.5px}
++.ab-list li b{color:var(--ink)}
++.ab-list-plain li:before{content:"–";flex:none;font-weight:700}
++.ab-list-check li:before{content:"✓";flex:none;color:var(--tint-ink);font-weight:800}
++.ab-close{margin-top:34px;font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-.03em}
++.ab-talk{padding:28px}
++.ab-team .ab-art{order:0}
++.ab-bubble{position:absolute;top:-18px;right:-8px;padding:16px 20px;border-radius:22px;border-bottom-left-radius:6px;background:#fff;color:#2E4BC8;font:600 20px/1.2 "Bradley Hand","Segoe Print","Comic Sans MS",cursive;box-shadow:var(--shadow);transform:rotate(3deg)}
++.ab-strip{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
++.ab-strip li{padding:22px 24px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-b);text-align:center}
++.ab-strip b{display:block;font-size:17px;letter-spacing:-.01em;background:linear-gradient(120deg,var(--a1),var(--a3) 50%,var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
++.ab-strip span{display:block;color:var(--muted);font-size:14px;margin-top:6px}
++.ab-principles{padding-top:34px}.ab-principles li{display:block}.ab-principles li:before{margin-right:8px}.ab-join h2{font-size:clamp(28px,3.4vw,40px)}
++.ab-join{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;padding:60px 56px;border-radius:32px;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(61,41,240,.10),rgba(133,20,245,.10) 50%,rgba(240,20,199,.12));border:1px solid var(--glass-b)}
++.ab-join:before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(5,148,245,.28),transparent 70%);pointer-events:none}
++.ab-join-copy{position:relative}
++.ab-join-art{position:relative;text-align:center}
++.ab-join-art img{width:min(100%,360px);height:auto}
++.ab-hand-join{justify-content:center;margin-bottom:24px;transform:rotate(-6deg)}
++.ab-hand-join svg{margin-top:12px}
++@media (prefers-reduced-motion:reduce){.ab-float{animation:none}}
++@media (max-width:1000px){.ab-values,.ab-strip{grid-template-columns:1fr 1fr}}
++@media (max-width:900px){
++  .ab-hero,.ab-two,.ab-join,.ab-cols{grid-template-columns:1fr}
++  .ab-hero{padding-top:40px;gap:20px}.ab-hero-art{padding:44px 0 34px}.ab-hero .lead{margin:0 0 12px}.ab-hero .ctas{justify-content:flex-start}
++  .ab-visual-hero{margin:0 auto}.ab-float{right:0;bottom:8px}
++  .ab-team .ab-art{order:2}
++  .ab-intro,.ab-principles{padding-top:0}
++  .ab-join{padding:40px 24px}.ab-compare{padding:36px 22px}
++}
++@media (max-width:560px){
++  .ab-values,.ab-strip,.ab-outcomes{grid-template-columns:1fr}
++  .ab-hand-hero{font-size:18px;right:0}.ab-float{position:static;margin:16px auto 0;max-width:100%}
++  .ab-bubble{position:static;display:inline-block;margin-top:14px;transform:none}
++  .ab-hand-mission{font-size:20px;top:16px;left:16px}
++  .ab-join .ctas .btn{width:100%;justify-content:center}
++}
+ </style>
+ 
+ <div class="blobs"><i></i><i></i><i></i><i></i></div>
+ 
+ <nav><div class="bar glass">
+   <a class="logo" href="#/home" aria-label="NexDo home"><img src="/assets/nexdo-logo-nav.webp" width="413" height="96" alt="NexDo"></a>
+-  <div class="links" data-nav><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a></div>
++  <div class="links" data-nav><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/about">About</a><a href="#/help">Help</a></div>
+   <div class="navr">
+         <a class="btn primary" href="#/start">Get started</a>
+     <button class="burger" aria-label="Open menu" aria-expanded="false" id="burger">☰</button>
+@@ -1207,26 +1291,241 @@ footer .base a{margin:0 0 0 20px}
+ 
+ <!-- ================= ABOUT / TEAM ================= -->
+ <div class="page" data-page="about">
+-  <header class="phead">
+-    <div class="eyebrow">About Nexdo</div>
+-    <h1 style="font-size:clamp(34px,5vw,56px)">We're building the assistant <span class="grad">that finishes the job.</span></h1>
+-    <p class="lead">Nexdo started with a simple frustration: every productivity app made a beautiful plan, and then left the actual doing to us. We wanted something that would say "here's your day," and then help make the call.</p>
++  <header class="ab-hero">
++    <div class="ab-hero-copy">
++      <div class="eyebrow">About NexDo</div>
++      <h1 class="ab-h1">A simpler, smarter<br>way to <span class="grad">everyday.</span></h1>
++      <p class="lead">NexDo was created with a simple belief — technology should take things off your mind, not add to it.</p>
++      <p class="lead">We're building an AI Action Assistant that helps you plan, remember, prioritize, and get things done — so you can focus on what matters most.</p>
++      <div class="ctas"><a class="btn primary" href="#mission">Our Story <svg class="ab-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
++    </div>
++    <div class="ab-hero-art">
++      <!-- Replaceable visual: swap the <figure> contents for a lifestyle photo (an img tag pointing at assets/about-hero.webp, 1200x1100, with descriptive alt text). Keep the .ab-float card and .ab-hand annotation as siblings. -->
++      <figure class="ab-visual ab-visual-hero" role="img" aria-label="Illustration of a calm, organized day: a phone showing a short, finished to-do list in warm light">
++        <svg viewBox="0 0 600 560" aria-hidden="true">
++          <defs>
++            <linearGradient id="abg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF1FF"/><stop offset=".55" stop-color="#F3E8FF"/><stop offset="1" stop-color="#FFE4F4"/></linearGradient>
++            <linearGradient id="abg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3D29F0"/><stop offset=".6" stop-color="#8514F5"/><stop offset="1" stop-color="#F014C7"/></linearGradient>
++            <linearGradient id="abg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity=".75"/></linearGradient>
++          </defs>
++          <rect width="600" height="560" rx="40" fill="url(#abg1)"/>
++          <circle cx="470" cy="120" r="150" fill="#C9D9FF" opacity=".55"/>
++          <circle cx="120" cy="470" r="170" fill="#F5C8EA" opacity=".45"/>
++          <rect x="210" y="90" width="230" height="420" rx="38" fill="#0B1233" opacity=".92"/>
++          <rect x="222" y="102" width="206" height="396" rx="30" fill="url(#abg3)"/>
++          <text x="248" y="160" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="800" fill="#080F2E">Good morning</text>
++          <text x="248" y="184" font-family="Inter,system-ui,sans-serif" font-size="12" fill="#575C80">3 things to focus on</text>
++          <g font-family="Inter,system-ui,sans-serif" font-size="13" fill="#080F2E">
++            <rect x="240" y="204" width="170" height="40" rx="12" fill="#fff"/><circle cx="260" cy="224" r="8" fill="url(#abg2)"/><path d="M256 224l3 3 6-6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><text x="276" y="228" text-decoration="line-through" fill="#575C80">Call Damien</text>
++            <rect x="240" y="252" width="170" height="40" rx="12" fill="#fff"/><circle cx="260" cy="272" r="8" fill="none" stroke="#3D29F0" stroke-width="2"/><text x="276" y="276">Groceries · Sat</text>
++            <rect x="240" y="300" width="170" height="40" rx="12" fill="#fff"/><circle cx="260" cy="320" r="8" fill="none" stroke="#3D29F0" stroke-width="2"/><text x="276" y="324">Mom's birthday</text>
++          </g>
++          <rect x="240" y="360" width="170" height="60" rx="16" fill="url(#abg2)" opacity=".12"/>
++          <text x="256" y="386" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="700" fill="#3D29F0">You're on track</text>
++          <text x="256" y="404" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#575C80">1 done · 2 to go</text>
++          <path d="M60 420c40-70 90-70 130-30s90 40 130 0" fill="none" stroke="url(#abg2)" stroke-width="3" stroke-linecap="round" opacity=".5"/>
++          <circle cx="520" cy="430" r="26" fill="#fff" opacity=".9"/><path d="M520 416l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="url(#abg2)"/>
++        </svg>
++      </figure>
++      <div class="ab-float glass" aria-hidden="true">
++        <div><span class="ab-fi" style="--t:#E3EEFF;--i:#2F7BF5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.8 2.8L16.2 9.6"/></svg></span>Tasks handled</div>
++        <div><span class="ab-fi" style="--t:#FFE4F4;--i:#E8267A"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-7.5-10A4.2 4.2 0 0112 8a4.2 4.2 0 017.5 2.5c0 5.4-7.5 10-7.5 10z" fill="currentColor"/></svg></span>Important moments remembered</div>
++        <div><span class="ab-fi" style="--t:#EEE6FF;--i:#7B3FE4"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3L3.5 10.5l6.3-2.2z" fill="currentColor"/></svg></span>More time for you</div>
++      </div>
++      <p class="ab-hand ab-hand-hero" aria-hidden="true">Less to remember.<br>More to live.<svg viewBox="0 0 50 30"><path d="M4 4C20 4 36 10 45 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M47 14l-1 12-12-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
++    </div>
+   </header>
+ 
+-  <section style="padding-top:30px">
+-    <div class="values">
+-      <div class="feat glass"><div class="ico">🔍</div><h3>Clarity first</h3><p>A short brief you can finish beats a long list you can't. We'd rather show you less and be right.</p></div>
+-      <div class="feat glass"><div class="ico">🤝</div><h3>You stay in control</h3><p>Nexdo drafts, suggests, and reminds. It never sends a message or makes a call without you tapping.</p></div>
+-      <div class="feat glass"><div class="ico">🏠</div><h3>Built for real life</h3><p>Work and home aren't separate calendars in your head, so they aren't separate in Nexdo either.</p></div>
+-      <div class="feat glass"><div class="ico">🔒</div><h3>Private by default</h3><p>Your tasks and conversations are yours. We collect what the product needs and nothing more.</p></div>
++  <section id="mission" class="ab-sec">
++    <div class="ab-two">
++      <div>
++        <div class="eyebrow">Our mission</div>
++        <h2>Help people live more intentional, <span class="grad">less stressful lives.</span></h2>
++        <p class="ab-p">Every day, people juggle tasks, calendars, reminders, messages, shopping lists, appointments, and the important moments they don't want to forget.</p>
++        <p class="ab-p">Most productivity tools help you organize that work. NexDo is being built to go further.</p>
++        <p class="ab-p">We bring the pieces of your day together and use AI to help you understand what matters, decide what to do next, and take action.</p>
++        <p class="ab-p">Whether you type it, tap it, or simply say it — NexDo is designed to help move things from your mind to done.</p>
++      </div>
++      <div class="ab-art">
++        <!-- Replaceable visual: swap for a calm landscape / mental-space photo (assets/about-mission.webp, lazy-loaded). -->
++        <figure class="ab-visual ab-visual-mission" role="img" aria-label="Illustration of a quiet sunrise over soft hills">
++          <svg viewBox="0 0 600 420" aria-hidden="true">
++            <defs>
++              <linearGradient id="abm1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E4BC8"/><stop offset=".5" stop-color="#8A6BFF"/><stop offset="1" stop-color="#FFC2E4"/></linearGradient>
++              <linearGradient id="abm2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D29F0"/><stop offset="1" stop-color="#1B1650"/></linearGradient>
++              <radialGradient id="abm3" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF3C4"/><stop offset="1" stop-color="#FFB3A6" stop-opacity="0"/></radialGradient>
++            </defs>
++            <rect width="600" height="420" rx="36" fill="url(#abm1)"/>
++            <circle cx="380" cy="230" r="150" fill="url(#abm3)"/>
++            <circle cx="380" cy="230" r="46" fill="#FFF6D6"/>
++            <path d="M0 300c80-40 140-70 220-50s140 60 220 30 110-40 160-20v160H0z" fill="url(#abm2)" opacity=".85"/>
++            <path d="M0 340c90-20 170-50 260-30s160 40 240 20 70-20 100-10v100H0z" fill="#0B1233"/>
++            <circle cx="150" cy="262" r="16" fill="#0B1233"/><path d="M118 335c4-34 18-52 32-52s28 18 32 52z" fill="#0B1233"/>
++          </svg>
++        </figure>
++        <p class="ab-hand ab-hand-mission" aria-hidden="true">A calmer mind.<br>A brighter day.</p>
++      </div>
+     </div>
+   </section>
+ 
+-  <section style="padding-top:20px">
+-    <div class="cta glass">
+-      <h2>Want to help shape Nexdo?</h2>
+-      <p>Early users get a direct line to the team. Tell us what's slowing you down and we'll build toward it.</p>
+-      <a class="btn primary" href="#/contact">Get in touch</a>
++  <section class="ab-sec">
++    <div class="ab-two ab-top">
++      <div>
++        <div class="eyebrow">Our values</div>
++        <h2>Built around what <span class="grad">matters to you.</span></h2>
++      </div>
++      <p class="ab-p ab-intro">We're guided by a few simple principles that shape everything we build — from the features we create to the way we handle your data.</p>
++    </div>
++    <div class="ab-values">
++      <div class="ab-card"><span class="ab-tile" style="--t:#E3EEFF;--i:#2F7BF5"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 20.5c.8-4.5 4-7 8-7s7.2 2.5 8 7z"/></svg></span><h3>People First</h3><p>We design for real life and real people — not just technology.</p></div>
++      <div class="ab-card"><span class="ab-tile" style="--t:#EEE6FF;--i:#7B3FE4"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 3l1.9 5.3L17 10l-5.1 1.7L10 17l-1.9-5.3L3 10l5.1-1.7z"/><path d="M18 14l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg></span><h3>Make It Simple</h3><p>Powerful doesn't have to be complicated. We turn complexity into clarity.</p></div>
++      <div class="ab-card"><span class="ab-tile" style="--t:#FFE4F4;--i:#E8267A"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10A4.2 4.2 0 0112 8a4.2 4.2 0 017.5 2.5c0 5.4-7.5 10-7.5 10z"/></svg></span><h3>More Life, Less Stress</h3><p>We help reduce the mental clutter so you can focus on what truly matters.</p></div>
++      <div class="ab-card"><span class="ab-tile" style="--t:#DDF6E6;--i:#1FAF55"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4c-9 0-15 4-15 12 0 1.6.4 3 1 4 1-5 4-9 9-11-3 3-5 7-6 12 1 .4 2.2.6 3.4.6C19 21.6 21 13 20 4z"/></svg></span><h3>Build Responsibly</h3><p>We build AI with privacy, security, transparency, and user control in mind.</p></div>
++    </div>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-two ab-top">
++      <div>
++        <div class="eyebrow">Why NexDo</div>
++        <h2>From remembering things to actually <span class="grad">getting them done.</span></h2>
++        <p class="ab-p">Traditional productivity apps primarily store information. NexDo is designed as an AI Action Assistant: it connects your Tasks, Calendar, Ask AI, Voice, Shopping Lists, Important Moments, and Reminders — and lets you call, text, or email straight from a task.</p>
++        <p class="ab-p ab-strong">One assistant helping you move from intention to action.</p>
++      </div>
++      <ol class="ab-flow" aria-label="How NexDo turns intention into action">
++        <li><b>Remember</b><span>Capture it by typing, tapping, or saying it.</span></li>
++        <li><b>Understand</b><span>Your tasks, calendar, and moments in one picture.</span></li>
++        <li><b>Prioritize</b><span>See what needs attention today.</span></li>
++        <li><b>Act</b><span>Call, text, or email from the task itself.</span></li>
++        <li><b>Follow up</b><span>Nothing slips through the cracks.</span></li>
++      </ol>
++    </div>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-compare glass">
++      <div class="ab-compare-head">
++        <h2>Not another to-do app.<br><span class="grad">An AI Action Assistant.</span></h2>
++      </div>
++      <div class="ab-cols">
++        <div class="ab-col">
++          <h3>Traditional productivity apps</h3>
++          <ul class="ab-list ab-list-plain">
++            <li>Store tasks</li><li>Show calendars</li><li>Send reminders</li><li>Wait for you to manage everything</li>
++          </ul>
++        </div>
++        <div class="ab-col ab-col-us">
++          <h3>NexDo</h3>
++          <ul class="ab-list ab-list-check">
++            <li>Understands what needs attention</li><li>Helps prioritize your day</li><li>Lets you ask questions</li><li>Accepts natural voice requests</li><li>Helps turn tasks into supported actions</li><li>Keeps important moments from slipping through the cracks</li>
++          </ul>
++        </div>
++      </div>
++      <p class="ab-close">Less managing. <span class="grad">More doing.</span></p>
++    </div>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-two">
++      <div>
++        <div class="eyebrow">Built for how people actually live</div>
++        <h2>Sometimes it's easier <span class="grad">to just say it.</span></h2>
++        <p class="ab-p">NexDo lets you interact naturally through voice and conversation, making it easier to capture tasks, ask questions, manage your day, and take supported actions without navigating through screen after screen.</p>
++        <div class="ctas"><a class="btn ghost" href="#/features#voice">Explore Voice AI <svg class="ab-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
++      </div>
++      <div class="talk ab-talk glass" aria-label="Example voice conversation">
++        <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
++        <div class="bub me">"Remind me to call Damien tomorrow at 10."</div>
++        <div class="bub ai">Done. Anything else?</div>
++        <div class="bub me">"Add groceries for Saturday morning."</div>
++        <div class="bub ai">Added.</div>
++      </div>
++    </div>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-two ab-team">
++      <div class="ab-art">
++        <!-- Replaceable visual: swap for real team photography when available (assets/about-team.webp, lazy-loaded). -->
++        <figure class="ab-visual ab-visual-team" role="img" aria-label="Abstract illustration of the NexDo mark surrounded by overlapping circles">
++          <svg viewBox="0 0 600 440" aria-hidden="true">
++            <defs><linearGradient id="abt1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EEFF"/><stop offset="1" stop-color="#FBE4F6"/></linearGradient><linearGradient id="abt2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0594F5"/><stop offset=".45" stop-color="#3D29F0"/><stop offset=".75" stop-color="#8514F5"/><stop offset="1" stop-color="#F014C7"/></linearGradient></defs>
++            <rect width="600" height="440" rx="36" fill="url(#abt1)"/>
++            <circle cx="170" cy="200" r="110" fill="#3D29F0" opacity=".14"/><circle cx="300" cy="250" r="120" fill="#8514F5" opacity=".14"/><circle cx="430" cy="200" r="110" fill="#F014C7" opacity=".14"/>
++            <path d="M228 300L262 190q3-10 9 0l36 100q6 12 12 0l38-110" fill="none" stroke="url(#abt2)" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
++          </svg>
++        </figure>
++        <p class="ab-bubble" aria-hidden="true">A small team<br>with a big belief.</p>
++      </div>
++      <div>
++        <div class="eyebrow">Our team</div>
++        <h2>A passionate team on a <span class="grad">meaningful mission.</span></h2>
++        <p class="ab-p">NexDo is built by people who believe technology should make everyday life simpler, not more complicated.</p>
++        <p class="ab-p">We're bringing together experience in AI, software, product design, and real-world problem solving to build an assistant that helps people spend less time managing life — and more time living it.</p>
++        <div class="ctas"><a class="btn primary" href="#/contact">Get in touch <svg class="ab-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
++      </div>
++    </div>
++  </section>
++
++  <section class="ab-sec ab-sec-tight">
++    <ul class="ab-strip" aria-label="What NexDo is">
++      <li><b>AI Action Assistant</b><span>Built to help you act, not just organize.</span></li>
++      <li><b>Tasks → Action</b><span>Call, text, or email from a task.</span></li>
++      <li><b>Voice + Ask AI</b><span>Say it, ask it, get it done.</span></li>
++      <li><b>Built for Everyday Life</b><span>Work, home, and the moments in between.</span></li>
++    </ul>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-two ab-top">
++      <div>
++        <div class="eyebrow">Our impact</div>
++        <h2>Less mental load. <span class="grad">More room for life.</span></h2>
++        <p class="ab-p">From remembering what matters to getting through busy days, NexDo is designed to help people stay organized, connected, and in control.</p>
++      </div>
++      <div class="ab-outcomes">
++        <div class="ab-card"><h3>Less to remember</h3><p>Keep tasks, reminders, schedules, and important moments in one intelligent experience.</p></div>
++        <div class="ab-card"><h3>Less app hopping</h3><p>Bring everyday planning and action together.</p></div>
++        <div class="ab-card"><h3>More action</h3><p>Move from "I need to remember that" to getting it done.</p></div>
++        <div class="ab-card"><h3>More time for what matters</h3><p>Spend less time managing your productivity system.</p></div>
++      </div>
++    </div>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-two ab-top">
++      <div>
++        <div class="eyebrow">Responsible AI</div>
++        <h2>Technology that <span class="grad">works for you.</span></h2>
++        <p class="ab-p">NexDo is designed around user control. AI should help you make decisions and take action — not take control away from you.</p>
++        <div class="ctas"><a class="btn ghost" href="#/trust">Privacy &amp; Security <svg class="ab-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
++      </div>
++      <ul class="ab-list ab-list-check ab-principles">
++        <li><b>You stay in control.</b> NexDo drafts, suggests, and reminds — you decide.</li>
++        <li><b>Every action is your tap.</b> It never sends a message or places a call on its own.</li>
++        <li><b>Voice only when you start it.</b> It doesn't listen unless you've begun a conversation.</li>
++        <li><b>Privacy-conscious design.</b> Your data isn't sold or used to advertise to you.</li>
++        <li><b>Your data, your choice.</b> Export or delete a conversation, a list, or your whole account at any time.</li>
++      </ul>
++    </div>
++  </section>
++
++  <section class="ab-sec">
++    <div class="ab-join">
++      <div class="ab-join-copy">
++        <div class="eyebrow">Join our journey</div>
++        <h2>Let's make everyday better.<br><span class="grad">Together.</span></h2>
++        <p class="ab-p">We're just getting started.</p>
++        <p class="ab-p">NexDo is being built to simplify the everyday — helping people plan, remember, decide, and take action with less effort. Join us as we build a smarter, calmer way to get things done.</p>
++        <div class="ctas">
++          <a class="btn primary" href="#/start">Get Started with NexDo <svg class="ab-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
++          <a class="btn ghost" href="#/features">Explore Features</a>
++        </div>
++      </div>
++      <div class="ab-join-art">
++        <p class="ab-hand ab-hand-join" aria-hidden="true"><svg viewBox="0 0 50 30"><path d="M46 26C30 26 14 20 5 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M3 16L4 4l12 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>A simpler,<br>brighter everyday<br>is possible.</p>
++        <img src="/assets/nexdo-logo-full.webp" width="624" height="160" alt="NexDo — Your AI action assistant" loading="lazy">
++      </div>
+     </div>
+   </section>
+ </div>
+@@ -1311,7 +1610,7 @@ footer .base a{margin:0 0 0 20px}
+   <div class="cols">
+     <div><a class="flogo" href="#/home" aria-label="NexDo home"><img src="/assets/nexdo-logo-full.webp" width="624" height="160" alt="NexDo — Your AI action assistant"></a><p>Your AI action &amp; follow-up assistant.<br>Less on your mind, more done in your day.<br>Plans your day, takes action, and keeps you on track.<br>From tasks to life’s important moments,<br>Nexdo helps you get it done.</p></div>
+     <div><b>Product</b><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a></div>
+-    <div><b>Company</b><a href="#/about">About &amp; team</a><a href="https://www.nexdoapp.com/privacy" rel="noopener">Privacy Policy</a><a href="https://www.nexdoapp.com/terms" rel="noopener">Terms of Service</a><a href="#/contact">Contact</a></div>
++    <div><b>Company</b><a href="#/about">About</a><a href="https://www.nexdoapp.com/privacy" rel="noopener">Privacy Policy</a><a href="https://www.nexdoapp.com/terms" rel="noopener">Terms of Service</a><a href="#/contact">Contact</a></div>
+     <div><b>Support</b><a href="#/help">Help center</a><a href="#/start">Get started</a><a href="https://harbour-onsite.up.railway.app/login">Sign in</a></div>
+   </div>
+   <div class="base">
+-- 
+2.43.0
+
