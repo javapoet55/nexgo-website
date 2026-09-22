@@ -117,3 +117,6 @@ body.moments-page>nav{font-family:Inter,system-ui,sans-serif;line-height:1.55;--
 @media(max-width:760px){.mm-pack-hero{max-width:580px;margin:15px auto 0}.mm-pack-reminded,.mm-pack-plan,.mm-pack-share,.mm-pack-action{border-radius:12px}.mm-pack-gift{border-radius:14px}.mm-pack-mother{margin-bottom:8px}.mm-pack-reminder{left:0;bottom:3%;width:65%;border-radius:13px}.mm-steps .mm-pack-icon{grid-row:1/3}.mm-share-features .mm-pack-icon{width:30px}.mm-pack-final-bg{opacity:.4}}
 .mm-pack-note{width:22%;left:-4%;bottom:3%}
 @media(max-width:760px){.mm-pack-note{width:19%;left:0}}
+
+/* Consistent calm backgrounds and uncluttered phone previews. */
+.mm-hero:before,.mm-ideas-scene:before,.mm-pack-glow,.mm-pack-final-bg,.mm-pack-reminded,.mm-pack-plan,.mm-pack-share,.mm-pack-action{display:none}.mm-final{background:#f4f5fc}.mm-pack-phone{transform:rotate(7deg);transform-origin:center}
