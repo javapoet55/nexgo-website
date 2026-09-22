@@ -34,6 +34,8 @@ const esc=s=>s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')
 // hash routes -> real paths
 let html=src.replace(/href="#\/home"/g,'href="/"').replace(/href="#\/([a-z-]+)(#[a-z0-9-]+)?"/g,(m,p,a)=>`href="/${p}${a||''}"`);
 html=html.replace(/<a\b[^>]*href="\/pricing(?:#[^"]*)?"[^>]*>[\s\S]*?<\/a>/g,'');
+// Keep the plan comparison source, but omit it while plans are unpublished.
+html=html.replace(/<section id="all-features"[^>]*>[\s\S]*?<\/section>/,'');
 html=html.replace('<main class="wrap">','<main class="wrap" id="main">');
 // legal: original documents from src/, ids prefixed to stay unique
 function legal(key,pre){
