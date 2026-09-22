@@ -19,6 +19,7 @@ for(const file of pages){
   assert(html.includes('href="/ask-ai"'),file+' missing Products > Ask AI nav link');
   const visible=html.replace(/<style[\s\S]*?<\/style>/g,'');
   assert(!/Instacart|store managers|Start your free trial|Cancel anytime/i.test(visible),file+' contains outdated marketing');
+  if(!/\/(?:privacy|terms)\/index\.html$/.test(file))assert(!/SOC 2|GDPR Compliant|independent audit|10x|driving.mode|iPhone app (?:is )?coming soon|Calendar connections are part of the roadmap|fully included in your Nexdo plan/i.test(visible),file+' contains unsupported or outdated claims');
   const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,file+' duplicate ids');
   for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){
     const link=m[1];if(/^(https?:|mailto:|data:)/.test(link))continue;

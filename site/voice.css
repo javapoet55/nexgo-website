@@ -42,3 +42,5 @@ body.voice-page>nav{font-family:Inter,system-ui,sans-serif;line-height:1.55;--mu
 
 /* Consistent calm backgrounds and uncluttered phone previews. */
 .v2-hero:before,.v2-hero-bg,.v2-final-bg,.v2-on-go{display:none}.v2-final{background:#f4f5fc}.v2-phone{transform:rotate(7deg);transform-origin:center}
+
+@media(min-width:651px){.v2-life{grid-template-columns:repeat(3,1fr)}}
