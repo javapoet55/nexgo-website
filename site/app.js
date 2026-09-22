@@ -20,5 +20,6 @@
   if(path==='/voice-ai')track('voice_ai_page_view');
   if(path==='/shopping-lists')track('shopping_page_view');
   if(path==='/important-moments')track('moments_page_view');
+  if(path==='/ask-ai')track('askai_page_view');
   document.addEventListener('click',function(e){var el=e.target.closest&&e.target.closest('[data-event]');if(el)track(el.getAttribute('data-event'))});
 })();
