@@ -27,9 +27,13 @@ const pages={
   privacy:['/privacy','Privacy Policy — Nexdo','How Nexdo collects, uses, stores, shares, and protects your information.'],
   terms:['/terms','Terms of Service — Nexdo','The terms that govern your use of Nexdo.'],
 };
+// Temporarily unpublished; keep page content and metadata ready to restore.
+const hiddenPages=new Set(['pricing']);
+for(const key of hiddenPages)delete pages[key];
 const esc=s=>s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 // hash routes -> real paths
 let html=src.replace(/href="#\/home"/g,'href="/"').replace(/href="#\/([a-z-]+)(#[a-z0-9-]+)?"/g,(m,p,a)=>`href="/${p}${a||''}"`);
+html=html.replace(/<a\b[^>]*href="\/pricing(?:#[^"]*)?"[^>]*>[\s\S]*?<\/a>/g,'');
 html=html.replace('<main class="wrap">','<main class="wrap" id="main">');
 // legal: original documents from src/, ids prefixed to stay unique
 function legal(key,pre){
