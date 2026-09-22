@@ -6,7 +6,7 @@ Production: https://nexdoapp.com (Railway service `nexgo-website`). Previous ver
 
 Node 22+; no dependencies.
 
-- `npm run build` — generates 14 static pages + a 404 page into `dist/`.
+- `npm run build` — generates 15 static pages + a 404 page into `dist/`.
 - `npm test` — checks one H1 per page, metadata, canonical URLs, internal links and anchors, duplicate ids, and that no inline scripts exist (the server's CSP blocks them).
 - `npm start` — serves `dist/` on `PORT` (default 8080). Railway builds the Dockerfile and health-checks `/`.
 
@@ -19,7 +19,7 @@ Node 22+; no dependencies.
 
 ## Pages
 
-`/`, `/voice-ai`, `/shopping-lists`, `/features`, `/use-cases`, `/why-nexdo`, `/pricing`, `/help`, `/about`, `/trust`, `/contact`, `/start`, `/privacy`, `/terms`, plus `sitemap.xml`, `robots.txt`, and `404.html`.
+`/`, `/voice-ai`, `/shopping-lists`, `/important-moments`, `/features`, `/use-cases`, `/why-nexdo`, `/pricing`, `/help`, `/about`, `/trust`, `/contact`, `/start`, `/privacy`, `/terms`, plus `sitemap.xml`, `robots.txt`, and `404.html`.
 
 Old URLs redirect (301): `/how-it-works` → `/features`, `/features/ai-assistant` → `/features#voice`, `/security` → `/trust`, `/compare/*` → `/why-nexdo`, and the legacy `.html` paths.
 

@@ -654,20 +654,35 @@ q{display:block;quotes:"“" "”";padding:12px 14px;border-radius:12px;backgrou
 .sl-strip,.sl-cats{grid-template-columns:1fr}.sl-steps{grid-template-columns:1fr}.sl-weeks{grid-template-columns:1fr}.sl-weeks .va-arr{transform:rotate(90deg);justify-self:center}.sl-ai{padding:22px}.sl-voice-art{height:500px}.sl-hero .ctas .btn{width:100%;justify-content:center}}
 .sl-hero>*,.va-two>*,.sl-ai>*{min-width:0}
 @media (max-width:400px){.sl-art{grid-template-columns:1fr}}
+/* ---------- important moments page ---------- */
+.im-row{display:flex;gap:10px;align-items:center;padding:9px 4px;border-bottom:1px solid #F0F1F7}
+.im-row b{display:block;font-size:13px}.im-row small{font-size:10.5px;color:#6B7392}
+.im-av{flex:none;width:32px;height:32px;border-radius:50%;background:color-mix(in srgb,var(--c) 16%,#fff);display:grid;place-items:center;font-size:15px}
+.im-photo{position:relative;min-height:380px;border-radius:28px;background:linear-gradient(135deg,#FFE3F1,#F3EEFF 55%,#E3EEFF);display:grid;place-items:center;overflow:hidden}
+.im-big{font-size:140px;filter:drop-shadow(0 20px 30px rgba(232,38,122,.25))}
+.im-h1{position:absolute;left:24px;top:22px}
+.im-note{position:absolute;left:18px;bottom:18px;right:18px;max-width:340px;display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;font-size:14px;color:var(--muted)}.im-note b{display:block;color:var(--ink)}
+.im-steps{grid-template-columns:repeat(4,1fr)}
+.im-tones{display:flex;gap:8px;flex-wrap:wrap}.im-tones span{padding:6px 14px;border-radius:999px;background:#F6F5FD;font-size:13px;font-weight:600;color:var(--muted)}.im-tones .on{background:linear-gradient(135deg,#3D29F0,#8514F5);color:#fff}
+.im-msg{padding:14px 16px;border-radius:14px;background:#FFF5FA;border:1px solid #FFD6E8;font-size:14.5px;line-height:1.55}
+.im-ch{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:14px;background:#F6F5FD;margin-bottom:10px}.im-ch span{font-weight:700}.im-ch small{color:var(--muted);font-size:13px}
+.im-cats{grid-template-columns:repeat(5,1fr);margin-top:22px}
+@media (max-width:1100px){.im-steps{grid-template-columns:1fr 1fr}.im-cats{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:600px){.im-steps,.im-cats{grid-template-columns:1fr}.im-big{font-size:100px}}
 </style>
 
 <div class="blobs"><i></i><i></i><i></i><i></i></div>
 
 <nav><div class="bar glass">
   <a class="logo" href="#/home" aria-label="NexDo home"><img src="/assets/nexdo-logo-nav.webp" width="413" height="96" alt="NexDo"></a>
-  <div class="links" data-nav><div class="dd"><button type="button" aria-expanded="false" aria-haspopup="true">Products ▾</button><div class="dd-m"><a href="#/voice-ai">Voice AI<small>Just say it. NexDo gets it done.</small></a><a href="#/shopping-lists">Shopping Lists<small>Voice, AI alternatives and sharing.</small></a></div></div><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a></div>
+  <div class="links" data-nav><div class="dd"><button type="button" aria-expanded="false" aria-haspopup="true">Products ▾</button><div class="dd-m"><a href="#/voice-ai">Voice AI<small>Just say it. NexDo gets it done.</small></a><a href="#/shopping-lists">Shopping Lists<small>Voice, AI alternatives and sharing.</small></a><a href="#/important-moments">Important Moments<small>Never miss what matters most.</small></a></div></div><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a></div>
   <div class="navr">
         <a class="btn primary" href="#/start">Get started</a>
     <button class="burger" aria-label="Open menu" aria-expanded="false" id="burger">☰</button>
   </div>
 </div></nav>
 <div class="menu" id="menu"><div class="glass" data-nav>
-  <a href="#/home">Home</a><div class="mlabel">Products</div><a href="#/voice-ai">Voice AI</a><a href="#/shopping-lists">Shopping Lists</a><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a><a href="#/about">About</a><a href="#/start">Get started</a>
+  <a href="#/home">Home</a><div class="mlabel">Products</div><a href="#/voice-ai">Voice AI</a><a href="#/shopping-lists">Shopping Lists</a><a href="#/important-moments">Important Moments</a><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a><a href="#/about">About</a><a href="#/start">Get started</a>
 </div></div>
 
 <main class="wrap">
@@ -1437,6 +1452,142 @@ q{display:block;quotes:"“" "”";padding:12px 14px;border-radius:12px;backgrou
   </section>
 </div>
 
+<!-- ================= IMPORTANT MOMENTS ================= -->
+<div class="page" data-page="important-moments">
+  <header class="sl-hero">
+    <div>
+      <div class="eyebrow">Important moments</div>
+      <h1 class="sl-h1">Never miss what matters <span class="va-grad">most.</span></h1>
+      <p class="va-lead">From birthdays and anniversaries to festivals and personal milestones, NexDo helps you remember, prepare ahead and send a heartfelt message — so you can be there for the moments that matter.</p>
+      <div class="ctas">
+        <a class="btn primary" href="https://harbour-onsite.up.railway.app/signup" data-event="moments_get_started_click">Get Started with NexDo →</a>
+        <a class="btn ghost" href="#/important-moments#im-how">See how it works</a>
+      </div>
+    </div>
+    <div class="sl-art" aria-hidden="true">
+      <div class="va-phone sl-phone"><div class="va-notch"></div><div class="sl-scr">
+        <div class="va-st"><span>9:41</span><span class="va-bat"></span></div>
+        <div class="sl-app"><b><img class="sl-mk" src="/assets/favicon.png" alt="" width="18" height="18">NexDo</b></div>
+        <div class="sl-lh"><div><b>Important Moments</b><small>Upcoming</small></div><span class="sl-add">+ Add</span></div>
+        <div class="im-row"><span class="im-av" style="--c:#F0457B">🎂</span><div><b>Mom's Birthday</b><small>Today · Wish drafted</small></div></div>
+        <div class="im-row"><span class="im-av" style="--c:#E8267A">❤</span><div><b>Our Anniversary</b><small>In 5 days · Repeats yearly</small></div></div>
+        <div class="im-row"><span class="im-av" style="--c:#7B3FE4">🎓</span><div><b>Emma's Graduation</b><small>Jun 14 · 2 weeks away</small></div></div>
+        <div class="im-row"><span class="im-av" style="--c:#F2994A">🪔</span><div><b>Diwali</b><small>Festival · Card ready</small></div></div>
+        <div class="im-row"><span class="im-av" style="--c:#1FAF55">🌷</span><div><b>Get well, Sam</b><small>Friday · Send a note</small></div></div>
+        <div class="im-row"><span class="im-av" style="--c:#2F7BF5">🎂</span><div><b>Dad's Birthday</b><small>Jul 3 · 3 weeks away</small></div></div>
+      </div></div>
+      <div class="sl-co c1 glass"><span class="sl-ci" style="--g:#7B3FE4">🔔</span>Get reminded<br>ahead of time</div>
+      <div class="sl-co c2 glass"><span class="sl-ci" style="--g:#E8267A">❤</span>Repeats<br>every year</div>
+      <div class="sl-co c3 glass"><span class="sl-ci" style="--g:#3D6BF0">✦</span>AI-drafted<br>wishes</div>
+      <div class="sl-co c4 glass"><span class="sl-ci" style="--g:#F2994A">🎁</span>Send by email,<br>message or share</div>
+    </div>
+  </header>
+
+  <section class="va-flow sl-strip glass" aria-label="What Important Moments do">
+    <div><span class="va-ic" style="--b:#EEE4FF;--c:#7B3FE4">🔔</span><b>Remember</b><p>Birthdays, anniversaries, festivals and milestones in one place.</p></div>
+    <div><span class="va-ic" style="--b:#E3EEFF;--c:#2F7BF5">📅</span><b>Prepare ahead</b><p>Get a heads-up days before, not the morning of.</p></div>
+    <div><span class="va-ic" style="--b:#FFE3F1;--c:#E8267A">✦</span><b>Write the message</b><p>NexDo drafts a warm wish in the tone you choose.</p></div>
+    <div><span class="va-ic" style="--b:#FFF1D6;--c:#F2994A">🎁</span><b>Send it</b><p>By email, your messages app, or copy and share.</p></div>
+  </section>
+
+  <section class="va-sec va-two">
+    <div class="im-photo" aria-hidden="true"><span class="im-big">💝</span><p class="va-hand2 im-h1">More moments<br>together</p>
+      <div class="im-note glass"><span class="sl-ci" style="--g:#F0457B">🎁</span><div><b>Reminder</b>Mom's birthday is tomorrow. Your wish is ready to send.</div></div></div>
+    <div>
+      <div class="eyebrow">Make life more meaningful</div>
+      <h2 class="va-h2">Keep your important moments <span class="va-grad">front and center.</span></h2>
+      <p class="va-sub" style="text-align:left">Capture the people and dates that make life special — no more last-minute scrambling or forgotten days.</p>
+      <ul class="sl-checks"><li>Birthdays, anniversaries, festivals, get-well wishes and your own milestones</li><li>Yearly moments repeat automatically</li><li>Bring dates in from your contacts and calendar, or pick festivals from a list</li><li>Add a first name, email or phone so the wish is ready to go</li><li>Ask by voice: “When is Dad's birthday?”</li></ul>
+    </div>
+  </section>
+
+  <section id="im-how" class="va-sec">
+    <div class="eyebrow" style="text-align:center">How it works</div>
+    <h2 class="va-h2" style="text-align:center">From a date to a <span class="va-grad">meaningful moment.</span></h2>
+    <ol class="sl-steps im-steps">
+      <li><b>Add a moment</b>Type it, say it, or import from contacts, calendar or the festival list.</li>
+      <li><b>Get ready ahead</b>Choose how early NexDo prepares — the same day, or 1, 3, 7 or 14 days before.</li>
+      <li><b>Draft the wish</b>Pick a tone — Warm, Personal, Short or Fun — and add a personal touch.</li>
+      <li><b>Review &amp; send</b>Send by email, your messages app, or copy and share it yourself.</li>
+    </ol>
+  </section>
+
+  <section class="va-sec">
+    <div class="sl-ai glass">
+      <div>
+        <div class="eyebrow">AI wishes &amp; cards</div>
+        <h2 class="va-h2">The right words, <span class="va-grad">when you need them.</span></h2>
+        <p class="va-sub" style="text-align:left">Not sure what to say? NexDo drafts a heartfelt message for the person and the occasion, in the tone you pick. Add a detail only you would know, edit anything, and regenerate until it sounds like you. For festivals, NexDo can also create a greeting card image in the style you choose.</p>
+        <p class="sl-fine">AI drafting and card images are used only with your permission. Nothing is sent until you choose to send it.</p>
+      </div>
+      <div class="sl-alt" aria-label="Example birthday wish">
+        <div class="sl-row"><span>🎂 Mom's Birthday <small>Tomorrow</small></span><em>✦</em></div>
+        <p class="sl-altq">Tone</p>
+        <div class="im-tones"><span class="on">Warm</span><span>Personal</span><span>Short</span><span>Fun</span></div>
+        <div class="im-msg">Happy birthday, Mom! Thank you for every hug, every phone call and every Sunday dinner. I hope today is as wonderful as you are. Love you always. ❤</div>
+        <div class="sl-btns"><span class="btn ghost">Regenerate</span><span class="btn primary">Use this wish</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="va-sec va-two">
+    <div class="sl-share glass" aria-hidden="true">
+      <p class="sl-wk">Send “Happy birthday, Mom!”</p>
+      <div class="im-ch"><span>✉️ Email</span><small>From your connected Gmail · schedule for 9:00 AM</small></div>
+      <div class="im-ch"><span>💬 Messages</span><small>Opens with the wish filled in — you tap send</small></div>
+      <div class="im-ch"><span>📋 Copy</span><small>Paste it anywhere</small></div>
+      <div class="im-ch"><span>↗ Share</span><small>Send through any app on your phone</small></div>
+    </div>
+    <div>
+      <div class="eyebrow">Send it your way</div>
+      <h2 class="va-h2">Life is better when you <span class="va-grad">show up.</span></h2>
+      <p class="va-sub" style="text-align:left">Connect your Gmail to send the wish by email — now or at the time you pick. Prefer a text? NexDo opens your messages app with the wish ready; you always tap send. Or copy it and share it however you like.</p>
+      <ul class="sl-checks"><li>You review every message before it goes out</li><li>Text messages always need your confirmation</li><li>Cancel a scheduled email anytime</li></ul>
+    </div>
+  </section>
+
+  <section class="va-sec">
+    <h2 class="va-h2" style="text-align:center">Every kind of moment.</h2>
+    <div class="sl-cats im-cats">
+      <div class="glass"><span>🎂</span><b>Birthdays</b><small>Family, friends and colleagues</small></div>
+      <div class="glass"><span>❤</span><b>Anniversaries</b><small>Yours and the people you love</small></div>
+      <div class="glass"><span>🪔</span><b>Festivals</b><small>Pick from a list and get cards ready</small></div>
+      <div class="glass"><span>🌷</span><b>Get well soon</b><small>A kind note when it counts</small></div>
+      <div class="glass"><span>🎓</span><b>Your milestones</b><small>Graduations, first days, anything</small></div>
+    </div>
+  </section>
+
+  <section class="va-sec va-two">
+    <div>
+      <h2 class="va-h2">Part of your whole day.</h2>
+      <p class="va-sub" style="text-align:left">Moments live in the same NexDo as your tasks, schedule and shopping lists — so a birthday can become a gift on your list and a reminder to call, all in one conversation.</p>
+      <a class="btn ghost" href="#/shopping-lists" data-event="moments_shopping_click">See Shopping Lists →</a>
+    </div>
+    <div class="va-chat glass">
+      <p class="u"><span>When is Dad's birthday?</span></p>
+      <p class="n"><span>July 3rd — three weeks from today. Anything else?</span></p>
+      <p class="u"><span>Add a card and candles to my shopping list.</span></p>
+      <p class="n"><span>Added to Weekly groceries. Anything else?</span></p>
+    </div>
+  </section>
+
+  <section class="va-sec">
+    <div class="va-trust"><div class="glass"><h3>You're always in control.</h3><ul><li>AI drafting and card images only with your permission</li><li>Nothing is sent without your review; texts always need your tap</li><li>Scheduled emails can be cancelled before they go</li><li>Your email is connected securely and can be disconnected anytime</li></ul><a href="https://www.nexdoapp.com/privacy">Learn about NexDo Privacy →</a></div></div>
+  </section>
+
+  <section class="va-sec">
+    <div class="va-final">
+      <div>
+        <div class="eyebrow">Important moments</div>
+        <h2>A more meaningful life<br><span class="va-grad">starts with remembering.</span></h2>
+        <p>Let NexDo keep the important moments in focus — so you spend less time worrying and more time living.</p>
+        <a class="btn primary" href="https://harbour-onsite.up.railway.app/signup" data-event="moments_get_started_click">Get Started with NexDo →</a>
+      </div>
+      <div class="va-fart"><p class="va-hand2" aria-hidden="true">Less to remember.<br>More time for what matters.</p><img class="sl-flogo" src="/assets/nexdo-logo-full.webp" width="624" height="160" alt="NexDo — Your AI action assistant" loading="lazy"></div>
+    </div>
+  </section>
+</div>
+
 <!-- ================= USE CASES ================= -->
 <div class="page" data-page="use-cases">
   <header class="phead">
@@ -1797,7 +1948,7 @@ q{display:block;quotes:"“" "”";padding:12px 14px;border-radius:12px;backgrou
 <footer><div class="wrap">
   <div class="cols">
     <div><a class="flogo" href="#/home" aria-label="NexDo home"><img src="/assets/nexdo-logo-full.webp" width="624" height="160" alt="NexDo — Your AI action assistant"></a><p>Your AI action &amp; follow-up assistant.<br>Less on your mind, more done in your day.<br>Plans your day, takes action, and keeps you on track.<br>From tasks to life’s important moments,<br>Nexdo helps you get it done.</p></div>
-    <div><b>Product</b><a href="#/voice-ai">Voice AI</a><a href="#/shopping-lists">Shopping Lists</a><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a></div>
+    <div><b>Product</b><a href="#/voice-ai">Voice AI</a><a href="#/shopping-lists">Shopping Lists</a><a href="#/important-moments">Important Moments</a><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a></div>
     <div><b>Company</b><a href="#/about">About &amp; team</a><a href="https://www.nexdoapp.com/privacy" rel="noopener">Privacy Policy</a><a href="https://www.nexdoapp.com/terms" rel="noopener">Terms of Service</a><a href="#/contact">Contact</a></div>
     <div><b>Support</b><a href="#/help">Help center</a><a href="#/start">Get started</a><a href="https://harbour-onsite.up.railway.app/login">Sign in</a></div>
   </div>

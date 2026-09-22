@@ -6,6 +6,7 @@ const pages={
   home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
   'voice-ai':['/voice-ai','NexDo Voice AI Assistant | Turn Conversations Into Action','Talk naturally with NexDo to create tasks, manage your day, ask questions, set reminders, and turn conversations into action.'],
   'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI-powered alternatives, share your list and reuse your weekly shop — all with NexDo, your AI Action Assistant.'],
+  'important-moments':['/important-moments','NexDo Important Moments | Never Miss What Matters','Remember birthdays, anniversaries, festivals and milestones, get AI-drafted wishes, and send them by email, message or share — with NexDo.'],
   features:['/features','Features — Nexdo','Daily Brief, Tasks + Calendar, real-time voice, action and follow-up, shopping lists, and Important Moments.'],
   'use-cases':['/use-cases','Use cases — Nexdo','How professionals, families, founders, and students use Nexdo to turn intentions into done.'],
   'why-nexdo':['/why-nexdo','Why Nexdo','Planning tools plan. Nexdo acts: call, text, or email straight from a task, and talk to it in real time.'],
