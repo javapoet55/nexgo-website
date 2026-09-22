@@ -35,7 +35,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
 {const v=readFileSync(root+'/voice-ai/index.html','utf8');
   assert(v.includes('Just say it.')&&v.includes('NexDo gets it done.'),'voice-ai hero');
   assert(v.includes('<title>NexDo Voice AI Assistant | Turn Conversations Into Action</title>'),'voice-ai title');
-  assert(/href="https:\/\/harbour-onsite\.up\.railway\.app\/signup"[^>]*data-event="voice_ai_primary_cta_click"/.test(v),'voice-ai primary CTA');
+  assert(/href="https:\/\/app\.nexdoapp\.com\/signup"[^>]*data-event="voice_ai_primary_cta_click"/.test(v),'voice-ai primary CTA');
   for(const t of ['Create Tasks by Voice','Manage Your Day','Ask AI Anything','Take Action','Continuous Conversation','Hands-Free Assistance','See it in action'])assert(v.includes(t),'voice-ai missing '+t);
   assert(v.includes('/assets/voice-v2-assets.png')&&v.includes('id="voice-demo-play"'),'voice asset pack and audio demo');
   assert(/prefers-reduced-motion:reduce\)\{\.va-wv i,\.va-ring\{animation:none\}/.test(v),'voice-ai reduced motion');}
