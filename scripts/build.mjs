@@ -7,7 +7,7 @@ const pages={
   features:['/features','Features — Nexdo','Daily Brief, Tasks + Calendar, real-time voice, action and follow-up, shopping lists, and Important Moments.'],
   'use-cases':['/use-cases','Use cases — Nexdo','How professionals, families, founders, and students use Nexdo to turn intentions into done.'],
   'why-nexdo':['/why-nexdo','Why Nexdo','Planning tools plan. Nexdo acts: call, text, or email straight from a task, and talk to it in real time.'],
-  pricing:['/pricing','Pricing — Nexdo','Get 1 year of Nexdo Pro or Family free when you sign up by November 30th. Compare plans and features.'],
+  pricing:['/pricing','Pricing — Nexdo','Get 1 year of NexDo Pro or Max free when you sign up by November 30th. Compare plans and features.'],
   help:['/help','Help center — Nexdo','Answers about getting started, the Daily Brief, voice, follow-ups, lists, and your account.'],
   about:['/about','About & team — Nexdo','We are building the assistant that finishes the job.'],
   trust:['/trust','Trust & privacy — Nexdo','How Nexdo treats your tasks, calendar, and conversations, in plain language.'],
