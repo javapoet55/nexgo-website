@@ -13,7 +13,7 @@ const pages={
   'why-nexdo':['/why-nexdo','Why Nexdo','Planning tools plan. Nexdo acts: call, text, or email straight from a task, and talk to it in real time.'],
   pricing:['/pricing','Pricing — Nexdo','Get 1 year of NexDo Pro or Max free when you sign up by November 30th. Compare plans and features.'],
   help:['/help','Help center — Nexdo','Answers about getting started, the Daily Brief, voice, follow-ups, lists, and your account.'],
-  about:['/about','About & team — Nexdo','We are building the assistant that finishes the job.'],
+  about:['/about','About — NexDo','We are building the assistant that finishes the job.'],
   trust:['/trust','Trust & privacy — Nexdo','How Nexdo treats your tasks, calendar, and conversations, in plain language.'],
   contact:['/contact','Contact — Nexdo','Support, feedback, press, and partnerships.'],
   start:['/start','Get started — Nexdo','Sign in on the web and get your first Daily Brief in under a minute.'],
