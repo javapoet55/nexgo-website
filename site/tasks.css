@@ -28,3 +28,7 @@ body.tasks-page{background:#fcfdff;color:#080f2e}.tasks-page main.wrap{max-width
 .tc-final{background:linear-gradient(140deg,#071238 5%,#10215b 62%,#5034bd)}.tc-shield,.tc-note{mix-blend-mode:darken}.tc-shield{clip-path:polygon(13% 17%,49% 4%,86% 17%,86% 49%,72% 65%,49% 75%,26% 64%,13% 48%)}
 @media(min-width:701px){.tc-phone-scene{mask-image:linear-gradient(90deg,transparent,#000 8%)}}
 .tc-final{padding:0}
+/* Revised high-density Tasks screen and unbroken vector annotation. */
+.tk3-device{padding:6px;border-radius:46px;background:linear-gradient(100deg,#c9ccd1 0%,#63666c 2%,#141518 4%,#08090a 96%,#8c9198 98%,#d5d7db);border-color:#8a8d93;box-shadow:0 0 0 1px #3d4045,0 18px 30px #20345426}.tk3-device-screen{border-radius:39px;box-shadow:0 0 0 1px #050608}.tk3-device-screen img{image-rendering:auto}.tk3-device-volume{height:25px;top:23%}.tk3-device-volume-down{height:25px;left:-3px;top:29%}.tk3-device-camera{height:29px;right:-3px;top:65%}.tk3-hand-vector{display:block;height:auto;clip-path:none;overflow:visible;mix-blend-mode:normal;width:32%;top:10%;right:-3%}
+@media(max-width:1050px){.tk3-device{padding:5px;border-radius:39px}.tk3-device-screen{border-radius:33px}.tk3-hand-vector{width:28%;right:-4%}}
+@media(max-width:700px){.tk3-device{padding:4px;border-radius:32px}.tk3-device-screen{border-radius:27px}.tk3-device-volume,.tk3-device-volume-down{height:18px}.tk3-device-camera{height:22px}.tk3-hand-vector{width:29%;right:0;top:8%}}
