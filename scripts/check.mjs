@@ -13,6 +13,7 @@ for(const file of pages){
   assert(!/<script(?![^>]*\ssrc=)[^>]*>/.test(html),file+' has an inline script (blocked by CSP)');
   assert(!/href="\/pricing(?:["#/?])/.test(html),file+' links to hidden pricing page');
   assert(!html.includes('href="#/'),file+' has a leftover hash route');
+  assert(html.includes('href="/tasks"'),file+' missing Products > Tasks nav link');
   assert(html.includes('href="/voice-ai"'),file+' missing Products > Voice AI nav link');
   assert(html.includes('href="/shopping-lists"'),file+' missing Products > Shopping Lists nav link');
   assert(html.includes('href="/important-moments"'),file+' missing Products > Important Moments nav link');
@@ -29,7 +30,7 @@ for(const file of pages){
     if(hash)assert(readFileSync(target,'utf8').includes(`id="${hash}"`),`Missing anchor ${link} on ${file}`);links++;
   }
 }
-assert.equal(pages.length,16,'expected 15 published pages + 404');
+assert.equal(pages.length,17,'expected 16 published pages + 404');
 assert(!existsSync(root+'/pricing'),'pricing must remain unpublished');
 assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing must not appear in sitemap');assert(existsSync(root+'/app.js'));
 {const v=readFileSync(root+'/voice-ai/index.html','utf8');

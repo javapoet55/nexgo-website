@@ -2,6 +2,7 @@
 import {readFileSync,writeFileSync,mkdirSync,rmSync,copyFileSync,existsSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 const voiceJsFile='voice-demo.'+createHash('sha256').update(readFileSync('site/voice.js')).digest('hex').slice(0,10)+'.js';
+const tasksCssFile='tasks.'+createHash('sha256').update(readFileSync('site/tasks.css')).digest('hex').slice(0,10)+'.css';
 const aboutCssFile='about.'+createHash('sha256').update(readFileSync('site/about.css')).digest('hex').slice(0,10)+'.css';
 const askCssFile='ask.'+createHash('sha256').update(readFileSync('site/ask.css')).digest('hex').slice(0,10)+'.css';
 const voiceCssFile='voice.'+createHash('sha256').update(readFileSync('site/voice.css')).digest('hex').slice(0,10)+'.css';
@@ -11,6 +12,7 @@ const ORIGIN='https://nexdoapp.com';
 const src=readFileSync('site/index.html','utf8');
 const pages={
   home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
+  tasks:['/tasks','NexDo Tasks | Plan, Prioritize & Follow Through','Organize tasks, create them by voice, plan your day, and prepare your next action with NexDo.'],
   'voice-ai':['/voice-ai','NexDo Voice AI Assistant | Turn Conversations Into Action','Talk naturally with NexDo to create tasks, manage your day, ask questions, set reminders, and turn conversations into action.'],
   'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, and share with family — all with NexDo, your AI Action Assistant.'],
   'important-moments':['/important-moments','NexDo Important Moments | Never Miss What Matters','Remember birthdays, anniversaries and milestones. Plan ahead, get thoughtful AI suggestions, and celebrate together with NexDo Important Moments.'],
@@ -62,7 +64,7 @@ function doc(key,body,status){
   const [path,title,desc]=pages[key]||pages.home;
   const url=ORIGIN+(path==='/'?'/':path);
   const pagePrefix=prefix;
-  return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc)}">\n<link rel="canonical" href="${url}">\n<meta property="og:title" content="${esc(title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta property="og:url" content="${url}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#3D29F0">\n<link rel="icon" type="image/png" href="/assets/favicon.png">\n<link rel="apple-touch-icon" href="/assets/nexdo-mark.png">\n${key==='about'?'<link rel="stylesheet" href="/'+aboutCssFile+'">':key==='ask-ai'?'<link rel="stylesheet" href="/'+askCssFile+'">':key==='voice-ai'?'<link rel="stylesheet" href="/'+voiceCssFile+'">':key==='important-moments'?'<link rel="stylesheet" href="/'+momentsCssFile+'">':key==='shopping-lists'?'<link rel="stylesheet" href="/'+shoppingCssFile+'">':''}\n<script src="/app.js" defer></script>${key==='voice-ai'?'<script src="/'+voiceJsFile+'" defer></script>':''}\n</head>\n<body${key==='about'?' class="about-page"':key==='ask-ai'?' class="ask-page"':key==='voice-ai'?' class="voice-page"':key==='important-moments'?' class="moments-page"':key==='shopping-lists'?' class="shopping-page"':''}>\n${pagePrefix}${body.replace(/<div class="page" data-page="([a-z-]+)">/,'<div class="page on" data-page="$1">')}${suffix}\n</body>\n</html>\n`;
+  return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<title>${esc(title)}</title>\n<meta name="description" content="${esc(desc)}">\n<link rel="canonical" href="${url}">\n<meta property="og:title" content="${esc(title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta property="og:url" content="${url}">\n<meta property="og:type" content="website">\n<meta name="theme-color" content="#3D29F0">\n<link rel="icon" type="image/png" href="/assets/favicon.png">\n<link rel="apple-touch-icon" href="/assets/nexdo-mark.png">\n${key==='tasks'?'<link rel="stylesheet" href="/'+tasksCssFile+'">':key==='about'?'<link rel="stylesheet" href="/'+aboutCssFile+'">':key==='ask-ai'?'<link rel="stylesheet" href="/'+askCssFile+'">':key==='voice-ai'?'<link rel="stylesheet" href="/'+voiceCssFile+'">':key==='important-moments'?'<link rel="stylesheet" href="/'+momentsCssFile+'">':key==='shopping-lists'?'<link rel="stylesheet" href="/'+shoppingCssFile+'">':''}\n<script src="/app.js" defer></script>${key==='voice-ai'?'<script src="/'+voiceJsFile+'" defer></script>':''}\n</head>\n<body${key==='tasks'?' class="tasks-page"':key==='about'?' class="about-page"':key==='ask-ai'?' class="ask-page"':key==='voice-ai'?' class="voice-page"':key==='important-moments'?' class="moments-page"':key==='shopping-lists'?' class="shopping-page"':''}>\n${pagePrefix}${body.replace(/<div class="page" data-page="([a-z-]+)">/,'<div class="page on" data-page="$1">')}${suffix}\n</body>\n</html>\n`;
 }
 rmSync('dist',{recursive:true,force:true});mkdirSync('dist/assets',{recursive:true});
 for(const key of Object.keys(pages)){
@@ -73,6 +75,7 @@ for(const key of Object.keys(pages)){
 }
 const nf=`<div class="page" data-page="notfound"><section style="padding-top:60px"><div class="cta glass"><div class="eyebrow">404</div><h1 style="font-size:clamp(34px,5vw,56px)">That page <span class="grad">wandered off.</span></h1><p>The link may be old or mistyped. Everything Nexdo does is one click away.</p><a class="btn primary" href="/">Back to home</a></div></section></div>\n`;
 writeFileSync('dist/404.html',doc('home',nf).replace(/<title>[^<]*<\/title>/,'<title>Page not found — Nexdo</title>').replace(/<link rel="canonical"[^>]*>\n/,'<meta name="robots" content="noindex">\n'));
+copyFileSync('site/tasks.css','dist/'+tasksCssFile);
 copyFileSync('site/about.css','dist/'+aboutCssFile);
 copyFileSync('site/app.js','dist/app.js');
 copyFileSync('site/ask.css','dist/'+askCssFile);
@@ -80,7 +83,7 @@ copyFileSync('site/voice.css','dist/'+voiceCssFile);
 copyFileSync('site/voice.js','dist/'+voiceJsFile);
 copyFileSync('site/moments.css','dist/'+momentsCssFile);
 copyFileSync('site/shopping.css','dist/'+shoppingCssFile);
-for(const f of ['about-v2-assets.png','ask-v2-assets.png','voice-v2-assets.png','hero-v3-assets.png','moments-assets.png','sl2-assets.png','favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
+for(const f of ['tasks-assets.png','about-v2-assets.png','ask-v2-assets.png','voice-v2-assets.png','hero-v3-assets.png','moments-assets.png','sl2-assets.png','favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 writeFileSync('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.values(pages).map(([p])=>`  <url><loc>${ORIGIN}${p==='/'?'/':p}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built ${Object.keys(pages).length} pages + 404 into dist/`);
