@@ -30,7 +30,7 @@ for(const file of pages){
     if(hash)assert(readFileSync(target,'utf8').includes(`id="${hash}"`),`Missing anchor ${link} on ${file}`);links++;
   }
 }
-assert.equal(pages.length,17,'expected 16 published pages + 404');
+assert.equal(pages.length,18,'expected 17 published pages + 404');
 assert(!existsSync(root+'/pricing'),'pricing must remain unpublished');
 assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing must not appear in sitemap');assert(existsSync(root+'/app.js'));
 {const v=readFileSync(root+'/voice-ai/index.html','utf8');
@@ -62,3 +62,5 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
   for(const t of ['Your everyday questions.','Try asking','Find time for a workout this week'])assert(txt.includes(t),'ask-ai missing '+t);
   assert(v.includes('/assets/ask-v2-assets.png')&&v.includes('id="ask-how"'),'ask-ai asset pack and how-it-works anchor');}
 console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checked.`);
+
+{const v=readFileSync(root+'/nexdo-ai/index.html','utf8');for(const t of ['Talk or Type.','Voice AI','Type AI','See Nexdo AI in action','nai-prompt','/assets/nexdo-ai-pack.png'])assert(v.includes(t),'Nexdo AI missing '+t);for(const f of pages)assert(readFileSync(f,'utf8').includes('href="/nexdo-ai"'),'Nexdo AI navigation missing');}
