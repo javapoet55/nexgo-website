@@ -7,6 +7,9 @@ const files=d=>readdirSync(d).flatMap(n=>statSync(d+'/'+n).isDirectory()?files(d
 const pages=files(root).filter(f=>f.endsWith('.html'));let links=0;
 for(const file of pages){
   const html=readFileSync(file,'utf8');
+  assert.equal((html.match(/cdn\.amplitude\.com\/script\/a2b6d5293c576970bb6251cbececb5bc\.js/g)||[]).length,1,file+' needs one Amplitude loader');
+  assert(html.indexOf('/analytics.js') > html.indexOf('cdn.amplitude.com/script/'),file+' analytics must follow SDK');
+  assert(html.indexOf('/analytics.js') < html.indexOf('/app.js'),file+' analytics must precede app events');
   assert.equal((html.match(/<footer[ >]/g)||[]).length,1,file+' must have one shared footer');
   assert(html.includes('<b>Lifestyle</b>'),file+' missing shared Lifestyle footer');
   assert.equal((html.match(/<h1[ >]/g)||[]).length,1,file+' needs exactly one H1');

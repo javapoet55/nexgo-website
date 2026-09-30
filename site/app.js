@@ -15,7 +15,7 @@
   /* Header dropdowns */
   document.querySelectorAll('.dd>button').forEach(function(b){b.onclick=function(){var d=b.parentNode,o=!d.classList.contains('open');document.querySelectorAll('.dd.open').forEach(function(other){if(other!==d){other.classList.remove('open');other.querySelector('button').setAttribute('aria-expanded','false')}});d.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o))};if(b.parentNode.querySelector('a.cur'))b.parentNode.classList.add('cur')});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.dd.open').forEach(function(d){d.classList.remove('open');d.querySelector('button').setAttribute('aria-expanded','false')})});
-  /* analytics hook: no SDK; pushes to window.dataLayer if present and emits nexdo:track */
+  /* Named events are forwarded to Amplitude by analytics.js. */
   function track(name){var d={event:name,path:location.pathname};try{(window.dataLayer=window.dataLayer||[]).push(d)}catch(x){}try{document.dispatchEvent(new CustomEvent('nexdo:track',{detail:d}))}catch(x){}}
   if(path==='/voice-ai')track('voice_ai_page_view');
   if(path==='/shopping-lists')track('shopping_page_view');
