@@ -11,6 +11,7 @@ const shoppingCssFile='shopping.'+createHash('sha256').update(readFileSync('site
 const ORIGIN='https://nexdoapp.com';
 const src=readFileSync('site/index.html','utf8');
 const pages={
+  'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','Explore the NexDo Calorie Tracker preview: ten thoughtful features, nutrition goals, a sample food log, and an interactive walkthrough.'],
   calendar:['/calendar','NexDo Calendar | Your Time, Your Plans, A Little More Calm','See tasks and appointments together. Explore Schedule, Week, and Month views, add events by voice, set repeating plans, and mark events complete with NexDo.'],
   'nexdo-ai':['/nexdo-ai','Nexdo AI — Talk or Type. Get Things Done.','One AI assistant for your tasks, calendar, shopping lists and important moments. Speak naturally or type a request to plan your day.'],
   home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
@@ -61,6 +62,7 @@ const prefix=html.slice(0,starts[0].index),suffix=html.slice(mainEnd);
 const chunk={};
 starts.forEach((m,i)=>{chunk[m[1]]=html.slice(m.index,i+1<starts.length?starts[i+1].index:mainEnd).replace(/\n<!-- =+ [^>]*-->\s*$/,'\n');});
 chunk['nexdo-ai']='<style>'+readFileSync('site/nexdo-ai.css','utf8')+'</style>'+readFileSync('site/nexdo-ai.html','utf8')+'<script src="/nexdo-ai.js" defer></script>';
+chunk['calorie-tracker']='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/calorie-tracker.css','utf8')+'</style>'+readFileSync('site/calorie-tracker.html','utf8')+'<script src="/calorie-tracker.js" defer></script>';
 chunk.calendar='<style>'+readFileSync('site/calendar.css','utf8')+'</style>'+readFileSync('site/calendar.html','utf8')+'<script src="/calendar.js" defer></script>';
 chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
 const legalCss=`<style>.legaldoc{max-width:860px}.legaldoc .toc{padding:16px 20px;border-radius:18px;background:var(--glass);border:1px solid var(--glass-b);margin-bottom:26px}.legaldoc .toc summary{cursor:pointer;font-weight:700}.legaldoc .toc ol{padding-left:22px;margin-top:10px}.legaldoc .toc a,.legaldoc a{color:var(--tint-ink)}.legaldoc section{padding:0;margin:0 0 30px}.legaldoc h2{font-size:24px;margin:0 0 8px;letter-spacing:-.02em}.legaldoc p,.legaldoc li{margin:0 0 10px}.legaldoc ul,.legaldoc ol{margin:0 0 12px;padding-left:22px}.legaldoc h3{font-size:19px;margin:18px 0 6px}.legaldoc .plus,.legaldoc .glow{display:none}.legaldoc .callout,.legaldoc .contact-card{padding:16px 20px;border-radius:18px;background:var(--tint);margin:14px 0}.legaldoc dl dt{font-weight:700;color:var(--ink)}.legaldoc dl dd{color:var(--muted);margin:0 0 10px}.legaldoc .n{color:var(--tint-ink);font-weight:800;margin-right:6px}</style>`;
@@ -84,6 +86,7 @@ copyFileSync('site/about.css','dist/'+aboutCssFile);
 copyFileSync('site/app.js','dist/app.js');
 copyFileSync('site/nexdo-ai.js','dist/nexdo-ai.js');
 copyFileSync('site/calendar.js','dist/calendar.js');
+copyFileSync('site/calorie-tracker.js','dist/calorie-tracker.js');
 copyFileSync('assets/nexdo-ai-pack.png','dist/assets/nexdo-ai-pack.png');
 copyFileSync('assets/nexdo-ai-lifestyle.png','dist/assets/nexdo-ai-lifestyle.png');
 copyFileSync('assets/nexdo-ai-mascot.png','dist/assets/nexdo-ai-mascot.png');

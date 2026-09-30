@@ -34,7 +34,7 @@ for(const file of pages){
     if(hash)assert(readFileSync(target,'utf8').includes(`id="${hash}"`),`Missing anchor ${link} on ${file}`);links++;
   }
 }
-assert.equal(pages.length,19,'expected 18 published pages + 404');
+assert.equal(pages.length,20,'expected 19 published pages + 404');
 assert(!existsSync(root+'/pricing'),'pricing must remain unpublished');
 assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing must not appear in sitemap');assert(existsSync(root+'/app.js'));
 {const v=readFileSync(root+'/voice-ai/index.html','utf8');
