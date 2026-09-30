@@ -64,3 +64,8 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
 console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checked.`);
 
 {const v=readFileSync(root+'/nexdo-ai/index.html','utf8');for(const t of ['Talk or Type.','Voice AI','Type AI','See Nexdo AI in action','nai-prompt','/assets/nexdo-ai-pack.png'])assert(v.includes(t),'Nexdo AI missing '+t);for(const f of pages)assert(readFileSync(f,'utf8').includes('href="/nexdo-ai"'),'Nexdo AI navigation missing');}
+{ const page=readFileSync(root+'/nexdo-ai/index.html','utf8');
+  assert(page.indexOf('id="nai-journey-title"') < page.indexOf('id="how-it-works"'),'new journey must precede Ask Understand Act');
+  for(const text of ['From a simple question','real progress.','1. Ask','2. Understand','3. Suggest','4. Take Action','5. Stay on Track','Illustrative conversation'])assert(page.includes(text),'journey missing '+text);
+  assert.equal((page.match(/data-nai-example=/g)||[]).length,6,'six example requests');
+}
