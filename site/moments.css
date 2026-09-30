@@ -1,7 +1,7 @@
 /* Important Moments uses original artwork from moments-assets.png.
    SVG viewBox windows isolate each asset without resampling the source. */
 body.moments-page{background:#fcfdff;color:#090830;--muted:#52588d;--tint-ink:#802bff;font-family:Arial,Helvetica,sans-serif;line-height:1.4}
-.moments-page .blobs,.moments-page>footer{display:none}
+.moments-page .blobs{display:none}
 .moments-page main.wrap{max-width:1200px;padding:0 28px}
 body.moments-page>nav{font-family:Inter,system-ui,sans-serif;line-height:1.55;--muted:#575C80;--tint-ink:#3D29F0}
 .moments-page main .btn{border-radius:15px;font-size:16px;font-weight:500;padding:14px 24px;line-height:1.2;white-space:nowrap}

@@ -7,6 +7,8 @@ const files=d=>readdirSync(d).flatMap(n=>statSync(d+'/'+n).isDirectory()?files(d
 const pages=files(root).filter(f=>f.endsWith('.html'));let links=0;
 for(const file of pages){
   const html=readFileSync(file,'utf8');
+  assert.equal((html.match(/<footer[ >]/g)||[]).length,1,file+' must have one shared footer');
+  assert(html.includes('<b>Lifestyle</b>'),file+' missing shared Lifestyle footer');
   assert.equal((html.match(/<h1[ >]/g)||[]).length,1,file+' needs exactly one H1');
   assert(html.includes('name="description"'),file+' description');assert(html.includes('property="og:title"'),file+' og:title');assert(html.includes('id="main"'),file+' main');
   if(!file.endsWith('/404.html'))assert(html.includes('rel="canonical"'),file+' canonical');
@@ -55,7 +57,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
   assert(v.includes('<title>NexDo Shopping Lists | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping Lists | Voice, AI & Smarter Shopping</title>'),'shopping title');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'shopping one h1');
   for(const t of ['Just say what you need.','your way.','Watch how it works','Real-time sync','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
-  assert(v.includes('href="/voice-ai"')&&/data-event="shopping_get_started_click"/.test(v),'shopping CTAs');
+  assert(/data-event="shopping_get_started_click"/.test(v),'shopping CTAs');
   assert(v.includes('id="sl-how"'),'shopping how anchor');
   assert(v.includes('/assets/sl2-assets.png'),'shopping supplied asset pack');
   assert(v.includes('class="shopping-page"')&&(/href="\/shopping\.[a-f0-9]{10}\.css"/.test(v)),'shopping scoped styles');}

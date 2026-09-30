@@ -1,7 +1,7 @@
 /* Shopping Lists redesign. SVG viewBox windows display the supplied asset pack
    at its original quality; page text and actions remain semantic HTML. */
 body.shopping-page{background:#fcfdff;color:#08072e;--muted:#555988;--tint-ink:#8642ff;font-family:Arial,Helvetica,sans-serif;line-height:1.4}
-.shopping-page .blobs,.shopping-page>footer{display:none}
+.shopping-page .blobs{display:none}
 .shopping-page main.wrap{max-width:1200px;padding:0 26px}
 body.shopping-page>nav{font-family:Inter,system-ui,sans-serif;line-height:1.55;--muted:#575C80;--tint-ink:#3D29F0}
 .shopping-page main .btn{border-radius:14px;padding:14px 24px;font-size:17px;font-weight:500;line-height:1.25;white-space:nowrap}

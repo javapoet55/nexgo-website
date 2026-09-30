@@ -11,7 +11,7 @@ const shoppingCssFile='shopping.'+createHash('sha256').update(readFileSync('site
 const ORIGIN='https://nexdoapp.com';
 const src=readFileSync('site/index.html','utf8');
 const pages={
-  pomodoro:['/pomodoro','NexDo Pomodoro | Page Coming Soon','A dedicated page for NexDo Pomodoro is coming soon.'],
+  pomodoro:['/pomodoro','NexDo Pomodoro | Small Sessions. Real Progress.','Choose your focus, set your timer, take a break, and see your progress with NexDo Pomodoro.'],
   'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','Explore the NexDo Calorie Tracker preview: ten thoughtful features, nutrition goals, a sample food log, and an interactive walkthrough.'],
   calendar:['/calendar','NexDo Calendar | Your Time, Your Plans, A Little More Calm','See tasks and appointments together. Explore Schedule, Week, and Month views, add events by voice, set repeating plans, and mark events complete with NexDo.'],
   'nexdo-ai':['/nexdo-ai','Nexdo AI — Talk or Type. Get Things Done.','One AI assistant for your tasks, calendar, shopping lists and important moments. Speak naturally or type a request to plan your day.'],
@@ -64,7 +64,7 @@ const chunk={};
 starts.forEach((m,i)=>{chunk[m[1]]=html.slice(m.index,i+1<starts.length?starts[i+1].index:mainEnd).replace(/\n<!-- =+ [^>]*-->\s*$/,'\n');});
 chunk['nexdo-ai']='<style>'+readFileSync('site/nexdo-ai.css','utf8')+'</style>'+readFileSync('site/nexdo-ai.html','utf8')+'<script src="/nexdo-ai.js" defer></script>';
 chunk['calorie-tracker']='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/calorie-tracker.css','utf8')+'</style>'+readFileSync('site/calorie-tracker.html','utf8')+'<script src="/calorie-tracker.js" defer></script>';
-chunk.pomodoro='<div class="page" data-page="pomodoro"><header class="phead"><div class="eyebrow">Lifestyle</div><h1>Pomodoro</h1><p class="lead">Our Pomodoro page is coming soon.</p><a class="btn primary" href="/">Back to home</a></header></div>';
+chunk.pomodoro='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/pomodoro.css','utf8')+'</style>'+readFileSync('site/pomodoro.html','utf8')+'<script src="/pomodoro.js" defer></script>';
 chunk.calendar='<style>'+readFileSync('site/calendar.css','utf8')+'</style>'+readFileSync('site/calendar.html','utf8')+'<script src="/calendar.js" defer></script>';
 chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
 const legalCss=`<style>.legaldoc{max-width:860px}.legaldoc .toc{padding:16px 20px;border-radius:18px;background:var(--glass);border:1px solid var(--glass-b);margin-bottom:26px}.legaldoc .toc summary{cursor:pointer;font-weight:700}.legaldoc .toc ol{padding-left:22px;margin-top:10px}.legaldoc .toc a,.legaldoc a{color:var(--tint-ink)}.legaldoc section{padding:0;margin:0 0 30px}.legaldoc h2{font-size:24px;margin:0 0 8px;letter-spacing:-.02em}.legaldoc p,.legaldoc li{margin:0 0 10px}.legaldoc ul,.legaldoc ol{margin:0 0 12px;padding-left:22px}.legaldoc h3{font-size:19px;margin:18px 0 6px}.legaldoc .plus,.legaldoc .glow{display:none}.legaldoc .callout,.legaldoc .contact-card{padding:16px 20px;border-radius:18px;background:var(--tint);margin:14px 0}.legaldoc dl dt{font-weight:700;color:var(--ink)}.legaldoc dl dd{color:var(--muted);margin:0 0 10px}.legaldoc .n{color:var(--tint-ink);font-weight:800;margin-right:6px}</style>`;
@@ -101,3 +101,6 @@ for(const f of ['tasks-closing-logo-v5.png','tasks-app-screen-v2.png','tasks-clo
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 writeFileSync('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.values(pages).map(([p])=>`  <url><loc>${ORIGIN}${p==='/'?'/':p}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built ${Object.keys(pages).length} pages + 404 into dist/`);
+
+copyFileSync('site/pomodoro.js','dist/pomodoro.js');
+copyFileSync('assets/pomodoro-tomato.png','dist/assets/pomodoro-tomato.png');
