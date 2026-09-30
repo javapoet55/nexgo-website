@@ -11,6 +11,7 @@ const shoppingCssFile='shopping.'+createHash('sha256').update(readFileSync('site
 const ORIGIN='https://nexdoapp.com';
 const src=readFileSync('site/index.html','utf8');
 const pages={
+  'how-it-works':['/how-it-works','How NexDo Works | Capture, Plan & Take Action','Explore a sample first day with NexDo: capture a task, review your plans, take the next action, and keep your day up to date.'],
   'daily-brief':['/daily-brief','NexDo Daily Brief | Your Day, Priorities & Next Move','Meet your NexDo Daily Brief: connected tasks and calendar, AI-assisted priorities, deadlines, and next actions. Explore interactive sample screens.'],
   pomodoro:['/pomodoro','NexDo Pomodoro | Small Sessions. Real Progress.','Choose your focus, set your timer, take a break, and see your progress with NexDo Pomodoro.'],
   'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','Explore the NexDo Calorie Tracker preview: ten thoughtful features, nutrition goals, a sample food log, and an interactive walkthrough.'],
@@ -67,6 +68,7 @@ chunk['nexdo-ai']='<style>'+readFileSync('site/nexdo-ai.css','utf8')+'</style>'+
 chunk['calorie-tracker']='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/calorie-tracker.css','utf8')+'</style>'+readFileSync('site/calorie-tracker.html','utf8')+'<script src="/calorie-tracker.js" defer></script>';
 chunk.pomodoro='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/pomodoro.css','utf8')+'</style>'+readFileSync('site/pomodoro.html','utf8')+'<script src="/pomodoro.js" defer></script>';
 chunk['daily-brief']='<style>'+readFileSync('site/daily-brief.css','utf8')+'</style>'+readFileSync('site/daily-brief.html','utf8')+'<script src="/daily-brief.js" defer></script>';
+chunk['how-it-works']='<style>'+readFileSync('site/how-it-works.css','utf8')+'</style>'+readFileSync('site/how-it-works.html','utf8')+'<script src="/how-it-works.js" defer></script>';
 chunk.features='<style>'+readFileSync('site/features.css','utf8')+'</style>'+readFileSync('site/features.html','utf8');
 chunk.calendar='<style>'+readFileSync('site/calendar.css','utf8')+'</style>'+readFileSync('site/calendar.html','utf8')+'<script src="/calendar.js" defer></script>';
 chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
@@ -109,3 +111,5 @@ copyFileSync('site/pomodoro.js','dist/pomodoro.js');
 copyFileSync('assets/pomodoro-tomato.png','dist/assets/pomodoro-tomato.png');
 
 copyFileSync('site/daily-brief.js','dist/daily-brief.js');
+
+copyFileSync('site/how-it-works.js','dist/how-it-works.js');
