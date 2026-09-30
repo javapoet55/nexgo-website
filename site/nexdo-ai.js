@@ -39,3 +39,48 @@
     section.querySelector('.nai-j-followup').textContent = example[3];
   }));
 })();
+
+// Opt-in spoken illustration; this demo never records audio or creates data.
+(() => {
+  const section = document.querySelector('.nai-action-life');
+  if (!section) return;
+  const button = section.querySelector('.nai-a-audio button');
+  const status = section.querySelector('.nai-a-audio small');
+  const waveStatus = section.querySelector('.nai-a-wave small');
+  let playing = false;
+  let speech;
+  const reset = message => {
+    playing = false;
+    section.classList.remove('nai-audio-playing');
+    button.setAttribute('aria-pressed', 'false');
+    button.textContent = '♫ Tap to hear';
+    status.textContent = message;
+    waveStatus.textContent = 'Ready to play';
+  };
+  if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
+    button.hidden = true;
+    status.textContent = 'Read the example conversation below.';
+    return;
+  }
+  button.addEventListener('click', () => {
+    if (playing) {
+      playing = false;
+      window.speechSynthesis.cancel();
+      reset('Example stopped. Tap to hear again.');
+      return;
+    }
+    speech = new SpeechSynthesisUtterance(Array.from(section.querySelectorAll('.nai-a-message p'), p => p.textContent).join('\n\n'));
+    speech.lang = 'en-US';
+    speech.rate = 0.95;
+    speech.onend = () => { if (playing) reset('Example complete. Tap to hear it again.'); };
+    speech.onerror = () => { if (playing) reset('Audio unavailable. You can read the conversation below.'); };
+    playing = true;
+    button.setAttribute('aria-pressed', 'true');
+    button.textContent = '■ Stop audio';
+    status.textContent = 'Playing the example conversation…';
+    waveStatus.textContent = 'Playing…';
+    section.classList.add('nai-audio-playing');
+    window.speechSynthesis.speak(speech);
+  });
+  window.addEventListener('pagehide', () => { if (playing) { playing = false; window.speechSynthesis.cancel(); } });
+})();
