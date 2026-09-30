@@ -82,3 +82,5 @@ console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checke
   for(const text of ['From a simple question','real progress.','1. Ask','2. Understand','3. Suggest','4. Take Action','5. Stay on Track','Illustrative conversation'])assert(page.includes(text),'journey missing '+text);
   assert.equal((page.match(/data-nai-example=/g)||[]).length,6,'six example requests');
 }
+
+{const features=readFileSync(root+'/features/index.html','utf8');assert.equal((features.match(/class="fx-list"/g)||[]).length,7,'seven module feature lists');assert.equal((features.match(/<h4>/g)||[]).length,35,'five features per module');}
