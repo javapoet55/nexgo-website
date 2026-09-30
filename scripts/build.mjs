@@ -11,6 +11,7 @@ const shoppingCssFile='shopping.'+createHash('sha256').update(readFileSync('site
 const ORIGIN='https://nexdoapp.com';
 const src=readFileSync('site/index.html','utf8');
 const pages={
+  'daily-brief':['/daily-brief','NexDo Daily Brief | Your Day, Priorities & Next Move','Meet your NexDo Daily Brief: connected tasks and calendar, AI-assisted priorities, deadlines, and next actions. Explore interactive sample screens.'],
   pomodoro:['/pomodoro','NexDo Pomodoro | Small Sessions. Real Progress.','Choose your focus, set your timer, take a break, and see your progress with NexDo Pomodoro.'],
   'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','Explore the NexDo Calorie Tracker preview: ten thoughtful features, nutrition goals, a sample food log, and an interactive walkthrough.'],
   calendar:['/calendar','NexDo Calendar | Your Time, Your Plans, A Little More Calm','See tasks and appointments together. Explore Schedule, Week, and Month views, add events by voice, set repeating plans, and mark events complete with NexDo.'],
@@ -21,7 +22,7 @@ const pages={
   'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, and share with family — all with NexDo, your AI Action Assistant.'],
   'important-moments':['/important-moments','NexDo Important Moments | Never Miss What Matters','Remember birthdays, anniversaries and milestones. Plan ahead, get thoughtful AI suggestions, and celebrate together with NexDo Important Moments.'],
   'ask-ai':['/ask-ai','NexDo Ask AI | Your Everyday Questions, Real Progress','Ask NexDo about your day by text or voice — get answers from your tasks and calendar, find free time, see what to do next, and take action.'],
-  features:['/features','NexDo Features | Seven Modules, One Place','Explore 35 key features across NexDo AI, Tasks, Calendar, Shopping Lists, Calorie Tracker, Pomodoro, and Moments.'],
+  features:['/features','NexDo Features | Eight Modules, One Place','Explore 40 key features across Daily Brief, NexDo AI, Tasks, Calendar, Shopping Lists, Calorie Tracker, Pomodoro, and Moments.'],
   'use-cases':['/use-cases','Use cases — Nexdo','How professionals, families, founders, and students use Nexdo to turn intentions into done.'],
   'why-nexdo':['/why-nexdo','Why Nexdo','Planning tools plan. Nexdo acts: call, text, or email straight from a task, and talk to it in real time.'],
   pricing:['/pricing','Pricing — Nexdo','Get 1 year of NexDo Pro or Max free when you sign up by November 30th. Compare plans and features.'],
@@ -65,6 +66,7 @@ starts.forEach((m,i)=>{chunk[m[1]]=html.slice(m.index,i+1<starts.length?starts[i
 chunk['nexdo-ai']='<style>'+readFileSync('site/nexdo-ai.css','utf8')+'</style>'+readFileSync('site/nexdo-ai.html','utf8')+'<script src="/nexdo-ai.js" defer></script>';
 chunk['calorie-tracker']='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/calorie-tracker.css','utf8')+'</style>'+readFileSync('site/calorie-tracker.html','utf8')+'<script src="/calorie-tracker.js" defer></script>';
 chunk.pomodoro='<style>'+readFileSync('site/calendar.css','utf8')+readFileSync('site/pomodoro.css','utf8')+'</style>'+readFileSync('site/pomodoro.html','utf8')+'<script src="/pomodoro.js" defer></script>';
+chunk['daily-brief']='<style>'+readFileSync('site/daily-brief.css','utf8')+'</style>'+readFileSync('site/daily-brief.html','utf8')+'<script src="/daily-brief.js" defer></script>';
 chunk.features='<style>'+readFileSync('site/features.css','utf8')+'</style>'+readFileSync('site/features.html','utf8');
 chunk.calendar='<style>'+readFileSync('site/calendar.css','utf8')+'</style>'+readFileSync('site/calendar.html','utf8')+'<script src="/calendar.js" defer></script>';
 chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
@@ -105,3 +107,5 @@ console.log(`Built ${Object.keys(pages).length} pages + 404 into dist/`);
 
 copyFileSync('site/pomodoro.js','dist/pomodoro.js');
 copyFileSync('assets/pomodoro-tomato.png','dist/assets/pomodoro-tomato.png');
+
+copyFileSync('site/daily-brief.js','dist/daily-brief.js');

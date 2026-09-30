@@ -21,6 +21,7 @@ for(const file of pages){
   assert(html.includes('href="/important-moments"'),file+' missing Lifestyle > Moments nav link');
 
   const productMenu=html.match(/<div class="dd-m">([\s\S]*?)<\/div>/)?.[1] || '';
+  assert(productMenu.startsWith('<a href="/daily-brief"'),file+' Daily Brief must lead Products');
   assert(productMenu.includes('href="/nexdo-ai"'),file+' missing Products > Nexdo AI');
   assert(!/href="\/(?:voice-ai|ask-ai)"/.test(productMenu),file+' contains hidden product menu links');
   assert(productMenu.includes('href="/calendar"'),file+' missing Products > Calendar');
@@ -43,7 +44,7 @@ for(const file of pages){
     if(hash)assert(readFileSync(target,'utf8').includes(`id="${hash}"`),`Missing anchor ${link} on ${file}`);links++;
   }
 }
-assert.equal(pages.length,21,'expected 20 published pages + 404');
+assert.equal(pages.length,22,'expected 21 published pages + 404');
 assert(!existsSync(root+'/pricing'),'pricing must remain unpublished');
 assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing must not appear in sitemap');assert(existsSync(root+'/app.js'));
 {const v=readFileSync(root+'/voice-ai/index.html','utf8');
@@ -83,4 +84,4 @@ console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checke
   assert.equal((page.match(/data-nai-example=/g)||[]).length,6,'six example requests');
 }
 
-{const features=readFileSync(root+'/features/index.html','utf8');assert.equal((features.match(/class="fx-list"/g)||[]).length,7,'seven module feature lists');assert.equal((features.match(/<h4>/g)||[]).length,35,'five features per module');}
+{const features=readFileSync(root+'/features/index.html','utf8');assert.equal((features.match(/class="fx-list"/g)||[]).length,8,'eight module feature lists');assert.equal((features.match(/<h4>/g)||[]).length,40,'five features per module');}
