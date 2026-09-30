@@ -28,3 +28,13 @@ Old URLs redirect (301): `/how-it-works` → `/features`, `/features/ai-assistan
 - Pricing (plans, prices, trial, discounts, feature comparison, FAQ) mirrors `src/components/pricing.tsx` in the Harbour app repo. Update both together.
 - Brand colors: Indigo `#3D29F0`, Blue `#0594F5`, Magenta `#F014C7`, Purple `#8514F5`, Deep navy `#080F2E`, Muted slate `#575C80`.
 - Team cards on `/about` and the mailboxes on `/contact` are placeholders to confirm before launch.
+
+## Support chatbot
+
+Every page includes Ask support. The build indexes metadata and FAQ answers from published pages into `dist/support-articles.json`; hidden pricing is excluded. Answers link to their published sources. No API key is required: matching guide excerpts are returned, with an honest fallback for missing answers.
+
+To enable AI later, add `OPENAI_API_KEY` to this website service in Railway. Optionally set `SUPPORT_CHAT_MODEL` (otherwise `OPENAI_MODEL`, then `gpt-5.4-mini`). Redeploy/restart after changing variables. No key is placed in browser code. AI uses only the published sources, validates source IDs and uses `store: false`; source validation does not guarantee every generated sentence, so the UI identifies possible mistakes. Conversations stay in browser memory and are not saved by this service.
+
+The endpoint is `/api/support/chat`. Requests are capped at 16 KB, nine messages and a 1,000-character question. Per-process limits: ten requests per visitor/minute, sixty total/minute, five concurrent. Add shared gateway rate limits if scaling across replicas. All client answers use textContent, with source links restricted to server-owned local paths. No account data, database access, mutations, or external page crawling.
+
+Run `npm run build && npm test` for source/link checks and support tests.

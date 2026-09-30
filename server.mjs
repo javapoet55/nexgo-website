@@ -1,4 +1,5 @@
 import http from 'node:http';
+import {supportRoute} from './support-server.mjs';
 import {readFile,stat} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
 const root=resolve('dist');
@@ -10,6 +11,7 @@ const host=String(req.headers['x-forwarded-host']||req.headers.host||'').split('
 const proto=String(req.headers['x-forwarded-proto']||'').split(',')[0].trim();
 if(proto&&proto!=='https'&&host&&!/^(localhost|127\.0\.0\.1)(:|$)/.test(host)){res.writeHead(301,{Location:'https://'+host+req.url});return res.end();}
 res.setHeader('Strict-Transport-Security','max-age=31536000; includeSubDomains');
+if(req.url.split('?')[0]==='/api/support/chat')return supportRoute(req,res);
 if(!['GET','HEAD'].includes(req.method)){res.writeHead(405,{'Allow':'GET, HEAD'});return res.end();}
 try{let path=decodeURIComponent(new URL(req.url,'http://localhost').pathname);if(aliases[path]){res.writeHead(301,{Location:aliases[path]});return res.end();}if(path.length>1&&path.endsWith('/')){res.writeHead(301,{Location:path.slice(0,-1)});return res.end();}let file=resolve(root,'.'+path);if(file!==root&&!file.startsWith(root+'/')){res.writeHead(404);return res.end();}let status=200;try{const s=await stat(file);if(s.isDirectory())file=resolve(file,'index.html');await stat(file);}catch{file=resolve(root,'404.html');status=404;}const data=await readFile(file);res.setHeader('Content-Type',types[extname(file)]||'application/octet-stream');res.setHeader('Cache-Control',extname(file)==='.html'?'public, max-age=0, must-revalidate':'public, max-age=3600');res.writeHead(status);res.end(req.method==='HEAD'?undefined:data);}catch{res.writeHead(400);res.end('Bad request');}
 });
