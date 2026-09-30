@@ -83,6 +83,7 @@ copyFileSync('site/app.js','dist/app.js');
 copyFileSync('site/nexdo-ai.js','dist/nexdo-ai.js');
 copyFileSync('assets/nexdo-ai-pack.png','dist/assets/nexdo-ai-pack.png');
 copyFileSync('assets/nexdo-ai-lifestyle.png','dist/assets/nexdo-ai-lifestyle.png');
+copyFileSync('assets/nexdo-ai-mascot.png','dist/assets/nexdo-ai-mascot.png');
 copyFileSync('site/ask.css','dist/'+askCssFile);
 copyFileSync('site/voice.css','dist/'+voiceCssFile);
 copyFileSync('site/voice.js','dist/'+voiceJsFile);
