@@ -14,10 +14,13 @@ for(const file of pages){
   assert(!/href="\/pricing(?:["#/?])/.test(html),file+' links to hidden pricing page');
   assert(!html.includes('href="#/'),file+' has a leftover hash route');
   assert(html.includes('href="/tasks"'),file+' missing Products > Tasks nav link');
-  assert(html.includes('href="/voice-ai"'),file+' missing Products > Voice AI nav link');
+
   assert(html.includes('href="/shopping-lists"'),file+' missing Products > Shopping Lists nav link');
   assert(html.includes('href="/important-moments"'),file+' missing Products > Important Moments nav link');
-  assert(html.includes('href="/ask-ai"'),file+' missing Products > Ask AI nav link');
+
+  const productMenu=html.match(/<div class="dd-m">([\s\S]*?)<\/div>/)?.[1] || '';
+  assert(productMenu.includes('href="/nexdo-ai"'),file+' missing Products > Nexdo AI');
+  assert(!/href="\/(?:voice-ai|ask-ai)"/.test(productMenu),file+' contains hidden product menu links');
   const visible=html.replace(/<style[\s\S]*?<\/style>/g,'');
   assert(!/Instacart|store managers|Start your free trial|Cancel anytime/i.test(visible),file+' contains outdated marketing');
   if(!/\/(?:privacy|terms)\/index\.html$/.test(file))assert(!/SOC 2|GDPR Compliant|independent audit|10x|driving.mode|iPhone app (?:is )?coming soon|Calendar connections are part of the roadmap|fully included in your Nexdo plan/i.test(visible),file+' contains unsupported or outdated claims');
