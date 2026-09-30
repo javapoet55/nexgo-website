@@ -186,7 +186,7 @@ table.cmp tr:last-child td{border-bottom:0}
 .crumbs a{font-size:14px;font-weight:600;text-decoration:none;color:var(--ink);padding:8px 14px;border-radius:999px}
 .jump{padding:22px 26px;font-size:15px;color:var(--muted)}
 .jump a{color:var(--tint-ink);font-weight:600;text-decoration:none}
-footer .cols{display:grid;grid-template-columns:2.5fr 1.2fr 1fr 1fr 1fr;gap:24px;width:100%;margin-bottom:26px}
+footer .cols{display:grid;grid-template-columns:2fr repeat(5,1fr);gap:20px;width:100%;margin-bottom:26px}
 footer .cols b{display:block;color:var(--ink);margin-bottom:10px;font-size:14px}
 footer .cols a{display:block;margin:0 0 8px}
 footer .cols p{max-width:none;white-space:normal}
@@ -845,14 +845,14 @@ q{display:block;quotes:"“" "”";padding:12px 14px;border-radius:12px;backgrou
 
 <nav><div class="bar glass">
   <a class="logo" href="#/home" aria-label="NexDo home"><img src="/assets/nexdo-logo-nav.webp" width="413" height="96" alt="NexDo"></a>
-  <div class="links" data-nav><div class="dd"><button type="button" aria-expanded="false" aria-haspopup="true">Products ▾</button><div class="dd-m"><a href="#/nexdo-ai">Nexdo AI<small>Talk or type. Get things done.</small></a><a href="#/tasks">Tasks<small>Plan, prioritize, and follow through.</small></a><a href="#/calendar">Calendar<small>Your tasks and appointments, together.</small></a><a href="#/calorie-tracker">Calorie Tracker<small>Explore meals, goals, and daily progress.</small></a><a href="#/shopping-lists">Shopping Lists<small>Voice, AI suggestions, and sharing.</small></a><a href="#/important-moments">Important Moments<small>Never miss what matters most.</small></a></div></div><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a></div>
+  <div class="links" data-nav><div class="dd"><button type="button" aria-expanded="false" aria-haspopup="true">Products ▾</button><div class="dd-m"><a href="#/nexdo-ai">Nexdo AI<small>Talk or type. Get things done.</small></a><a href="#/tasks">Tasks<small>Plan, prioritize, and follow through.</small></a><a href="#/calendar">Calendar<small>Your tasks and appointments, together.</small></a></div></div><div class="dd"><button type="button" aria-expanded="false" aria-haspopup="true">Lifestyle ▾</button><div class="dd-m"><a href="#/shopping-lists">Shopping Lists<small>Voice, AI suggestions, and sharing.</small></a><a href="#/calorie-tracker">Calorie Tracker<small>Explore meals, goals, and daily progress.</small></a><a href="#/pomodoro">Pomodoro<small>Page coming soon.</small></a><a href="#/important-moments">Moments<small>Never miss what matters most.</small></a></div></div><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a></div>
   <div class="navr">
         <a class="btn primary" href="#/start">Get started</a>
     <button class="burger" aria-label="Open menu" aria-expanded="false" id="burger">☰</button>
   </div>
 </div></nav>
 <div class="menu" id="menu"><div class="glass" data-nav>
-  <a href="#/home">Home</a><div class="mlabel">Products</div><a href="#/nexdo-ai">Nexdo AI</a><a href="#/tasks">Tasks</a><a href="#/calendar">Calendar</a><a href="#/calorie-tracker">Calorie Tracker</a><a href="#/shopping-lists">Shopping Lists</a><a href="#/important-moments">Important Moments</a><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a><a href="#/about">About</a><a href="#/start">Get started</a>
+  <a href="#/home">Home</a><div class="mlabel">Products</div><a href="#/nexdo-ai">Nexdo AI</a><a href="#/tasks">Tasks</a><a href="#/calendar">Calendar</a><div class="mlabel">Lifestyle</div><a href="#/shopping-lists">Shopping Lists</a><a href="#/calorie-tracker">Calorie Tracker</a><a href="#/pomodoro">Pomodoro</a><a href="#/important-moments">Moments</a><div class="mlabel">Explore</div><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a><a href="#/help">Help</a><a href="#/about">About</a><a href="#/start">Get started</a>
 </div></div>
 
 <main class="wrap">
@@ -1633,7 +1633,7 @@ q{display:block;quotes:"“" "”";padding:12px 14px;border-radius:12px;backgrou
 <footer><div class="wrap">
   <div class="cols">
     <div><a class="flogo" href="#/home" aria-label="NexDo home"><img src="/assets/nexdo-logo-full.webp" width="624" height="160" alt="NexDo — Your AI action assistant"></a><p>Your AI action &amp; follow-up assistant.<br>Less on your mind, more done daily.<br>Plans your day, takes action, and keeps you on track.<br>From tasks to life’s important moments,<br>Nexdo helps you get it done.</p></div>
-    <div><b>Products</b><a href="#/nexdo-ai">Nexdo AI</a><a href="#/tasks">Tasks</a><a href="#/calendar">Calendar</a><a href="#/calorie-tracker">Calorie Tracker</a><a href="#/shopping-lists">Shopping Lists</a><a href="#/important-moments">Important Moments</a></div>
+    <div><b>Products</b><a href="#/nexdo-ai">Nexdo AI</a><a href="#/tasks">Tasks</a><a href="#/calendar">Calendar</a></div><div><b>Lifestyle</b><a href="#/shopping-lists">Shopping Lists</a><a href="#/calorie-tracker">Calorie Tracker</a><a href="#/pomodoro">Pomodoro</a><a href="#/important-moments">Moments</a></div>
     <div><b>Explore</b><a href="#/features">Features</a><a href="#/use-cases">Use cases</a><a href="#/why-nexdo">Why Nexdo</a><a href="#/pricing">Pricing</a></div>
     <div><b>Company</b><a href="#/about">About</a><a href="https://www.nexdoapp.com/privacy" rel="noopener">Privacy Policy</a><a href="https://www.nexdoapp.com/terms" rel="noopener">Terms of Service</a><a href="#/contact">Contact</a></div>
     <div><b>Support</b><a href="#/help">Help center</a><a href="#/start">Get started</a><a href="https://app.nexdoapp.com/login">Sign in</a></div>

@@ -15,13 +15,20 @@ for(const file of pages){
   assert(!html.includes('href="#/'),file+' has a leftover hash route');
   assert(html.includes('href="/tasks"'),file+' missing Products > Tasks nav link');
 
-  assert(html.includes('href="/shopping-lists"'),file+' missing Products > Shopping Lists nav link');
-  assert(html.includes('href="/important-moments"'),file+' missing Products > Important Moments nav link');
+  assert(html.includes('href="/shopping-lists"'),file+' missing Lifestyle > Shopping Lists nav link');
+  assert(html.includes('href="/important-moments"'),file+' missing Lifestyle > Moments nav link');
 
   const productMenu=html.match(/<div class="dd-m">([\s\S]*?)<\/div>/)?.[1] || '';
   assert(productMenu.includes('href="/nexdo-ai"'),file+' missing Products > Nexdo AI');
   assert(!/href="\/(?:voice-ai|ask-ai)"/.test(productMenu),file+' contains hidden product menu links');
   assert(productMenu.includes('href="/calendar"'),file+' missing Products > Calendar');
+  const lifestyleMenu=[...html.matchAll(/<div class="dd-m">([\s\S]*?)<\/div>/g)][1]?.[1] || '';
+  const footerLifestyle=html.match(/<div><b>Lifestyle<\/b>([\s\S]*?)<\/div>/)?.[1] || '';
+  for(const route of ['shopping-lists','calorie-tracker','pomodoro','important-moments']){
+    assert(lifestyleMenu.includes(`href="/${route}"`),file+' missing Lifestyle > '+route);
+    assert(footerLifestyle.includes(`href="/${route}"`),file+' missing footer Lifestyle > '+route);
+    assert(!productMenu.includes(`href="/${route}"`),file+' Lifestyle item still in Products');
+  }
   const visible=html.replace(/<style[\s\S]*?<\/style>/g,'');
   assert(!/Instacart|store managers|Start your free trial|Cancel anytime/i.test(visible),file+' contains outdated marketing');
   if(!/\/(?:privacy|terms)\/index\.html$/.test(file))assert(!/SOC 2|GDPR Compliant|independent audit|10x|driving.mode|iPhone app (?:is )?coming soon|Calendar connections are part of the roadmap|fully included in your Nexdo plan/i.test(visible),file+' contains unsupported or outdated claims');
@@ -34,7 +41,7 @@ for(const file of pages){
     if(hash)assert(readFileSync(target,'utf8').includes(`id="${hash}"`),`Missing anchor ${link} on ${file}`);links++;
   }
 }
-assert.equal(pages.length,20,'expected 19 published pages + 404');
+assert.equal(pages.length,21,'expected 20 published pages + 404');
 assert(!existsSync(root+'/pricing'),'pricing must remain unpublished');
 assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing must not appear in sitemap');assert(existsSync(root+'/app.js'));
 {const v=readFileSync(root+'/voice-ai/index.html','utf8');
