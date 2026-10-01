@@ -71,6 +71,7 @@ chunk['daily-brief']='<style>'+readFileSync('site/daily-brief.css','utf8')+'</st
 chunk['how-it-works']='<style>'+readFileSync('site/how-it-works.css','utf8')+'</style>'+readFileSync('site/how-it-works.html','utf8')+'<script src="/how-it-works.js" defer></script>';
 chunk.features='<style>'+readFileSync('site/features.css','utf8')+'</style>'+readFileSync('site/features.html','utf8');
 chunk.calendar='<style>'+readFileSync('site/calendar.css','utf8')+'</style>'+readFileSync('site/calendar.html','utf8')+'<script src="/calendar.js" defer></script>';
+chunk.tasks=chunk.tasks.replace('<section class="tf-features"',readFileSync('site/tasks-how.html','utf8')+'<section class="tf-features"').replace('<svg class="tk3-asset tk3-calm"','<a class="th-hero-link" href="#tasks-how-it-works">See how it works ↓</a><svg class="tk3-asset tk3-calm"')+'<script src="/tasks-how.js" defer></script>';
 chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
 chunk['important-moments']=chunk['important-moments'].replace(/<section id="im-how"[\s\S]*?<\/section>/,readFileSync('site/moments-how.html','utf8'))+'<script src="/moments-how.js" defer></script>';
 chunk['shopping-lists']=chunk['shopping-lists'].replace('<section class="sl2-two sl2-create" id="sl-how">',readFileSync('site/shopping-how.html','utf8')+'<section class="sl2-two sl2-create" id="sl-add">')+'<script src="/shopping-how.js" defer></script>';
@@ -105,6 +106,7 @@ copyFileSync('site/voice.js','dist/'+voiceJsFile);
 copyFileSync('site/moments.css','dist/'+momentsCssFile);
 copyFileSync('site/moments-how.js','dist/moments-how.js');
 copyFileSync('site/shopping-how.js','dist/shopping-how.js');
+copyFileSync('site/tasks-how.js','dist/tasks-how.js');
 copyFileSync('site/shopping.css','dist/'+shoppingCssFile);
 for(const f of ['tasks-closing-logo-v5.png','tasks-app-screen-v2.png','tasks-closing-v4.png','tasks-app-screen.png','tasks-features-v3.png','tasks-hero-v3.png','tasks-v2-assets.png','about-v2-assets.png','ask-v2-assets.png','voice-v2-assets.png','hero-v3-assets.png','moments-assets.png','sl2-assets.png','favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
