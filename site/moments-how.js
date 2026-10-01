@@ -1,0 +1,13 @@
+(()=>{
+ const root=document.querySelector('.mh-section');if(!root)return;
+ const tabs=[...root.querySelectorAll('[data-mh-tab]')];let index=0;
+ const wish=root.querySelector('#mh-wish'),review=root.querySelector('#mh-message-review'),channel=root.querySelector('#mh-channel'),result=root.querySelector('.mh-result');
+ const update=()=>{review.textContent=wish.value;result.textContent='';root.querySelector('#mh-delivery-note').textContent=channel.value==='messages'?'NexDo reminds you to open the prepared wish. You tap Send in Messages; it is not sent automatically.':'After you approve the recipient and message, email can send at the scheduled time when Gmail and the delivery service are connected.';};
+ const select=n=>{index=n;tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===n));tab.tabIndex=i===n?0:-1;root.querySelector('#'+tab.getAttribute('aria-controls')).hidden=i!==n;});root.querySelector('.mh-position').textContent=`${n+1} of 3`;root.querySelector('.mh-back').disabled=n===0;root.querySelector('.mh-next').textContent=n===2?'Start again ↻':'Next →';update();};
+ tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>select(i));tab.addEventListener('keydown',e=>{let n;if(['ArrowRight','ArrowDown'].includes(e.key))n=(i+1)%3;if(['ArrowLeft','ArrowUp'].includes(e.key))n=(i+2)%3;if(e.key==='Home')n=0;if(e.key==='End')n=2;if(n===undefined)return;e.preventDefault();select(n);tabs[n].focus();});});
+ root.querySelector('.mh-next').addEventListener('click',()=>select((index+1)%3));root.querySelector('.mh-back').addEventListener('click',()=>select(Math.max(0,index-1)));
+ const drafts={Warm:'Happy birthday, Maya! Wishing you a day full of joy and a wonderful year ahead.',Personal:'Happy birthday, Maya! I’m grateful for our friendship and all the memories we’ve made. Here’s to many more.',Short:'Happy birthday, Maya! Have a wonderful day.',Fun:'Happy birthday, Maya! More cake, more laughs, more adventures. Let’s celebrate!'};
+ root.querySelectorAll('[data-mh-tone]').forEach(button=>button.addEventListener('click',()=>{wish.value=drafts[button.dataset.mhTone];root.querySelectorAll('[data-mh-tone]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));update();}));
+ wish.addEventListener('input',()=>{root.querySelectorAll('[data-mh-tone]').forEach(b=>b.setAttribute('aria-pressed','false'));update();});channel.addEventListener('change',update);
+ root.querySelector('.mh-preview').addEventListener('click',()=>{result.textContent=channel.value==='messages'?'Example reviewed: a reminder would prompt you to open Messages and tap Send. Nothing was scheduled or sent.':'Example reviewed: approved email would be scheduled when delivery is available. Nothing was scheduled or sent.';});update();
+})();

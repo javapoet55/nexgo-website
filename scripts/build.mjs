@@ -72,6 +72,7 @@ chunk['how-it-works']='<style>'+readFileSync('site/how-it-works.css','utf8')+'</
 chunk.features='<style>'+readFileSync('site/features.css','utf8')+'</style>'+readFileSync('site/features.html','utf8');
 chunk.calendar='<style>'+readFileSync('site/calendar.css','utf8')+'</style>'+readFileSync('site/calendar.html','utf8')+'<script src="/calendar.js" defer></script>';
 chunk.privacy=legal('privacy','pp-');chunk.terms=legal('terms','tos-');
+chunk['important-moments']=chunk['important-moments'].replace(/<section id="im-how"[\s\S]*?<\/section>/,readFileSync('site/moments-how.html','utf8'))+'<script src="/moments-how.js" defer></script>';
 const legalCss=`<style>.legaldoc{max-width:860px}.legaldoc .toc{padding:16px 20px;border-radius:18px;background:var(--glass);border:1px solid var(--glass-b);margin-bottom:26px}.legaldoc .toc summary{cursor:pointer;font-weight:700}.legaldoc .toc ol{padding-left:22px;margin-top:10px}.legaldoc .toc a,.legaldoc a{color:var(--tint-ink)}.legaldoc section{padding:0;margin:0 0 30px}.legaldoc h2{font-size:24px;margin:0 0 8px;letter-spacing:-.02em}.legaldoc p,.legaldoc li{margin:0 0 10px}.legaldoc ul,.legaldoc ol{margin:0 0 12px;padding-left:22px}.legaldoc h3{font-size:19px;margin:18px 0 6px}.legaldoc .plus,.legaldoc .glow{display:none}.legaldoc .callout,.legaldoc .contact-card{padding:16px 20px;border-radius:18px;background:var(--tint);margin:14px 0}.legaldoc dl dt{font-weight:700;color:var(--ink)}.legaldoc dl dd{color:var(--muted);margin:0 0 10px}.legaldoc .n{color:var(--tint-ink);font-weight:800;margin-right:6px}</style>`;
 function doc(key,body,status){
   const [path,title,desc]=pages[key]||pages.home;
@@ -101,6 +102,7 @@ copyFileSync('site/ask.css','dist/'+askCssFile);
 copyFileSync('site/voice.css','dist/'+voiceCssFile);
 copyFileSync('site/voice.js','dist/'+voiceJsFile);
 copyFileSync('site/moments.css','dist/'+momentsCssFile);
+copyFileSync('site/moments-how.js','dist/moments-how.js');
 copyFileSync('site/shopping.css','dist/'+shoppingCssFile);
 for(const f of ['tasks-closing-logo-v5.png','tasks-app-screen-v2.png','tasks-closing-v4.png','tasks-app-screen.png','tasks-features-v3.png','tasks-hero-v3.png','tasks-v2-assets.png','about-v2-assets.png','ask-v2-assets.png','voice-v2-assets.png','hero-v3-assets.png','moments-assets.png','sl2-assets.png','favicon.png','favicon.ico','nexdo-logo.png','nexdo-mark.png','app-today.webp','nexdo-logo-nav.webp','nexdo-logo-full.webp','sl-groceries.png','sl-voice-bg.png','sl-bag.png','sl-family.png'])if(existsSync('assets/'+f))copyFileSync('assets/'+f,'dist/assets/'+f);
 writeFileSync('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);

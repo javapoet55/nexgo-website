@@ -68,7 +68,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
   assert(v.includes('class="shopping-page"')&&(/href="\/shopping\.[a-f0-9]{10}\.css"/.test(v)),'shopping scoped styles');}
 {const v=readFileSync(root+'/important-moments/index.html','utf8');const txt=v.replace(/<style[\s\S]*?<\/style>/g,'');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'moments one h1');
-  for(const t of ['Never miss','what matters','Share &amp; Collaborate','Set Reminders','Gift Ideas for Mom','Spa Gift Card','starts with remembering.'])assert(txt.includes(t),'moments missing '+t);
+  for(const t of ['Never miss','what matters','Share &amp; Collaborate','Choose the right time.','Gift Ideas for Mom','Spa Gift Card','starts with remembering.'])assert(txt.includes(t),'moments missing '+t);
   assert(v.includes('class="moments-page"')&&(/href="\/moments\.[a-f0-9]{10}\.css"/.test(v)),'moments scoped styles');
   assert(v.includes('href="/assets/moments-assets.png"'),'moments supplied asset pack');
   assert(!v.includes('/assets/im-design.png'),'moments no longer uses the design screenshot');
