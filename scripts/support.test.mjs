@@ -57,7 +57,7 @@ const questions=[
  ['How do smart swaps work?','/help',/unavailable/],
  ['Can I share birthdays with my family?','/important-moments',/Share moments|share with family/i],
  ['How do I log meals in calorie tracker?','/calorie-tracker',/sample food log|sample meal log/],
- ['Does my food agent call me automatically?','/calorie-tracker',/does not schedule calls/],
+ ['Does my food agent call me automatically?','/calorie-tracker',/verified phone|Verify your phone/],
  ['How do I delete my account?','/privacy',/deletion request/],
  ['Do you sell my data?','/privacy',/does not sell/],
  ['Can I get a refund?','/terms',/refund/],
@@ -66,8 +66,8 @@ const questions=[
 for(const [question,path,evidence]of questions)test('site-wide answer evidence: '+question,()=>{
   assert(retrieve(question).some(a=>a.url.split('#')[0]===path&&evidence.test(a.text)),question);
 });
-test('calorie passages preserve preview qualification',()=>{
-  for(const a of articles.filter(a=>a.url.startsWith('/calorie-tracker')))assert.match(a.description,/preview/);
+test('calorie passages preserve website demo qualification',()=>{
+  for(const a of articles.filter(a=>a.url.startsWith('/calorie-tracker')))assert.match(a.description,/sample walkthrough/);
 });
 test('unsupported personal-account actions are not fabricated by fallback',async()=>{
   const result=await answerSupport([{role:'user',content:'What is my personal account password?'}]);

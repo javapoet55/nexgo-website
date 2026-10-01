@@ -14,7 +14,7 @@ const pages={
   'how-it-works':['/how-it-works','How NexDo Works | Capture, Plan & Take Action','Explore a sample first day with NexDo: capture a task, review your plans, take the next action, and keep your day up to date.'],
   'daily-brief':['/daily-brief','NexDo Daily Brief | Your Day, Priorities & Next Move','Meet your NexDo Daily Brief: connected tasks and calendar, AI-assisted priorities, deadlines, and next actions. Explore interactive sample screens.'],
   pomodoro:['/pomodoro','NexDo Pomodoro | Small Sessions. Real Progress.','Choose your focus, set your timer, take a break, and see your progress with NexDo Pomodoro.'],
-  'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','Explore the NexDo Calorie Tracker preview: ten thoughtful features, nutrition goals, a sample food log, and an interactive walkthrough.'],
+  'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','See how NexDo Calorie Tracker works: set nutrition goals, log meals, review food entries, and follow daily, weekly, and monthly progress. Try the sample walkthrough.'],
   calendar:['/calendar','NexDo Calendar | Your Time, Your Plans, A Little More Calm','See tasks and appointments together. Explore Schedule, Week, and Month views, add events by voice, set repeating plans, and mark events complete with NexDo.'],
   'nexdo-ai':['/nexdo-ai','Nexdo AI — Talk or Type. Get Things Done.','One AI assistant for your tasks, calendar, shopping lists and important moments. Speak naturally or type a request to plan your day.'],
   home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
