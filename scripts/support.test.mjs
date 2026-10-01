@@ -35,3 +35,41 @@ test('contact details reach the AI as evidence',async()=>{
     assert.equal(result.mode,'ai');assert.equal(result.sources[0].url,'/contact');
   }finally{globalThis.fetch=original;process.env.OPENAI_API_KEY='';}
 });
+test('every published page is indexed with valid source links',async()=>{
+  const {readFileSync}=await import('node:fs');
+  const coverage=JSON.parse(readFileSync(new URL('../dist/support-coverage.json',import.meta.url)));
+  assert.equal(coverage.length,22);
+  for(const page of coverage)assert(page.sources>=2,page.url);
+  for(const a of articles){
+    const [path,anchor]=a.url.split('#');
+    const html=readFileSync(new URL('../dist'+(path==='/'?'':path)+'/index.html',import.meta.url),'utf8');
+    if(anchor)assert(html.includes(`id="${anchor}"`),a.url);
+    assert(a.text.length<=1850,a.id);
+    assert(!a.text.includes('display:none'));
+  }
+});
+const questions=[
+ ['How does the Daily Brief prioritize my day?','/daily-brief',/priority, deadlines, progress/],
+ ['Can I pause a Pomodoro session?','/pomodoro',/pause|Freeze/i],
+ ['Does distraction-free mode block calls?','/pomodoro',/does not silence|No\./],
+ ['Can I add repeating appointments?','/calendar',/daily, weekly, monthly/],
+ ['How do I find a plumber?','/tasks',/plumber/],
+ ['How do smart swaps work?','/help',/unavailable/],
+ ['Can I share birthdays with my family?','/important-moments',/Share moments|share with family/i],
+ ['How do I log meals in calorie tracker?','/calorie-tracker',/sample food log|sample meal log/],
+ ['Does my food agent call me automatically?','/calorie-tracker',/does not schedule calls/],
+ ['How do I delete my account?','/privacy',/deletion request/],
+ ['Do you sell my data?','/privacy',/does not sell/],
+ ['Can I get a refund?','/terms',/refund/],
+ ['Is Nexdo always listening?','/help',/active only/],
+];
+for(const [question,path,evidence]of questions)test('site-wide answer evidence: '+question,()=>{
+  assert(retrieve(question).some(a=>a.url.split('#')[0]===path&&evidence.test(a.text)),question);
+});
+test('calorie passages preserve preview qualification',()=>{
+  for(const a of articles.filter(a=>a.url.startsWith('/calorie-tracker')))assert.match(a.description,/preview/);
+});
+test('unsupported personal-account actions are not fabricated by fallback',async()=>{
+  const result=await answerSupport([{role:'user',content:'What is my personal account password?'}]);
+  assert(!result.answer.includes('Your password is'));
+});

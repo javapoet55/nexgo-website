@@ -88,4 +88,4 @@ console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checke
   assert.equal((page.match(/data-nai-example=/g)||[]).length,6,'six example requests');
 }
 
-{const features=readFileSync(root+'/features/index.html','utf8');assert.equal((features.match(/class="fx-list"/g)||[]).length,8,'eight module feature lists');assert.equal((features.match(/<h4>/g)||[]).length,40,'five features per module');}
+{const features=readFileSync(root+'/features/index.html','utf8');assert.equal((features.match(/class="fx-list"/g)||[]).length,8,'eight module feature lists');assert.equal((features.match(/<h4(?:\s[^>]*)?>/g)||[]).length,40,'five features per module');}

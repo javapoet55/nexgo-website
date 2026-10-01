@@ -1,6 +1,7 @@
 FROM node:22-alpine AS build
 WORKDIR /app
-COPY package.json ./
+COPY package.json package-lock.json ./
+RUN npm ci --include=dev
 COPY scripts ./scripts
 COPY src ./src
 COPY site ./site

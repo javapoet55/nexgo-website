@@ -1,28 +1,75 @@
 import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
-const clean=s=>s.replace(/<script\b[\s\S]*?<\/script>|<style\b[\s\S]*?<\/style>/gi,'').replace(/<[^>]*>/g,' ').replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&nbsp;/g,' ').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();
+import {createHash} from 'node:crypto';
+import {parse,serialize} from 'parse5';
+const attr=(n,key)=>n.attrs?.find(a=>a.name===key)?.value;
+const excluded=n=>['script','style','svg','template','nav','footer'].includes(n.tagName)||attr(n,'hidden')!==undefined||attr(n,'aria-hidden')==='true'||/display\s*:\s*none|visibility\s*:\s*hidden/i.test(attr(n,'style')||'');
+const text=n=>excluded(n)?'':n.nodeName==='#text'?n.value:(n.childNodes||[]).map(text).join(' ');
+const clean=n=>text(n).replace(/\s+/g,' ').trim();
+const find=(n,p)=>p(n)?n:(n.childNodes||[]).map(c=>find(c,p)).find(Boolean);
+const idFor=(url,key)=>'support-'+createHash('sha256').update(url+'|'+key).digest('hex').slice(0,12);
 export function buildSupportIndex(){
-  const articles=[];
+  const articles=[],coverage=[];
   const walk=d=>readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(d+'/'+e.name):[d+'/'+e.name]);
-  for(const file of walk('dist').filter(f=>f.endsWith('/index.html'))){
-    let html=readFileSync(file,'utf8'); const url=file.replace(/^dist/,'').replace(/index.html$/,'').replace(/\/$/,'')||'/';
-    if(['/privacy','/terms'].includes(url))continue;
-    const title=clean(html.match(/<title>([\s\S]*?)<\/title>/)?.[1]||'NexDo');
-    const description=clean(html.match(/<meta name="description" content="([^"]*)"/)?.[1]||'');
-    if(description)articles.push({id:`page-${articles.length}`,title,text:description,url});
-    let main=html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1]||'';
-    if(url==='/contact')articles.push({id:'contact-details',title:'Contact customer service and support',text:clean(main),url,keywords:'customer service support email contact human person representative agent feedback press partnership'});
-    main=main.replace(/<details\b([^>]*)>([\s\S]*?)<\/details>/g,(all,attrs,body)=>{
-      const question=clean(body.match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/)?.[1]||'');
-      const answer=clean(body.replace(/<summary\b[^>]*>[\s\S]*?<\/summary>/,''));
-      if(!question||!answer||!question.endsWith('?'))return all;
-      const id=attrs.match(/\bid="([^"]+)"/)?.[1]||`support-faq-${articles.length}`;
-      articles.push({id:`faq-${articles.length}`,title:question,text:answer,url:`${url}#${id}`});
+  const files=walk('dist').filter(f=>f.endsWith('/index.html'));
+  // Preserve FAQ anchors already shared by the original support chatbot.
+  let legacyCount=0;
+  for(const file of files){
+    if(/\/(privacy|terms)\/index.html$/.test(file))continue;
+    let html=readFileSync(file,'utf8');
+    if(/<meta name="description" content="[^"]+"/.test(html))legacyCount++;
+    if(file==='dist/contact/index.html')legacyCount++;
+    html=html.replace(/<details\b([^>]*)>([\s\S]*?)<\/details>/g,(all,attrs,body)=>{
+      const title=body.match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/)?.[1]?.replace(/<[^>]*>/g,'').trim();
+      if(!title?.endsWith('?'))return all;
+      const id=`support-faq-${legacyCount++}`;
       return `<details${attrs}${/\bid=/.test(attrs)?'':` id="${id}"`}>${body}</details>`;
     });
-    html=html.replace(/(<main\b[^>]*>)[\s\S]*?(<\/main>)/,(_,a,b)=>a+main+b);
     writeFileSync(file,html);
   }
-  if(articles.filter(a=>a.url.startsWith('/help#')).length<10)throw Error('Help indexing failed');
+  for(const file of files.sort()){
+    const doc=parse(readFileSync(file,'utf8'));
+    const url=file.replace(/^dist/,'').replace(/index.html$/,'').replace(/\/$/,'')||'/';
+    const main=find(doc,n=>n.tagName==='main');if(!main)throw Error('Missing main: '+url);
+    const pageTitle=clean(find(doc,n=>n.tagName==='title'));
+    const description=attr(find(doc,n=>n.tagName==='meta'&&attr(n,'name')==='description'),'content')||'';
+    const before=articles.length;
+    const add=(title,body,anchor='',kind='section')=>{
+      if(body.length<(kind==='section'?60:20))return;
+      // Small passages keep retrieval focused; retain the page description on every passage.
+      const paragraphs=body.match(/.{1,1800}(?:\s|$)/g)||[body];
+      paragraphs.forEach((part,i)=>articles.push({id:idFor(url,title+'|'+anchor+'|'+i),title,text:part.trim(),url:url+(anchor?'#'+anchor:''),pageTitle,description,kind}));
+    };
+    add(pageTitle,description,'','overview');
+    if(url==='/contact')articles.push({id:'contact-details',title:'Contact customer service and support',text:clean(main),url,pageTitle,description,kind:'contact',keywords:'customer service support email contact human person representative agent feedback press partnership'});
+    let heading=pageTitle,anchor='',parts=[];const parents={};
+    const flush=()=>{add(heading,parts.join(' ').replace(/\s+/g,' ').trim(),anchor);parts=[];};
+    let sequence=0;
+    const visit=n=>{
+      if(excluded(n))return;
+      if(n.tagName==='details'){
+        flush();const summary=find(n,x=>x.tagName==='summary');
+        const title=summary?clean(summary).replace(/\s*\+$/,''):'';
+        if(title.endsWith('?')){
+          let id=attr(n,'id');if(!id){id=idFor(url,'faq-'+sequence++);n.attrs.push({name:'id',value:id});}
+          const body=(n.childNodes||[]).filter(x=>x!==summary).map(clean).join(' ');
+          add(title,body,id,'faq');return;
+        }
+      }
+      if(/^h[1-4]$/.test(n.tagName||'')){
+        flush();const level=Number(n.tagName[1]);for(const k of Object.keys(parents))if(Number(k)>=level)delete parents[k];
+        parents[level]=clean(n);heading=Object.values(parents).join(' — ');
+        anchor=attr(n,'id');if(!anchor){anchor=idFor(url,'heading-'+sequence++);n.attrs.push({name:'id',value:anchor});}
+        return;
+      }
+      if(n.nodeName==='#text')parts.push(n.value);
+      else for(const child of n.childNodes||[])visit(child);
+    };
+    visit(main);flush();
+    coverage.push({url,sources:articles.length-before});
+    writeFileSync(file,serialize(doc));
+  }
+  if(coverage.length!==22||coverage.some(p=>p.sources<2))throw Error('Incomplete website support coverage');
   writeFileSync('dist/support-articles.json',JSON.stringify(articles));
-  console.log(`Indexed ${articles.length} published support sources; hidden pages excluded.`);
+  writeFileSync('dist/support-coverage.json',JSON.stringify(coverage,null,2));
+  console.log(`Indexed ${articles.length} passages across ${coverage.length} published pages.`);
 }
