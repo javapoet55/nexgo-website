@@ -41,6 +41,11 @@ export function buildSupportIndex(){
     };
     add(pageTitle,description,'','overview');
     if(url==='/contact')articles.push({id:'contact-details',title:'Contact customer service and support',text:clean(main),url,pageTitle,description,kind:'contact',keywords:'customer service support email contact human person representative agent feedback press partnership'});
+    // Keep the published workflow together, rather than losing its steps to heading chunks.
+    const workflowIds={'/calorie-tracker':'how-calorie-tracker-works','/calendar':'calendar-how-it-works','/tasks':'tasks-how-it-works','/pomodoro':'pomodoro-how-it-works','/important-moments':'im-how','/shopping-lists':'sl-how','/nexdo-ai':'how-it-works','/daily-brief':'brief-tour'};
+    const workflowId=workflowIds[url];
+    const workflow=workflowId&&find(main,n=>attr(n,'id')===workflowId);
+    if(workflow)add('How it works — '+pageTitle,clean(workflow),workflowId,'workflow');
     let heading=pageTitle,anchor='',parts=[];const parents={};
     const flush=()=>{add(heading,parts.join(' ').replace(/\s+/g,' ').trim(),anchor);parts=[];};
     let sequence=0;

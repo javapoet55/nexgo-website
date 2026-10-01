@@ -82,3 +82,42 @@ test('customer support contacts do not mix conflicting legal-page emails',()=>{
   const found=retrieve('how to contact customer service?');
   assert(found.length>0);assert(found.every(a=>a.url.split('#')[0]==='/contact'));
 });
+
+test('customer calorie-count wording retrieves the actual published workflow',async()=>{
+  const question='how does calorie count works?';
+  const found=retrieve(question);
+  assert.equal(found[0].kind,'workflow');
+  assert.equal(found[0].url,'/calorie-tracker#how-calorie-tracker-works');
+  for(const term of [/Set your daily goals/i,/Log the meals/i,/Review before/i,/Find your daily picture/i])assert.match(found[0].text,term);
+  const result=await answerSupport([{role:'user',content:question}]);
+  assert.equal(result.mode,'articles');assert.match(result.answer,/Log the meals/i);
+});
+for(const [module,path]of [['calories','/calorie-tracker'],['calendar','/calendar'],['tasks','/tasks'],['Pomodoro','/pomodoro'],['moments','/important-moments'],['shopping lists','/shopping-lists'],['NexDo AI','/nexdo-ai'],['Daily Brief','/daily-brief']]){
+  test(`how-it-works evidence for ${module}`,()=>{
+    const found=retrieve(`How does ${module} work?`);
+    assert.equal(found[0].kind,'workflow');assert.equal(found[0].url.split('#')[0],path);
+  });
+  test(`page-context workflow for ${module}`,async()=>{
+    const result=await answerSupport([{role:'user',content:'How does this work?'}],path);
+    assert.equal(result.mode,'articles');assert.equal(result.sources[0].url.split('#')[0],path);
+  });
+}
+test('explicit module change overrides older conversation and current page',async()=>{
+  const result=await answerSupport([{role:'user',content:'How does calorie tracker work?'},{role:'assistant',content:'Read the calorie guide.'},{role:'user',content:'How does Pomodoro work?'}],'/calorie-tracker');
+  assert.equal(result.sources[0].url.split('#')[0],'/pomodoro');
+});
+test('context never becomes an arbitrary external retrieval source',()=>{
+  assert.deepEqual(retrieve('How does this work?','https://example.com/private'),retrieve('How does this work?'));
+});
+test('AI receives the calorie workflow, including logging and review',async()=>{
+  const original=globalThis.fetch;process.env.OPENAI_API_KEY='test';
+  try{
+    globalThis.fetch=async(_,opts)=>{
+      const {articles:context}=JSON.parse(JSON.parse(opts.body).input);
+      assert.equal(context[0].kind,'workflow');assert.match(context[0].text,/Log the meals/);assert.match(context[0].text,/Review before/);
+      return Response.json({status:'completed',output:[{content:[{type:'output_text',text:JSON.stringify({supported:true,answer:'Set your goals, log your meals, review the entries, then compare calories and nutrients with your goals.',sourceIds:[context[0].id]})}]}]});
+    };
+    const result=await answerSupport([{role:'user',content:'how does calorie count works?'}],'/calorie-tracker');
+    assert.equal(result.mode,'ai');assert.equal(result.sources[0].url,'/calorie-tracker#how-calorie-tracker-works');
+  }finally{globalThis.fetch=original;process.env.OPENAI_API_KEY='';}
+});
