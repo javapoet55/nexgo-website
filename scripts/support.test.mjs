@@ -73,3 +73,12 @@ test('unsupported personal-account actions are not fabricated by fallback',async
   const result=await answerSupport([{role:'user',content:'What is my personal account password?'}]);
   assert(!result.answer.includes('Your password is'));
 });
+test('service research answers include the complete published workflow',()=>{
+  const found=retrieve('How do I find a plumber?');
+  assert(found.some(a=>/city\/ZIP/.test(a.text)));
+  assert(found.some(a=>/curated businesses/.test(a.text)));
+});
+test('customer support contacts do not mix conflicting legal-page emails',()=>{
+  const found=retrieve('how to contact customer service?');
+  assert(found.length>0);assert(found.every(a=>a.url.split('#')[0]==='/contact'));
+});

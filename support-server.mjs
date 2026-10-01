@@ -13,7 +13,7 @@ export function retrieve(question){
   const moduleWords=routes.flatMap(path=>tokens(path.replaceAll('-',' ')));
   const specific=q.filter(t=>!moduleWords.includes(t)&&!(routes.includes('/daily-brief')&&t==='day'));
   const searchTerms=specific.length?specific:q;
-  return indexed.map(({a,title,body,keywords,page})=>{
+  const ranked=indexed.map(({a,title,body,keywords,page})=>{
     let matched=0;
     let score=searchTerms.reduce((sum,t)=>{
       const weight=Math.log(1+articles.length/(1+(frequency.get(t)||0)));
@@ -27,7 +27,17 @@ export function retrieve(question){
     if(routes.includes(a.url.split('#')[0]))score+=24;
     if(policyIntent&&/^\/(privacy|terms)(#|$)/.test(a.url))score+=12;
     return {a,score};
-  }).filter(x=>x.score>=3).sort((a,b)=>b.score-a.score).slice(0,8).map(x=>x.a);
+  }).filter(x=>x.score>=3).sort((a,b)=>b.score-a.score).map(x=>x.a);
+  if(contactIntent&&!policyIntent)return ranked.filter(a=>a.url.split('#')[0]==='/contact').slice(0,4);
+  const result=ranked.slice(0,5);
+  // Feature workflows span neighboring cards (intent, research, results, outreach).
+  const first=ranked[0];
+  if(first?.kind==='section'){
+    const at=articles.indexOf(first);
+    for(const next of articles.slice(at+1,at+4))if(next.url.split('#')[0]===first.url.split('#')[0]&&!result.includes(next))result.push(next);
+  }
+  for(const a of ranked)if(result.length<8&&!result.includes(a))result.push(a);
+  return result.slice(0,8);
 }
 const sourceLinks=list=>[...new Map(list.map(({title,url})=>[url,{title,url}])).values()];
 const unknown={answer:'I couldn’t find a confirmed answer in NexDo’s published website or help pages. Try a question about tasks, calendars, voice, shopping lists, Pomodoro, or your account. For more help, use our Contact page.',sources:[{title:'Help center',url:'/help'},{title:'Contact support',url:'/contact'}],mode:'unknown'};

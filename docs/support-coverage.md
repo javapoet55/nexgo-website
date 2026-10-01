@@ -10,7 +10,7 @@ Answers use retrieved published text and validated citations. Page descriptions 
 
 - Help says the iPhone app is under App Store review, while product pages advertise an App Store download. Confirm current availability before updating the FAQ; the chatbot must acknowledge conflicting sources.
 - The Calorie Tracker website describes a sample-data preview that does not save meals or schedule calls. Support must retain this qualification until the published page is updated to match a released feature.
-- Contact lists `support@nextdoapp.com`, while other contact addresses use `nexdoapp.com`. The mailbox has not been verified; no replacement address was invented.
+- Contact lists `support@nextdoapp.com`, while Terms lists `support@nexdoapp.com`. Contact-intent answers use the Contact page to avoid silently mixing these conflicting addresses. The mailbox has not been verified; no replacement address was invented.
 
 ## Validation
 
