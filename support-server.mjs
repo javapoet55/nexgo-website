@@ -3,7 +3,9 @@ import {createHash} from 'node:crypto';
 export const articles=JSON.parse(readFileSync(new URL('./dist/support-articles.json',import.meta.url),'utf8'));
 const stop=new Set('a an the i my me you your we it is are do does how what why when can to of in on for and or with nexdo nexdoapp please about'.split(' '));
 const tokens=s=>[...new Set(s.toLowerCase().replace(/calendars?/g,'calendar').replace(/tasks?/g,'task').match(/[a-z0-9]+/g)||[])].filter(t=>t.length>1&&!stop.has(t));
-export function retrieve(question){const q=tokens(question);return articles.map(a=>({a,score:q.reduce((n,t)=>n+(tokens(a.title).includes(t)?4:tokens(a.text).includes(t)?1:0),0)})).filter(x=>x.score>=2).sort((a,b)=>b.score-a.score).slice(0,5).map(x=>x.a);}
+export function retrieve(question){const q=tokens(question);
+  const contactIntent=/customer (service|support)|contact.{0,25}(support|service|team|you)|(?:support|service).{0,25}(email|address|phone|number)|(?:talk|speak|chat).{0,20}(human|person|representative|agent)|(?:email|reach|contact) (you|them|nexdo)|(?:contact|email) (details|address)/i.test(question);
+return articles.map(a=>({a,score:(contactIntent&&a.id==='contact-details'?20:0)+q.reduce((n,t)=>n+(tokens(a.title).includes(t)?4:tokens(a.keywords||'').includes(t)?3:tokens(a.text).includes(t)?1:0),0)})).filter(x=>x.score>=2).sort((a,b)=>b.score-a.score).slice(0,5).map(x=>x.a);}
 const unknown={answer:'I couldn’t find a confirmed answer in NexDo’s published website or help pages. Try a question about tasks, calendars, voice, shopping lists, Pomodoro, or your account. For more help, use our Contact page.',sources:[{title:'Help center',url:'/help'},{title:'Contact support',url:'/contact'}],mode:'unknown'};
 export async function answerSupport(messages){
   const latest=messages.at(-1).content;const previous=messages.filter(m=>m.role==='user').slice(-2,-1).map(m=>m.content).join(' ');

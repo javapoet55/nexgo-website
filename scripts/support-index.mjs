@@ -5,11 +5,12 @@ export function buildSupportIndex(){
   const walk=d=>readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(d+'/'+e.name):[d+'/'+e.name]);
   for(const file of walk('dist').filter(f=>f.endsWith('/index.html'))){
     let html=readFileSync(file,'utf8'); const url=file.replace(/^dist/,'').replace(/index.html$/,'').replace(/\/$/,'')||'/';
-    if(['/privacy','/terms','/contact'].includes(url))continue;
+    if(['/privacy','/terms'].includes(url))continue;
     const title=clean(html.match(/<title>([\s\S]*?)<\/title>/)?.[1]||'NexDo');
     const description=clean(html.match(/<meta name="description" content="([^"]*)"/)?.[1]||'');
     if(description)articles.push({id:`page-${articles.length}`,title,text:description,url});
     let main=html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1]||'';
+    if(url==='/contact')articles.push({id:'contact-details',title:'Contact customer service and support',text:clean(main),url,keywords:'customer service support email contact human person representative agent feedback press partnership'});
     main=main.replace(/<details\b([^>]*)>([\s\S]*?)<\/details>/g,(all,attrs,body)=>{
       const question=clean(body.match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/)?.[1]||'');
       const answer=clean(body.replace(/<summary\b[^>]*>[\s\S]*?<\/summary>/,''));
