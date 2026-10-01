@@ -61,7 +61,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
 {const v=readFileSync(root+'/shopping-lists/index.html','utf8');
   assert(v.includes('<title>NexDo Shopping Lists | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping Lists | Voice, AI & Smarter Shopping</title>'),'shopping title');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'shopping one h1');
-  for(const t of ['Just say what you need.','your way.','Watch how it works','Real-time sync','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
+  for(const t of ['Just say what you need.','your way.','Watch how it works','Current saved list, shared by link','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
   assert(/data-event="shopping_get_started_click"/.test(v),'shopping CTAs');
   assert(v.includes('id="sl-how"'),'shopping how anchor');
   assert(v.includes('/assets/sl2-assets.png'),'shopping supplied asset pack');
