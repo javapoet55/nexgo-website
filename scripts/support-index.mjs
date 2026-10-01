@@ -33,11 +33,11 @@ export function buildSupportIndex(){
     const pageTitle=clean(find(doc,n=>n.tagName==='title'));
     const description=attr(find(doc,n=>n.tagName==='meta'&&attr(n,'name')==='description'),'content')||'';
     const before=articles.length;
-    const add=(title,body,anchor='',kind='section')=>{
+    const add=(title,body,anchor='',kind='section',answerParagraphs=[])=>{
       if(body.length<(kind==='section'?60:20))return;
       // Small passages keep retrieval focused; retain the page description on every passage.
       const paragraphs=body.match(/.{1,1800}(?:\s|$)/g)||[body];
-      paragraphs.forEach((part,i)=>articles.push({id:idFor(url,title+'|'+anchor+'|'+i),title,text:part.trim(),url:url+(anchor?'#'+anchor:''),pageTitle,description,kind}));
+      paragraphs.forEach((part,i)=>articles.push({id:idFor(url,title+'|'+anchor+'|'+i),title,text:part.trim(),url:url+(anchor?'#'+anchor:''),pageTitle,description,kind,answerParagraphs}));
     };
     add(pageTitle,description,'','overview');
     if(url==='/contact')articles.push({id:'contact-details',title:'Contact customer service and support',text:clean(main),url,pageTitle,description,kind:'contact',keywords:'customer service support email contact human person representative agent feedback press partnership'});
@@ -45,9 +45,14 @@ export function buildSupportIndex(){
     const workflowIds={'/calorie-tracker':'how-calorie-tracker-works','/calendar':'calendar-how-it-works','/tasks':'tasks-how-it-works','/pomodoro':'pomodoro-how-it-works','/important-moments':'im-how','/shopping-lists':'sl-how','/nexdo-ai':'how-it-works','/daily-brief':'brief-tour'};
     const workflowId=workflowIds[url];
     const workflow=workflowId&&find(main,n=>attr(n,'id')===workflowId);
-    if(workflow)add('How it works — '+pageTitle,clean(workflow),workflowId,'workflow');
-    let heading=pageTitle,anchor='',parts=[];const parents={};
-    const flush=()=>{add(heading,parts.join(' ').replace(/\s+/g,' ').trim(),anchor);parts=[];};
+    if(workflow){
+      const paragraphs=[];
+      const collect=n=>{if(excluded(n))return;if(n.tagName==='p'){const t=clean(n);if(t.length>65)paragraphs.push(t);return;}for(const c of n.childNodes||[])collect(c);};
+      collect(find(workflow,n=>n.tagName==='ol')||workflow);
+      add('How it works — '+pageTitle,clean(workflow),workflowId,'workflow',paragraphs.slice(0,4));
+    }
+    let heading=pageTitle,anchor='',parts=[],answerParts=[];const parents={};
+    const flush=()=>{add(heading,parts.join(' ').replace(/\s+/g,' ').trim(),anchor,'section',answerParts);parts=[];answerParts=[];};
     let sequence=0;
     const visit=n=>{
       if(excluded(n))return;
@@ -57,7 +62,7 @@ export function buildSupportIndex(){
         if(title.endsWith('?')){
           let id=attr(n,'id');if(!id){id=idFor(url,'faq-'+sequence++);n.attrs.push({name:'id',value:id});}
           const body=(n.childNodes||[]).filter(x=>x!==summary).map(clean).join(' ');
-          add(title,body,id,'faq');return;
+          add(title,body,id,'faq',[body.trim()]);return;
         }
       }
       if(/^h[1-4]$/.test(n.tagName||'')){
@@ -66,6 +71,7 @@ export function buildSupportIndex(){
         anchor=attr(n,'id');if(!anchor){anchor=idFor(url,'heading-'+sequence++);n.attrs.push({name:'id',value:anchor});}
         return;
       }
+      if(n.tagName==='p'&&clean(n).length>30)answerParts.push(clean(n));
       if(n.nodeName==='#text')parts.push(n.value);
       else for(const child of n.childNodes||[])visit(child);
     };

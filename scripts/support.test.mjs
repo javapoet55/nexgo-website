@@ -90,7 +90,7 @@ test('customer calorie-count wording retrieves the actual published workflow',as
   assert.equal(found[0].url,'/calorie-tracker#how-calorie-tracker-works');
   for(const term of [/Set your daily goals/i,/Log the meals/i,/Review before/i,/Find your daily picture/i])assert.match(found[0].text,term);
   const result=await answerSupport([{role:'user',content:question}]);
-  assert.equal(result.mode,'articles');assert.match(result.answer,/Log the meals/i);
+  assert.equal(result.mode,'articles');assert.match(result.answer,/Add food manually/i);
 });
 for(const [module,path]of [['calories','/calorie-tracker'],['calendar','/calendar'],['tasks','/tasks'],['Pomodoro','/pomodoro'],['moments','/important-moments'],['shopping lists','/shopping-lists'],['NexDo AI','/nexdo-ai'],['Daily Brief','/daily-brief']]){
   test(`how-it-works evidence for ${module}`,()=>{
@@ -120,4 +120,23 @@ test('AI receives the calorie workflow, including logging and review',async()=>{
     const result=await answerSupport([{role:'user',content:'how does calorie count works?'}],'/calorie-tracker');
     assert.equal(result.mode,'ai');assert.equal(result.sources[0].url,'/calorie-tracker#how-calorie-tracker-works');
   }finally{globalThis.fetch=original;process.env.OPENAI_API_KEY='';}
+});
+
+for(const question of ['How does Pomodoro work?','Can I pause a Pomodoro session?','How does distraction-free mode work?','how does calorie count works?'])test('concise fallback: '+question,async()=>{
+ const result=await answerSupport([{role:'user',content:question}]);
+ assert.equal(result.mode,'articles');assert(result.answer.length<900);
+ assert(!/Here’s what|Try the interactive|Website demo only|HOW IT WORKS|STEP 0|Your next tap/.test(result.answer));
+ assert.equal(result.sources.length,1);
+ if(question.includes('pause'))assert.match(result.answer,/pause|freeze/i);
+ if(question.includes('distraction')){assert.match(result.answer,/does not|No\./);assert(!/Choose a category|5-minute/.test(result.answer));}
+});
+test('AI failure and overlong output never dump a page',async()=>{
+ const original=globalThis.fetch;process.env.OPENAI_API_KEY='test';
+ try{
+  for(const kind of ['outage','long','incomplete']){
+   globalThis.fetch=async()=>{if(kind==='outage')throw Error('timeout');return Response.json({status:kind==='incomplete'?'incomplete':'completed',output:[{content:[{type:'output_text',text:JSON.stringify({supported:true,answer:'page text '.repeat(150),sourceIds:[retrieve('How does Pomodoro work?')[0].id]})}]}]});};
+   const result=await answerSupport([{role:'user',content:'How does Pomodoro work?'}]);
+   assert.equal(result.mode,'articles');assert(result.answer.length<900);assert(!/Try the interactive|Website demo/.test(result.answer));
+  }
+ }finally{globalThis.fetch=original;process.env.OPENAI_API_KEY='';}
 });
