@@ -21,12 +21,12 @@ for(const file of pages){
   assert(!html.includes('href="#/'),file+' has a leftover hash route');
   assert(html.includes('href="/tasks"'),file+' missing Products > Tasks nav link');
 
-  assert(html.includes('href="/shopping-lists"'),file+' missing Lifestyle > Shopping Lists nav link');
+  assert(html.includes('href="/shopping-lists"'),file+' missing Lifestyle > Shopping List nav link');
   assert(html.includes('href="/important-moments"'),file+' missing Lifestyle > Moments nav link');
 
   const productMenu=html.match(/<div class="dd-m">([\s\S]*?)<\/div>/)?.[1] || '';
   assert(productMenu.startsWith('<a href="/daily-brief"'),file+' Daily Brief must lead Products');
-  assert(productMenu.includes('href="/nexdo-ai"'),file+' missing Products > Nexdo AI');
+  assert(productMenu.includes('href="/nexdo-ai"'),file+' missing Products > NexDo AI');
   assert(!/href="\/(?:voice-ai|ask-ai)"/.test(productMenu),file+' contains hidden product menu links');
   assert(productMenu.includes('href="/calendar"'),file+' missing Products > Calendar');
   const lifestyleMenu=[...html.matchAll(/<div class="dd-m">([\s\S]*?)<\/div>/g)][1]?.[1] || '';
@@ -38,7 +38,7 @@ for(const file of pages){
   }
   const visible=html.replace(/<style[\s\S]*?<\/style>/g,'');
   assert(!/Instacart|store managers|Start your free trial|Cancel anytime/i.test(visible),file+' contains outdated marketing');
-  if(!/\/(?:privacy|terms)\/index\.html$/.test(file))assert(!/SOC 2|GDPR Compliant|independent audit|10x|driving.mode|iPhone app (?:is )?coming soon|Calendar connections are part of the roadmap|fully included in your Nexdo plan/i.test(visible),file+' contains unsupported or outdated claims');
+  if(!/\/(?:privacy|terms)\/index\.html$/.test(file))assert(!/SOC 2|GDPR Compliant|independent audit|10x|driving.mode|iPhone app (?:is )?coming soon|Calendar connections are part of the roadmap|fully included in your NexDo plan/i.test(visible),file+' contains unsupported or outdated claims');
   const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,file+' duplicate ids');
   for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){
     const link=m[1];if(/^(https?:|mailto:|data:)/.test(link))continue;
@@ -59,7 +59,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
   assert(v.includes('/assets/voice-v2-assets.png')&&v.includes('id="voice-demo-play"'),'voice asset pack and audio demo');
   assert(/prefers-reduced-motion:reduce\)\{\.va-wv i,\.va-ring\{animation:none\}/.test(v),'voice-ai reduced motion');}
 {const v=readFileSync(root+'/shopping-lists/index.html','utf8');
-  assert(v.includes('<title>NexDo Shopping Lists | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping Lists | Voice, AI & Smarter Shopping</title>'),'shopping title');
+  assert(v.includes('<title>NexDo Shopping List | Voice, AI &amp; Smarter Shopping</title>')||v.includes('<title>NexDo Shopping List | Voice, AI & Smarter Shopping</title>'),'shopping title');
   assert((v.match(/<h1[ >]/g)||[]).length===1,'shopping one h1');
   for(const t of ['Just say what you need.','your way.','Watch how it works','Current saved list, shared by link','Make everyday simpler','weekly'])assert(v.includes(t),'shopping missing '+t);
   assert(/data-event="shopping_get_started_click"/.test(v),'shopping CTAs');
@@ -81,7 +81,7 @@ assert(!readFileSync(root+'/sitemap.xml','utf8').includes('/pricing'),'pricing m
   assert(v.includes('/assets/ask-v2-assets.png')&&v.includes('id="ask-how"'),'ask-ai asset pack and how-it-works anchor');}
 console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checked.`);
 
-{const v=readFileSync(root+'/nexdo-ai/index.html','utf8');for(const t of ['Talk or Type.','Voice AI','Type AI','See Nexdo AI in action','nai-prompt','/assets/nexdo-ai-pack.png'])assert(v.includes(t),'Nexdo AI missing '+t);for(const f of pages)assert(readFileSync(f,'utf8').includes('href="/nexdo-ai"'),'Nexdo AI navigation missing');}
+{const v=readFileSync(root+'/nexdo-ai/index.html','utf8');for(const t of ['Talk or Type.','Voice AI','Type AI','See NexDo AI in action','nai-prompt','/assets/nexdo-ai-pack.png'])assert(v.includes(t),'NexDo AI missing '+t);for(const f of pages)assert(readFileSync(f,'utf8').includes('href="/nexdo-ai"'),'NexDo AI navigation missing');}
 { const page=readFileSync(root+'/nexdo-ai/index.html','utf8');
   assert(page.indexOf('id="nai-journey-title"') < page.indexOf('id="how-it-works"'),'new journey must precede Ask Understand Act');
   for(const text of ['From a simple question','real progress.','1. Ask','2. Understand','3. Suggest','4. Take Action','5. Stay on Track','Illustrative conversation'])assert(page.includes(text),'journey missing '+text);

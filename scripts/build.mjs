@@ -1,4 +1,4 @@
-// Builds the static Nexdo marketing site from site/index.html (single source for every page).
+// Builds the static NexDo marketing site from site/index.html (single source for every page).
 import {readFileSync,writeFileSync,mkdirSync,rmSync,copyFileSync,existsSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 const voiceJsFile='voice-demo.'+createHash('sha256').update(readFileSync('site/voice.js')).digest('hex').slice(0,10)+'.js';
@@ -17,24 +17,24 @@ const pages={
   pomodoro:['/pomodoro','NexDo Pomodoro | Small Sessions. Real Progress.','Choose your focus, set your timer, take a break, and see your progress with NexDo Pomodoro.'],
   'calorie-tracker':['/calorie-tracker','NexDo Calorie Tracker | Explore Meals, Goals & Daily Progress','See how NexDo Calorie Tracker works: set nutrition goals, log meals, review food entries, and follow daily, weekly, and monthly progress. Try the sample walkthrough.'],
   calendar:['/calendar','NexDo Calendar | Your Time, Your Plans, A Little More Calm','See tasks and appointments together. Explore Schedule, Week, and Month views, add events by voice, set repeating plans, and mark events complete with NexDo.'],
-  'nexdo-ai':['/nexdo-ai','Nexdo AI — Talk or Type. Get Things Done.','One AI assistant for your tasks, calendar, shopping lists and important moments. Speak naturally or type a request to plan your day.'],
-  home:['/','Nexdo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
+  'nexdo-ai':['/nexdo-ai','NexDo AI — Talk or Type. Get Things Done.','One AI assistant for your tasks, calendar, shopping lists and important moments. Speak naturally or type a request to plan your day.'],
+  home:['/','NexDo — Get More Done with AI','Your AI action and follow-up assistant. Tasks, calendar, real-time voice, and follow-ups in one calm plan.'],
   tasks:['/tasks','NexDo Tasks | Plan, Prioritize & Follow Through','Organize tasks, create them by voice, plan your day, and prepare your next action with NexDo.'],
   'voice-ai':['/voice-ai','NexDo Voice AI Assistant | Turn Conversations Into Action','Talk naturally with NexDo to create tasks, manage your day, ask questions, set reminders, and turn conversations into action.'],
-  'shopping-lists':['/shopping-lists','NexDo Shopping Lists | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, and share with family — all with NexDo, your AI Action Assistant.'],
+  'shopping-lists':['/shopping-lists','NexDo Shopping List | Voice, AI & Smarter Shopping','Create shopping lists by voice, get AI suggestions, and share with family — all with NexDo, your AI Action Assistant.'],
   'important-moments':['/important-moments','NexDo Important Moments | Never Miss What Matters','Remember birthdays, anniversaries and milestones. Plan ahead, get thoughtful AI suggestions, and celebrate together with NexDo Important Moments.'],
   'ask-ai':['/ask-ai','NexDo Ask AI | Your Everyday Questions, Real Progress','Ask NexDo about your day by text or voice — get answers from your tasks and calendar, find free time, see what to do next, and take action.'],
-  features:['/features','NexDo Features | Eight Modules, One Place','Explore 40 key features across Daily Brief, NexDo AI, Tasks, Calendar, Shopping Lists, Calorie Tracker, Pomodoro, and Moments.'],
-  'use-cases':['/use-cases','Use cases — Nexdo','How professionals, families, founders, and students use Nexdo to turn intentions into done.'],
-  'why-nexdo':['/why-nexdo','Why Nexdo','Planning tools plan. Nexdo acts: call, text, or email straight from a task, and talk to it in real time.'],
-  pricing:['/pricing','Pricing — Nexdo','Get 1 year of NexDo Pro or Max free when you sign up by November 30th. Compare plans and features.'],
-  help:['/help','Help center — Nexdo','Answers about getting started, the Daily Brief, voice, follow-ups, lists, and your account.'],
+  features:['/features','NexDo Features | Eight Modules, One Place','Explore 40 key features across Daily Brief, NexDo AI, Tasks, Calendar, Shopping List, Calorie Tracker, Pomodoro, and Moments.'],
+  'use-cases':['/use-cases','Use cases — NexDo','How professionals, families, founders, and students use NexDo to turn intentions into done.'],
+  'why-nexdo':['/why-nexdo','Why NexDo','Planning tools plan. NexDo acts: call, text, or email straight from a task, and talk to it in real time.'],
+  pricing:['/pricing','Pricing — NexDo','Get 1 year of NexDo Pro or Max free when you sign up by November 30th. Compare plans and features.'],
+  help:['/help','Help center — NexDo','Answers about getting started, the Daily Brief, voice, follow-ups, lists, and your account.'],
   about:['/about','About — NexDo','We are building the assistant that finishes the job.'],
-  trust:['/trust','Trust & privacy — Nexdo','How Nexdo treats your tasks, calendar, and conversations, in plain language.'],
-  contact:['/contact','Contact — Nexdo','Support, feedback, press, and partnerships.'],
-  start:['/start','Get started — Nexdo','Sign in on the web and get your first Daily Brief in under a minute.'],
-  privacy:['/privacy','Privacy Policy — Nexdo','How Nexdo collects, uses, stores, shares, and protects your information.'],
-  terms:['/terms','Terms of Service — Nexdo','The terms that govern your use of Nexdo.'],
+  trust:['/trust','Trust & privacy — NexDo','How NexDo treats your tasks, calendar, and conversations, in plain language.'],
+  contact:['/contact','Contact — NexDo','Support, feedback, press, and partnerships.'],
+  start:['/start','Get started — NexDo','Sign in on the web and get your first Daily Brief in under a minute.'],
+  privacy:['/privacy','Privacy Policy — NexDo','How NexDo collects, uses, stores, shares, and protects your information.'],
+  terms:['/terms','Terms of Service — NexDo','The terms that govern your use of NexDo.'],
 };
 // Temporarily unpublished; keep page content and metadata ready to restore.
 const hiddenPages=new Set(['pricing']);
@@ -90,8 +90,8 @@ for(const key of Object.keys(pages)){
   const dir=key==='home'?'dist':`dist/${key}`;mkdirSync(dir,{recursive:true});
   writeFileSync(`${dir}/index.html`,doc(key,body));
 }
-const nf=`<div class="page" data-page="notfound"><section style="padding-top:60px"><div class="cta glass"><div class="eyebrow">404</div><h1 style="font-size:clamp(34px,5vw,56px)">That page <span class="grad">wandered off.</span></h1><p>The link may be old or mistyped. Everything Nexdo does is one click away.</p><a class="btn primary" href="/">Back to home</a></div></section></div>\n`;
-writeFileSync('dist/404.html',doc('home',nf).replace(/<title>[^<]*<\/title>/,'<title>Page not found — Nexdo</title>').replace(/<link rel="canonical"[^>]*>\n/,'<meta name="robots" content="noindex">\n'));
+const nf=`<div class="page" data-page="notfound"><section style="padding-top:60px"><div class="cta glass"><div class="eyebrow">404</div><h1 style="font-size:clamp(34px,5vw,56px)">That page <span class="grad">wandered off.</span></h1><p>The link may be old or mistyped. Everything NexDo does is one click away.</p><a class="btn primary" href="/">Back to home</a></div></section></div>\n`;
+writeFileSync('dist/404.html',doc('home',nf).replace(/<title>[^<]*<\/title>/,'<title>Page not found — NexDo</title>').replace(/<link rel="canonical"[^>]*>\n/,'<meta name="robots" content="noindex">\n'));
 copyFileSync('site/tasks.css','dist/'+tasksCssFile);
 copyFileSync('site/about.css','dist/'+aboutCssFile);
 copyFileSync('site/app.js','dist/app.js');

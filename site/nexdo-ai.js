@@ -8,7 +8,7 @@
     let answer = page.querySelector('.nai-demo-answer');
     if (!answer) { answer = document.createElement('p'); answer.className = 'nai-demo-answer'; answer.setAttribute('role', 'status'); page.querySelector('.nai-chips').after(answer); }
     answer.replaceChildren(document.createTextNode('Ready to turn your request into action? '));
-    const link = document.createElement('a'); link.href = 'https://app.nexdoapp.com/login'; link.textContent = 'Sign in to Nexdo AI'; answer.append(link);
+    const link = document.createElement('a'); link.href = 'https://app.nexdoapp.com/login'; link.textContent = 'Sign in to NexDo AI'; answer.append(link);
   });
   const demo = page.querySelector('.nai-conversation');
   const status = page.querySelector('.nai-demo-hint');
