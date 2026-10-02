@@ -99,7 +99,7 @@ for(const route of ['/daily-brief','/tasks','/calendar','/nexdo-ai','/shopping-l
 assert(hero.includes('/assets/mobile-store-badges.png'),'Hero needs approved store badges');
 assert(hero.includes('https://apps.apple.com/us/app/nexdo-ai-planner/id6812225981'),'Hero App Store destination');
 assert(/<button[^>]*disabled[^>]*aria-label="Google Play/.test(hero),'Google Play must stay non-clickable');
-assert(/<button[^>]*disabled[^>]*>Watch Demo Video<\/button>/.test(home),'Demo button must stay without a URL');
+assert(/<button[^>]*disabled[^>]*><span>Watch Demo Video<\/span><small class="coming-soon-label">Coming soon<\/small><\/button>/.test(home),'Demo button must stay without a URL');
 
 const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-testimonials','home-download'];
 let previousSection=-1;
