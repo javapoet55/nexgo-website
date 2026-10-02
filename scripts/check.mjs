@@ -92,7 +92,7 @@ console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checke
 
 // Preserve the approved homepage hero when publishing from another checkout.
 const home=readFileSync(resolve(root,'index.html'),'utf8');
-const hero=home.slice(home.indexOf('<header class="hx"'),home.indexOf('id="hm-voice"'));
+const hero=home.slice(home.indexOf('<header class="hx"'),home.indexOf('id="home-how-it-works"'));
 assert(hero.length>0,'Homepage hero must be present');
 assert(!hero.includes('Prepare a call, text, or email'),'Remove superseded hero copy');
 for(const route of ['/daily-brief','/tasks','/calendar','/nexdo-ai','/shopping-lists','/calorie-tracker','/important-moments','/pomodoro'])assert(hero.includes('href="'+route+'"'),'Hero missing module '+route);
@@ -100,3 +100,8 @@ assert(hero.includes('/assets/mobile-store-badges.png'),'Hero needs approved sto
 assert(hero.includes('https://apps.apple.com/us/app/nexdo-ai-planner/id6812225981'),'Hero App Store destination');
 assert(/<button[^>]*disabled[^>]*aria-label="Google Play/.test(hero),'Google Play must stay non-clickable');
 assert(/<button[^>]*disabled[^>]*>Watch Demo Video<\/button>/.test(home),'Demo button must stay without a URL');
+
+const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-testimonials','home-download'];
+let previousSection=-1;
+for(const id of homeFlow){const position=home.indexOf('id="'+id+'"');assert(position>previousSection,'Homepage section missing or out of order: '+id);previousSection=position;}
+assert(!home.includes('id="hm-why"'),'Redundant comparison section must stay removed');
