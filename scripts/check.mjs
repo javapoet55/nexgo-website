@@ -92,7 +92,7 @@ console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checke
 
 // Preserve the approved homepage hero when publishing from another checkout.
 const home=readFileSync(resolve(root,'index.html'),'utf8');
-const hero=home.slice(home.indexOf('<header class="hx"'),home.indexOf('id="hm-features"'));
+const hero=home.slice(home.indexOf('<header class="hx"'),home.indexOf('id="hm-voice"'));
 assert(hero.length>0,'Homepage hero must be present');
 assert(!hero.includes('Prepare a call, text, or email'),'Remove superseded hero copy');
 for(const route of ['/daily-brief','/tasks','/calendar','/nexdo-ai','/shopping-lists','/calorie-tracker','/important-moments','/pomodoro'])assert(hero.includes('href="'+route+'"'),'Hero missing module '+route);
