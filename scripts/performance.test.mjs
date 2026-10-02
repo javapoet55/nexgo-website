@@ -10,7 +10,7 @@ test('homepage image budget and stable cropped artwork dimensions',()=>{
  assert(/rel="preload" as="image"[^>]*fetchpriority="high"/.test(html));
 });
 test('homepage CSS removes other product styles and preserves menu states',()=>{
- const path=html.match(/href="(\/home\.[a-f0-9]{10}\.css)"/)[1];const css=readFileSync('dist'+path,'utf8');
+ const css=html.match(/<style data-home-critical(?:="")?>([\s\S]*?)<\/style>/)[1];
  assert(css.length<40000);assert(!css.includes('.va-ring'));assert(css.includes('.dd.open'));assert(css.includes('.menu.open'));assert(css.includes('prefers-reduced-motion'));assert(css.includes('scaleY'));
 });
 test('compressed representations decode to the original HTML',()=>{

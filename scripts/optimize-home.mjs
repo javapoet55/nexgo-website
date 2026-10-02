@@ -40,8 +40,8 @@ export async function optimizeHome(){
  const css=[...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(m=>m[1]).join('\n');
  html=html.replace(/<style>[\s\S]*?<\/style>/g,'');
  const [{css:clean}]=await new PurgeCSS().purge({content:[{raw:html,extension:'html'},{raw:readFileSync('site/app.js','utf8'),extension:'js'}],css:[{raw:css}],safelist:['open','cur','on'],keyframes:true});
- const name='/home.'+hash(clean)+'.css';writeFileSync('dist'+name,clean);
- html=html.replace('</head>',`<link rel="stylesheet" href="${name}">${heroImage?`<link rel="preload" as="image" href="${heroImage}" fetchpriority="high">`:''}</head>`);
+ // Inline the small, pruned stylesheet so first paint does not wait on another request.
+ html=html.replace('</head>',`<style data-home-critical>${clean}</style>${heroImage?`<link rel="preload" as="image" href="${heroImage}" fetchpriority="high" media="(min-width:1061px)">`:''}</head>`);
  writeFileSync(file,html);
  console.log(`Homepage CSS: ${Buffer.byteLength(css)} → ${Buffer.byteLength(clean)} bytes; ${optimized.size} optimized image regions.`);
 }
