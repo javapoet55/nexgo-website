@@ -101,7 +101,7 @@ assert(hero.includes('https://apps.apple.com/us/app/nexdo-ai-planner/id681222598
 assert(/<button[^>]*disabled[^>]*aria-label="Google Play/.test(hero),'Google Play must stay non-clickable');
 assert(/<button[^>]*disabled[^>]*><span>Watch Demo Video<\/span><small class="coming-soon-label">Coming soon<\/small><\/button>/.test(home),'Demo button must stay without a URL');
 
-const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-testimonials','home-download'];
+const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-download'];
 let previousSection=-1;
 for(const id of homeFlow){const position=home.indexOf('id="'+id+'"');assert(position>previousSection,'Homepage section missing or out of order: '+id);previousSection=position;}
 assert(!home.includes('id="hm-why"'),'Redundant comparison section must stay removed');
