@@ -32,7 +32,7 @@ const pages={
   about:['/about','About — NexDo','We are building the assistant that finishes the job.'],
   trust:['/trust','Trust & privacy — NexDo','How NexDo treats your tasks, calendar, and conversations, in plain language.'],
   contact:['/contact','Contact — NexDo','Support, feedback, press, and partnerships.'],
-  start:['/start','Get started — NexDo','Sign in on the web and get your first Daily Brief in under a minute.'],
+  start:['/start','Get started — NexDo','Download NexDo for iPhone. Bring your tasks, calendar, and Daily Brief together in the mobile app.'],
   privacy:['/privacy','Privacy Policy — NexDo','How NexDo collects, uses, stores, shares, and protects your information.'],
   terms:['/terms','Terms of Service — NexDo','The terms that govern your use of NexDo.'],
 };
