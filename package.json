@@ -9,9 +9,11 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node server.mjs",
-    "test": "node scripts/check.mjs && node --test scripts/support.test.mjs"
+    "test": "node scripts/check.mjs && node --test scripts/support.test.mjs scripts/performance.test.mjs"
   },
   "devDependencies": {
-    "parse5": "8.0.1"
+    "parse5": "8.0.1",
+    "purgecss": "^8.0.0",
+    "sharp": "^0.35.5"
   }
 }

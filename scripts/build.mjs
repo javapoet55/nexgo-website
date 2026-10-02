@@ -123,9 +123,14 @@ copyFileSync('site/how-it-works.js','dist/how-it-works.js');
 
 copyFileSync('site/analytics.js','dist/analytics.js');
 
+const {optimizeHome}=await import('./optimize-home.mjs');
+await optimizeHome();
 const {buildSupportIndex}=await import('./support-index.mjs');
 buildSupportIndex();
 copyFileSync('site/support-chat.js','dist/support-chat.js');
 copyFileSync('site/support-chat.js',`dist/support-chat.${supportAssetVersion}.js`);
 copyFileSync('site/support-chat.css',`dist/support-chat.${supportAssetVersion}.css`);
 copyFileSync('site/support-chat.css','dist/support-chat.css');
+
+const {precompress}=await import('./precompress.mjs');
+precompress();
