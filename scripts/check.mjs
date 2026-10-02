@@ -89,3 +89,14 @@ console.log(`PASS: ${pages.length} files, ${links} internal links/anchors checke
 }
 
 {const features=readFileSync(root+'/features/index.html','utf8');assert.equal((features.match(/class="fx-list"/g)||[]).length,8,'eight module feature lists');assert.equal((features.match(/<h4(?:\s[^>]*)?>/g)||[]).length,40,'five features per module');}
+
+// Preserve the approved homepage hero when publishing from another checkout.
+const home=readFileSync(resolve(root,'index.html'),'utf8');
+const hero=home.slice(home.indexOf('<header class="hx"'),home.indexOf('id="hm-features"'));
+assert(hero.length>0,'Homepage hero must be present');
+assert(!hero.includes('Prepare a call, text, or email'),'Remove superseded hero copy');
+for(const route of ['/daily-brief','/tasks','/calendar','/nexdo-ai','/shopping-lists','/calorie-tracker','/important-moments','/pomodoro'])assert(hero.includes('href="'+route+'"'),'Hero missing module '+route);
+assert(hero.includes('/assets/mobile-store-badges.png'),'Hero needs approved store badges');
+assert(hero.includes('https://apps.apple.com/us/app/nexdo-ai-planner/id6812225981'),'Hero App Store destination');
+assert(/<button[^>]*disabled[^>]*aria-label="Google Play/.test(hero),'Google Play must stay non-clickable');
+assert(/<button[^>]*disabled[^>]*>Watch Demo Video<\/button>/.test(home),'Demo button must stay without a URL');
