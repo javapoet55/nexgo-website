@@ -140,3 +140,8 @@ test('AI failure and overlong output never dump a page',async()=>{
   }
  }finally{globalThis.fetch=original;process.env.OPENAI_API_KEY='';}
 });
+
+test('illustrative homepage testimonials are excluded from support evidence',()=>{
+  assert(!articles.some(a=>JSON.stringify(a).includes('Priya S.')));
+  assert(!articles.some(a=>JSON.stringify(a).includes('Illustrative customer stories')));
+});

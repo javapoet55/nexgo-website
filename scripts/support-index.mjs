@@ -2,7 +2,7 @@ import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {parse,serialize} from 'parse5';
 const attr=(n,key)=>n.attrs?.find(a=>a.name===key)?.value;
-const excluded=n=>['script','style','svg','template','nav','footer'].includes(n.tagName)||attr(n,'hidden')!==undefined||attr(n,'aria-hidden')==='true'||/display\s*:\s*none|visibility\s*:\s*hidden/i.test(attr(n,'style')||'');
+const excluded=n=>attr(n,'data-support-exclude')!==undefined||['script','style','svg','template','nav','footer'].includes(n.tagName)||attr(n,'hidden')!==undefined||attr(n,'aria-hidden')==='true'||/display\s*:\s*none|visibility\s*:\s*hidden/i.test(attr(n,'style')||'');
 const text=n=>excluded(n)?'':n.nodeName==='#text'?n.value:(n.childNodes||[]).map(text).join(' ');
 const clean=n=>text(n).replace(/\s+/g,' ').trim();
 const find=(n,p)=>p(n)?n:(n.childNodes||[]).map(c=>find(c,p)).find(Boolean);
