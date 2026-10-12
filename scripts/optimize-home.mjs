@@ -31,7 +31,7 @@ export async function optimizeHome(){
    }
   }
   if(n.tagName==='img'){
-   const url=attr(n,'src');if(url?.startsWith('/assets/')&&/\.(png|webp)$/.test(url)){set(n,'src',await imageAsset(url));set(n,'decoding','async');}
+   const url=attr(n,'src');if(url!=='/assets/nexdo-branded-qr.png'&&url?.startsWith('/assets/')&&/\.(png|webp)$/.test(url)){set(n,'src',await imageAsset(url));set(n,'decoding','async');}
   }
   for(const c of n.childNodes||[])await walk(c);
  }
