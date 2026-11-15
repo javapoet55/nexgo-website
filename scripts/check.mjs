@@ -41,7 +41,8 @@ for(const file of pages){
   if(!/\/(?:privacy|terms)\/index\.html$/.test(file))assert(!/SOC 2|GDPR Compliant|independent audit|10x|driving.mode|iPhone app (?:is )?coming soon|Calendar connections are part of the roadmap|fully included in your NexDo plan/i.test(visible),file+' contains unsupported or outdated claims');
   const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,file+' duplicate ids');
   for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){
-    const link=m[1];if(/^(https?:|mailto:|data:)/.test(link))continue;
+    const link=m[1];if(link==='/get-app')continue; // Served by the device redirect in server.mjs.
+    if(/^(https?:|mailto:|data:)/.test(link))continue;
     const [p,hash]=link.split('#');let target=p?(p.startsWith('/')?root+p:resolve(dirname(file),p)):file;
     if(existsSync(target)&&statSync(target).isDirectory())target+='/index.html';
     assert(existsSync(target),`Missing ${link} on ${file}`);

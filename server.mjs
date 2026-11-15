@@ -14,6 +14,18 @@ if(proto&&proto!=='https'&&host&&!/^(localhost|127\.0\.0\.1)(:|$)/.test(host)){r
 res.setHeader('Strict-Transport-Security','max-age=31536000; includeSubDomains');
 if(req.url.split('?')[0]==='/api/support/chat')return supportRoute(req,res);
 if(!['GET','HEAD'].includes(req.method)){res.writeHead(405,{'Allow':'GET, HEAD'});return res.end();}
+if (/^\/get-app\/?(?:\?|$)/.test(req.url)) {
+  const agent = req.headers['user-agent'] || '';
+  const platform = req.headers['sec-ch-ua-platform'];
+  let destination = '/#hero-store-links';
+  if (platform === '"Android"' || /Android/i.test(agent)) {
+    destination = 'https://play.google.com/store/apps/details?id=com.pinslots.nexdo';
+  } else if (platform === '"iOS"' || /iPhone|iPad|iPod/i.test(agent)) {
+    destination = 'https://apps.apple.com/us/app/nexdo-ai-planner/id6812225981';
+  }
+  res.writeHead(302, {Location: destination, 'Cache-Control': 'no-store', Vary: 'User-Agent, Sec-CH-UA-Platform'});
+  return res.end();
+}
 try{let path=decodeURIComponent(new URL(req.url,'http://localhost').pathname);if(aliases[path]){res.writeHead(301,{Location:aliases[path]});return res.end();}if(path.length>1&&path.endsWith('/')){res.writeHead(301,{Location:path.slice(0,-1)});return res.end();}let file=resolve(root,'.'+path);if(file!==root&&!file.startsWith(root+'/')){res.writeHead(404);return res.end();}let status=200;try{const s=await stat(file);if(s.isDirectory())file=resolve(file,'index.html');await stat(file);}catch{file=resolve(root,'404.html');status=404;}const extension=extname(file);
 res.setHeader('Content-Type',types[extension]||'application/octet-stream');
 const fingerprinted=/[.-][a-f0-9]{10}\.(?:webp|css|js)$/.test(file);
