@@ -38,3 +38,10 @@ To enable AI later, add `OPENAI_API_KEY` to this website service in Railway. Opt
 The endpoint is `/api/support/chat`. Requests are capped at 16 KB, nine messages and a 1,000-character question. Per-process limits: ten requests per visitor/minute, sixty total/minute, five concurrent. Add shared gateway rate limits if scaling across replicas. All client answers use textContent, with source links restricted to server-owned local paths. No account data, database access, mutations, or external page crawling.
 
 Run `npm run build && npm test` for source/link checks and support tests.
+
+The homepage QR image encodes `/get-app?source=hero-qr`. The clickable card uses
+`/get-app` and is excluded from QR reporting. To enable reporting, set
+`QR_ANALYTICS_URL` to the Harbour `/api/telemetry/qr-open` endpoint and set
+`QR_ANALYTICS_TOKEN` to the token shared with that service. The store redirects
+work when reporting is unavailable. Location is looked up locally and only
+the country, region, and city are sent with the event.
