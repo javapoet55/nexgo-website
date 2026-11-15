@@ -98,7 +98,7 @@ assert(!hero.includes('Prepare a call, text, or email'),'Remove superseded hero 
 for(const route of ['/daily-brief','/tasks','/calendar','/nexdo-ai','/shopping-lists','/calorie-tracker','/important-moments','/pomodoro'])assert(hero.includes('href="'+route+'"'),'Hero missing module '+route);
 assert(hero.includes('data-artwork="mobile-store-badges.png"'),'Hero needs approved store badges');
 assert(hero.includes('https://apps.apple.com/us/app/nexdo-ai-planner/id6812225981'),'Hero App Store destination');
-assert(/<button[^>]*disabled[^>]*aria-label="Google Play/.test(hero),'Google Play must stay non-clickable');
+assert(/<a[^>]*href="https:\/\/play\.google\.com\/store\/apps\/details\?id=com\.pinslots\.nexdo"[^>]*aria-label="Download NexDo on Google Play"/.test(hero),'Hero Google Play destination');
 assert(/<button[^>]*disabled[^>]*><span>Watch Demo Video<\/span><small class="coming-soon-label">Coming soon<\/small><\/button>/.test(home),'Demo button must stay without a URL');
 
 const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-download'];
