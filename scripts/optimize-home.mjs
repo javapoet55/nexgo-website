@@ -12,9 +12,17 @@ export async function optimizeHome(){
  const optimized=new Map();let heroImage;
  async function imageAsset(url,box){
   const key=url+JSON.stringify(box);if(optimized.has(key))return optimized.get(key);
-  let img=sharp(readFileSync('dist'+url));
-  if(box)img=img.extract({left:box[0],top:box[1],width:box[2],height:box[3]});
-  const bytes=await img.resize({width:box?Math.min(box[2],900):900,withoutEnlargement:true}).webp({quality:88,alphaQuality:100}).toBuffer();
+  const source=readFileSync('dist'+url);let img=sharp(source);let width=box?box[2]:900;
+  if(box){
+   // The viewBox is in the <image>'s declared width/height, which can differ from the file's real pixel
+   // size (home-workflow-pack.png is drawn at 2048×711 but is 2129×739). Scale the box into file pixels,
+   // or the crop lands short and to the left of the artwork.
+   const meta=await sharp(source).metadata();const sx=box[4]?meta.width/box[4]:1,sy=box[5]?meta.height/box[5]:1;
+   const left=Math.max(0,Math.round(box[0]*sx)),top=Math.max(0,Math.round(box[1]*sy));
+   width=Math.min(meta.width-left,Math.round(box[2]*sx));
+   img=img.extract({left,top,width,height:Math.min(meta.height-top,Math.round(box[3]*sy))});
+  }
+  const bytes=await img.resize({width:Math.min(width,900),withoutEnlargement:true}).webp({quality:88,alphaQuality:100}).toBuffer();
   const name='/assets/home-'+hash(bytes)+'.webp';writeFileSync('dist'+name,bytes);optimized.set(key,name);return name;
  }
  async function walk(n){
@@ -24,7 +32,7 @@ export async function optimizeHome(){
    if(imgs.length===1&&vb?.length===4&&vb.every(Number.isInteger)){
     const im=imgs[0],url=attr(im,'href');
     if(url?.startsWith('/assets/')&&url.endsWith('.png')){
-     const replacement=await imageAsset(url,vb);set(n,'data-artwork',url.split('/').pop());
+     const replacement=await imageAsset(url,[...vb,Number(attr(im,'width'))||0,Number(attr(im,'height'))||0]);set(n,'data-artwork',url.split('/').pop());
      set(im,'href',replacement);set(im,'x',vb[0]);set(im,'y',vb[1]);set(im,'width',vb[2]);set(im,'height',vb[3]);
      if((attr(n,'class')||'').includes('hx-pack-phone'))heroImage=replacement;
     }
