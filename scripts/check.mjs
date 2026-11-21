@@ -100,6 +100,11 @@ for(const route of ['/daily-brief','/tasks','/calendar','/nexdo-ai','/shopping-l
 assert(hero.includes('data-artwork="mobile-store-badges.png"'),'Hero needs approved store badges');
 assert(hero.includes('https://apps.apple.com/us/app/nexdo-ai-planner/id6812225981'),'Hero App Store destination');
 assert(/<a[^>]*href="https:\/\/play\.google\.com\/store\/apps\/details\?id=com\.pinslots\.nexdo"[^>]*aria-label="Download NexDo on Google Play"/.test(hero),'Hero Google Play destination');
+// The Google Play badge is a live link wherever it appears, never a disabled "Coming soon" button.
+const playLink=/<a[^>]*href="https:\/\/play\.google\.com\/store\/apps\/details\?id=com\.pinslots\.nexdo"[^>]*aria-label="Download NexDo on Google Play"/;
+const downloadBanner=home.slice(home.indexOf('id="home-download"'),home.indexOf('</section>',home.indexOf('id="home-download"')));
+assert(playLink.test(downloadBanner),'Download banner Google Play destination');
+for(const file of pages){const html=readFileSync(file,'utf8');assert(!/Google Play[^<]{0,12}coming soon/i.test(html)&&!html.includes('hx-pending-store" type="button"'),'Google Play must not be marked coming soon in '+file);}
 assert(/<button[^>]*disabled[^>]*><span>Watch Demo Video<\/span><small class="coming-soon-label">Coming soon<\/small><\/button>/.test(home),'Demo button must stay without a URL');
 
 const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-download'];
