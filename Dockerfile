@@ -12,7 +12,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
-COPY server.mjs support-server.mjs qr-analytics.mjs ./
+COPY server.mjs support-server.mjs qr-analytics.mjs abuse-guard.mjs ./
 USER node
 EXPOSE 8080
 CMD ["node", "server.mjs"]

@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node server.mjs",
-    "test": "node scripts/check.mjs && node --test scripts/support.test.mjs scripts/performance.test.mjs"
+    "test": "node scripts/check.mjs && node --test scripts/support.test.mjs scripts/performance.test.mjs scripts/security.test.mjs"
   },
   "devDependencies": {
     "parse5": "8.0.1",

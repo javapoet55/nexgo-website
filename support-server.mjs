@@ -1,5 +1,5 @@
 import {readFileSync} from 'node:fs';
-import {createHash} from 'node:crypto';
+import {clientAddress,createLimiter,setting} from './abuse-guard.mjs';
 export const articles=JSON.parse(readFileSync(new URL('./dist/support-articles.json',import.meta.url),'utf8'));
 const stop=new Set('a an the i my me you your we it is are do does how what why when can to of in on for and or with nexdo nexdoapp please about have has there get use using would like want need tell could should'.split(' '));
 const tokens=s=>[...new Set(s.toLowerCase().replace(/\bcalories\b/g,'calorie').replace(/\bworks\b/g,'work').replace(/calendars?/g,'calendar').replace(/tasks?/g,'task').replace(/\b(events|appointments)\b/g,'event').replace(/\b(reminders)\b/g,'reminder').replace(/\b(prioritize|prioritization|priorities|prioritise)\b/g,'priority').replace(/\b(meals)\b/g,'meal').match(/[a-z0-9]+/g)||[])].filter(t=>t.length>1&&!stop.has(t));
@@ -71,12 +71,12 @@ function conciseFallback(matches,question){
 }
 const sourceLinks=list=>[...new Map(list.map(({title,url})=>[url,{title,url}])).values()];
 const unknown={answer:'I couldn’t find a confirmed answer in NexDo’s published website or help pages. Try a question about tasks, calendars, voice, shopping lists, Pomodoro, or your account. For more help, use our Contact page.',sources:[{title:'Help center',url:'/help'},{title:'Contact support',url:'/contact'}],mode:'unknown'};
-export async function answerSupport(messages,pagePath=''){
+export async function answerSupport(messages,pagePath='',{ai=true}={}){
   const latest=messages.at(-1).content;const previous=messages.filter(m=>m.role==='user').slice(-2,-1).map(m=>m.content).join(' ');
   const followUp=!routeFor(latest).length&&(tokens(latest).length<4||/\b(it|that|those|them|this feature)\b/i.test(latest));
   const matches=/^(hi|hello|hey)[!. ]*$|^what (can nexdo do|is nexdo)[?. ]*$/i.test(latest.trim())?articles.filter(a=>a.url==='/'&&a.kind==='overview'):retrieve(latest+(followUp?' '+previous:''),pagePath);
   const fallback=()=>conciseFallback(matches,latest);
-  if(!process.env.OPENAI_API_KEY)return fallback();
+  if(!ai||!process.env.OPENAI_API_KEY)return fallback();
   try{
     if(!matches.length)return unknown;
     const context=matches;
@@ -89,18 +89,43 @@ export async function answerSupport(messages,pagePath=''){
     return {answer:result.answer,sources:sourceLinks([...new Set(result.sourceIds)].map(id=>context.find(a=>a.id===id))),mode:'ai'};
   }catch{return fallback();}
 }
-let start=0,total=0,active=0;const visitors=new Map();
+const MINUTE=60_000,DAY=86_400_000;
+// Questions per visitor. Over these the visitor is asked to wait.
+const visitorMinute=createLimiter({limit:setting('SUPPORT_VISITOR_MINUTE_LIMIT',10),windowMs:MINUTE});
+const visitorDay=createLimiter({limit:setting('SUPPORT_VISITOR_DAILY_LIMIT',80),windowMs:DAY});
+// A ceiling on all questions, to protect the server itself.
+const everyoneMinute=createLimiter({limit:setting('SUPPORT_TOTAL_MINUTE_LIMIT',600),windowMs:MINUTE});
+// Paid AI answers. Over any of these the answer comes from the published articles instead, which
+// costs nothing, so a flood can neither run up the AI bill nor lock real visitors out of support.
+const aiVisitorDay=createLimiter({limit:setting('SUPPORT_AI_VISITOR_DAILY_LIMIT',30),windowMs:DAY});
+const aiMinute=createLimiter({limit:setting('SUPPORT_AI_MINUTE_LIMIT',30),windowMs:MINUTE});
+const aiDay=createLimiter({limit:setting('SUPPORT_AI_DAILY_LIMIT',1500),windowMs:DAY});
+const aiConcurrency=setting('SUPPORT_AI_CONCURRENCY',5);
+let active=0,lastBudgetLog=0;
+const hostOf=value=>{try{return new URL(value).host;}catch{return null;}};
+/** True only for a request our own pages made: browsers put Origin on every POST. */
+function fromOurSite(req){
+  const site=req.headers['sec-fetch-site'];
+  if(site&&site!=='same-origin')return false;
+  const origin=req.headers.origin;
+  if(!origin)return site==='same-origin';
+  const hosts=[req.headers.host,String(req.headers['x-forwarded-host']||'').split(',')[0].trim()].filter(Boolean);
+  return hosts.includes(hostOf(origin));
+}
 export async function supportRoute(req,res){
   const reply=(status,data)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store',...(status===429?{'Retry-After':'60'}:{})});res.end(JSON.stringify(data));};
   if(req.method!=='POST')return reply(405,{error:'Use POST.'});
-  const origin=req.headers.origin;try{if((origin&&new URL(origin).host!==req.headers.host)||req.headers['sec-fetch-site']==='cross-site')return reply(403,{error:'Please use support on the NexDo website.'});}catch{return reply(403,{error:'Invalid origin.'});}
+  if(!fromOurSite(req))return reply(403,{error:'Please use support on the NexDo website.'});
   if(!String(req.headers['content-type']).includes('application/json'))return reply(415,{error:'Expected JSON.'});
+  const now=Date.now();
+  // Without a trusted address every such request shares one allowance.
+  const visitor=clientAddress(req)||'unknown';
+  if(!everyoneMinute.take('all',now)||!visitorMinute.take(visitor,now)||!visitorDay.take(visitor,now))return reply(429,{error:'Please wait a minute before asking another question.'});
   let messages,pagePath;try{let size=0;const chunks=[];for await(const chunk of req){size+=chunk.length;if(size>16000)return reply(413,{error:'Your message is too long.'});chunks.push(chunk);}const body=JSON.parse(Buffer.concat(chunks));messages=body.messages;pagePath=typeof body.pagePath==='string'&&moduleRoutes.some(([,path])=>path===body.pagePath)?body.pagePath:'';
     if(!Array.isArray(messages)||!messages.length||messages.length>9||messages.some(m=>!m||!['user','assistant'].includes(m.role)||typeof m.content!=='string'||!m.content.trim()||m.content.length>2400)||messages.at(-1).role!=='user'||messages.at(-1).content.length>1000)throw Error('Invalid');
   }catch{return reply(400,{error:'Ask a question of up to 1,000 characters.'});}
-  const now=Date.now();if(now-start>=60000){start=now;total=0;}for(const[k,v]of visitors)if(v.expires<=now)visitors.delete(k);
-  const key=createHash('sha256').update(String(req.headers['x-forwarded-for']||req.socket.remoteAddress||'unknown').split(',')[0]).digest('hex');const visitor=visitors.get(key)||{count:0,expires:now+60000};
-  if(total>=60||active>=5||visitor.count>=10)return reply(429,{error:'Please wait a minute before asking another question.'});
-  visitor.count++;visitors.set(key,visitor);total++;active++;
-  try{return reply(200,await answerSupport(messages,pagePath));}finally{active--;}
+  const ai=Boolean(process.env.OPENAI_API_KEY)&&active<aiConcurrency&&aiVisitorDay.take(visitor,now)&&aiMinute.take('all',now)&&aiDay.take('all',now);
+  if(!ai&&process.env.OPENAI_API_KEY&&now-lastBudgetLog>=MINUTE){lastBudgetLog=now;console.warn(JSON.stringify({event:'support_ai_budget_reached',aiLeftToday:aiDay.remaining('all',now),aiLeftThisMinute:aiMinute.remaining('all',now),active}));}
+  if(ai)active++;
+  try{return reply(200,await answerSupport(messages,pagePath,{ai}));}finally{if(ai)active--;}
 }

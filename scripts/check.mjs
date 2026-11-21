@@ -112,3 +112,7 @@ const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','
 let previousSection=-1;
 for(const id of homeFlow){const position=home.indexOf('id="'+id+'"');assert(position>previousSection,'Homepage section missing or out of order: '+id);previousSection=position;}
 assert(!home.includes('id="hm-why"'),'Redundant comparison section must stay removed');
+
+// Every published email address is on our own domain. A look-alike domain (one typo away) would send
+// customers' support requests to whoever owns that domain.
+for(const file of pages){const html=readFileSync(file,'utf8');for(const address of html.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)||[]){if(/\.(png|webp|svg|jpg|css|js)$/i.test(address))continue;assert(/@nexdoapp\.com$/i.test(address),'Email on another domain in '+file+': '+address);}}

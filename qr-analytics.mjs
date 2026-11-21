@@ -1,8 +1,16 @@
 import {isIP} from 'node:net';
+import {clientAddress,createLimiter,setting} from './abuse-guard.mjs';
 
 let geolocation;
 const configuredEndpoint = process.env.QR_ANALYTICS_URL;
 const token = process.env.QR_ANALYTICS_TOKEN;
+
+// One scan is one open. Without these, anyone requesting /get-app?source=hero-qr in a loop
+// would fill the scan report with invented opens and send a write to the app for each one.
+const perVisitor = createLimiter({limit: setting('QR_OPENS_PER_VISITOR', 3), windowMs: 10 * 60_000});
+const perMinute = createLimiter({limit: setting('QR_OPENS_PER_MINUTE', 120), windowMs: 60_000});
+const maxInFlight = 8;
+let inFlight = 0;
 
 export function recordHeroQrOpen(req, destination) {
   if (!configuredEndpoint || !token || req.method !== 'GET') return;
@@ -10,6 +18,7 @@ export function recordHeroQrOpen(req, destination) {
   const agent = headers['user-agent'] || '';
   const purpose = [headers['purpose'], headers['sec-purpose'], headers['x-purpose']].join(' ');
   if (!agent || /prefetch|prerender|preview/i.test(purpose) || /bot\b|crawler|spider|preview|facebookexternalhit/i.test(agent)) return;
+  if (inFlight >= maxInFlight || !perVisitor.take(clientAddress(req) || 'unknown') || !perMinute.take('all')) return;
   const platform = destination.startsWith('https://play.google.com/') ? 'android'
     : destination.startsWith('https://apps.apple.com/') ? 'ios' : 'other';
   const hint = headers['sec-ch-ua-model']?.match(/^"([^"]+)"$/)?.[1];
@@ -19,6 +28,7 @@ export function recordHeroQrOpen(req, destination) {
   const ip = headers['x-real-ip'];
   const openedAt = new Date().toISOString();
 
+  inFlight++;
   void (async () => {
     let location;
     if (ip && isIP(ip)) {
@@ -41,5 +51,5 @@ export function recordHeroQrOpen(req, destination) {
     });
     if (!response.ok) throw new Error('QR event returned HTTP ' + response.status);
     await response.body?.cancel();
-  })().catch(error => console.warn('Unable to record hero QR open:', error.message));
+  })().catch(error => console.warn('Unable to record hero QR open:', error.message)).finally(() => { inFlight--; });
 }
