@@ -105,7 +105,8 @@ const playLink=/<a[^>]*href="https:\/\/play\.google\.com\/store\/apps\/details\?
 const downloadBanner=home.slice(home.indexOf('id="home-download"'),home.indexOf('</section>',home.indexOf('id="home-download"')));
 assert(playLink.test(downloadBanner),'Download banner Google Play destination');
 for(const file of pages){const html=readFileSync(file,'utf8');assert(!/Google Play[^<]{0,12}coming soon/i.test(html)&&!html.includes('hx-pending-store" type="button"'),'Google Play must not be marked coming soon in '+file);}
-assert(/<button[^>]*disabled[^>]*><span>Watch Demo Video<\/span><small class="coming-soon-label">Coming soon<\/small><\/button>/.test(home),'Demo button must stay without a URL');
+// The header's call to action opens the web app's sign-up page (which links to log-in), on every page.
+for(const file of pages){if(file.endsWith('404.html'))continue;const html=readFileSync(file,'utf8');assert(/<a class="btn primary nav-auth" href="https:\/\/app\.nexdoapp\.com\/signup">Sign up \/ Login<\/a>/.test(html),'Header needs the Sign up / Login button in '+file);assert(!html.includes('Watch Demo Video'),'The Demo button was replaced in '+file);}
 
 const homeFlow=['home-how-it-works','home-daily-brief','hm-voice','hm-compare','home-use-cases','home-trust','home-download'];
 let previousSection=-1;
